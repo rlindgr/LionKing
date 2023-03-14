@@ -8,5 +8,7 @@ namespace LionKing
 {
     internal class Animal
     {
+        public int Animal_id { get; set; }
+        public string? Name { get; set; }
     }
 }
