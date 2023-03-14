@@ -23,7 +23,7 @@ namespace LionKing
         public MainWindow()
         {
             InitializeComponent();
-            // försöker igen
+            // försöker igen jhk
         }
     }
 }
