@@ -10,5 +10,7 @@ namespace LionKing
     {
         public int Animal_id { get; set; }
         public string? Name { get; set; }
+        public int Species_id { get; set; }
+        public int Class_id { get; set; }
     }
 }

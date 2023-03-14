@@ -25,5 +25,23 @@ namespace LionKing
             InitializeComponent();
             // försöker igen jhk
         }
+        //public async void AddAnimal(Animal animal)
+        //{
+        //    try
+        //    {
+        //        await using var command = dataSource.CreateCommand(stmt);
+        //        string stmt = $"INSERT INTO Animal VALUES(@Animal_id, Animal_name)";
+        //        await using var command = NpgsqlDataSource.Create(_connectionString);
+        //        command.Parameters.AddWithValue("Animal_id", animal.Animal_id);
+        //        await command.ExecuteNonQueryAsync();
+
+        //    }
+        //    catch (PostgresException ex)
+        //    {
+        //        string mess = ex.Message;
+        //        throw;
+        //    }
+
+        //}
     }
 }
