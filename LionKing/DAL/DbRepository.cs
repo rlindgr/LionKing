@@ -3,6 +3,7 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +43,16 @@ namespace LionKing.DAL
             }
 
             return animal;
+        }
+        public async Task AddAnimal(string animal_name, int species, int animal_class)
+        {
+            string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+            await using var command = dataSource.CreateCommand(stmt);
+
+            command.Parameters.AddWithValue("animal_name", animal_name);
+            command.Parameters.AddWithValue("class_id", animal_class);
+            command.Parameters.AddWithValue("species_id", species);
         }
     }
 }

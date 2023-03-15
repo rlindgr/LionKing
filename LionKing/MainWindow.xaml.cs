@@ -24,7 +24,9 @@ namespace LionKing
         public MainWindow()
         {
             InitializeComponent();
+            
         }
+        
 
 
         private async void btnFetchAnimal_Click_1(object sender, RoutedEventArgs e)
@@ -38,6 +40,6 @@ namespace LionKing
             //hej
 
         }
-      
+
     }
 }
