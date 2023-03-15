@@ -44,15 +44,36 @@ namespace LionKing.DAL
 
             return animal;
         }
-        public async Task AddAnimal(string animal_name, int species, int animal_class)
-        {
-            string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-            await using var command = dataSource.CreateCommand(stmt);
 
-            command.Parameters.AddWithValue("animal_name", animal_name);
-            command.Parameters.AddWithValue("class_id", animal_class);
-            command.Parameters.AddWithValue("species_id", species);
+        /// <summary>
+        /// Adds animal to database, with species and class relations
+        /// </summary>
+        /// <param name="animal"></param>
+        /// <returns></returns>
+        public async Task<Animal> AddAnimal(Animal animal)
+        {
+            try
+            {
+                string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
+                command.Parameters.AddWithValue("class_id", animal.Class_id);
+                command.Parameters.AddWithValue("species_id", animal.Species_id);
+                animal.Animal_id =(int) await command .ExecuteScalarAsync();
+                return animal;
+            }
+            catch (PostgresException ex)
+            {
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    default:
+                        break;
+                }
+                throw;
+            }
         }
     }
 }

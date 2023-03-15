@@ -20,7 +20,7 @@
         <Label x:Name="lblSelectAnimalClass" Content="Select animal class&#xD;&#xA;" HorizontalAlignment="Left" Height="26" Margin="35,26,0,0" VerticalAlignment="Top" Width="142"/>
         <Label x:Name="lblSelectSpecies" Content="Select species" HorizontalAlignment="Left" Height="26" Margin="35,89,0,0" VerticalAlignment="Top" Width="105"/>
         <Label x:Name="lblSelectAnimal" Content="Select animal" HorizontalAlignment="Left" Height="26" Margin="35,144,0,0" VerticalAlignment="Top" Width="105"/>
-        <TextBlock x:Name="txtResults" HorizontalAlignment="Left" Height="301" Margin="313,55,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="281"/>
+        <TextBlock x:Name="txtResults" HorizontalAlignment="Left" Height="301" Margin="286,58,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="281"/>
         <ComboBox Name ="cbxClassAdd" HorizontalAlignment="Left" Height="31" Margin="547,55,0,0" VerticalAlignment="Top" Width="204"/>
         <ComboBox Name="cbxSpeciesAdd" HorizontalAlignment="Left" Height="31" Margin="547,113,0,0" VerticalAlignment="Top" Width="204"/>
         <ComboBox Name="cbxAnimalAdd" HorizontalAlignment="Left" Height="32" Margin="547,174,0,0" VerticalAlignment="Top" Width="204"/>
@@ -28,5 +28,6 @@
         <Label x:Name="lblSelectSpecies_Copy" Content="Select species" HorizontalAlignment="Left" Height="26" Margin="544,89,0,0" VerticalAlignment="Top" Width="105"/>
         <Label x:Name="lblSelectAnimal_Copy" Content="Select animal" HorizontalAlignment="Left" Height="26" Margin="544,149,0,0" VerticalAlignment="Top" Width="105"/>
         <Label Content="Add animal" HorizontalAlignment="Left" Height="26" Margin="536,3,0,0" VerticalAlignment="Top" Width="105"/>
+        <Button Name="btnAdd" Content="Lägg till" HorizontalAlignment="Left" Height="42" Margin="567,266,0,0" VerticalAlignment="Top" Width="156"/>
     </Grid>
 </Window>
