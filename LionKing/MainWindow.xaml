@@ -8,5 +8,18 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button x:Name="btnFetchAnimal" Content="Hämta ett djur" HorizontalAlignment="Left" Height="39" Margin="594,68,0,0" VerticalAlignment="Top" Width="155" Click="btnFetchAnimal_Click_1"/>
+        <ComboBox x:Name="cbxAnimalClass" HorizontalAlignment="Left" Height="32" Margin="35,52,0,0" VerticalAlignment="Top" Width="199">
+            <ComboBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="199"/>
+        </ComboBox>
+        <ComboBox x:Name="cbxSpecies" HorizontalAlignment="Left" Height="31" Margin="35,113,0,0" VerticalAlignment="Top" Width="199">
+            <ComboBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="199"/>
+        </ComboBox>
+        <ComboBox x:Name="cbxAnimal" HorizontalAlignment="Left" Height="33" Margin="35,172,0,0" VerticalAlignment="Top" Width="199">
+            <ComboBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="199"/>
+        </ComboBox>
+        <Label x:Name="lblSelectAnimalClass" Content="Select animal class&#xD;&#xA;" HorizontalAlignment="Left" Height="26" Margin="35,26,0,0" VerticalAlignment="Top" Width="142"/>
+        <Label x:Name="lblSelectSpecies" Content="Select species" HorizontalAlignment="Left" Height="26" Margin="35,89,0,0" VerticalAlignment="Top" Width="105"/>
+        <Label x:Name="lblSelectAnimal" Content="Select animal" HorizontalAlignment="Left" Height="26" Margin="35,144,0,0" VerticalAlignment="Top" Width="105"/>
+        <TextBlock x:Name="txtResults" HorizontalAlignment="Left" Height="301" Margin="282,52,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="281"/>
     </Grid>
 </Window>
