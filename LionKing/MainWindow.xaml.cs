@@ -31,13 +31,13 @@ namespace LionKing
         private async void btnFetchAnimal_Click_1(object sender, RoutedEventArgs e)
         {
             //När vi klickar på knappen skapas ett nytt objekt av DbRepository
+            // Vi ska inte lägga den i ctor? eller vill vi skapa en ny vid varje tryck? :)
             DbRepository db = new();
             var animal = await db.GetAnimal(5);
 
             MessageBox.Show($"{animal.Animal_name}");
 
-            //hej
-
+            
         }
 
     }
