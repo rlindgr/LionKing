@@ -37,7 +37,10 @@ namespace LionKing.DAL
                 animal = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = (string)reader["animal_name"]
+                    //Animal_name = (string)reader["animal_name"]
+
+                    // If retrived value is null, transforms into null value in C#
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
                 };
 
             }
@@ -58,7 +61,9 @@ namespace LionKing.DAL
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
+                //command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
+                command.Parameters.AddWithValue(ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? Or should it be "animal_name" instead of animal.Animal_name
+
                 command.Parameters.AddWithValue("class_id", animal.Class_id);
                 command.Parameters.AddWithValue("species_id", animal.Species_id);
                 animal.Animal_id =(int) await command .ExecuteScalarAsync();
@@ -66,14 +71,50 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
+                string errorMessage = "Något gick fel";
                 string errorCode = ex.SqlState;
                 switch (errorCode)
                 {
+                    //case PostgresErrorCodes.:
+                    //    errorMessage = "";
+                    //    break;
                     default:
                         break;
                 }
-                throw;
+                throw new Exception(errorMessage);
             }
+        }
+
+       
+
+        /// <summary>
+        /// Transforms null valu from database to null value in c#. If not null, returns object. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static T? ConvertFromDBVal<T>(object obj) // T is an arbitraty object, can be anything (string, int....)
+        {
+            if (obj == null || obj == DBNull.Value)
+            {
+                return default; // if database is null return null, otherwise return object. Default value is null!
+            }
+            return (T)obj;
+        }
+
+        /// <summary>
+        /// Transforms inserted null valu to null valu in database. If not null, returns obejct. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static object ConvertToDBValue<T> (object obj)
+        {
+            if (obj == null || obj == string.Empty)
+            {
+                return DBNull.Value;
+            }
+            return (T)obj;
         }
     }
 }
