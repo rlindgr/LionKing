@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Button x:Name="btnFetchAnimal" Content="Hämta ett djur" HorizontalAlignment="Left" Height="39" Margin="594,68,0,0" VerticalAlignment="Top" Width="155" Click="btnFetchAnimal_Click_1"/>
     </Grid>
 </Window>

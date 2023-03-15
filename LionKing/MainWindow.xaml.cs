@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LionKing.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,17 @@ namespace LionKing
         public MainWindow()
         {
             InitializeComponent();
-            // försöker igen jhk
+        }
+
+
+        private async void btnFetchAnimal_Click_1(object sender, RoutedEventArgs e)
+        {
+            //När vi klickar på knappen skapas ett nytt objekt av DbRepository
+            DbRepository db = new();
+            var animal = await db.GetAnimal(5);
+
+            MessageBox.Show($"{animal.Animal_name}");
+
         }
     }
 }
