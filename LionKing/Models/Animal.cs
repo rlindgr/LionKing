@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LionKing.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,10 @@ namespace LionKing
         /// </summary>
         public int Animal_id { get; set; }
         public string? Animal_name { get; set; }   
-        public int Class_id { get; set; }
-        public int Species_id { get; set; }
+       
+
+        public Species Species { get; set; }
+        //public AnimalClass Class { get; set; } kanske är bättre att ha den i species eftersom man då ändå får med den informationen hit. 
+
     }
 }

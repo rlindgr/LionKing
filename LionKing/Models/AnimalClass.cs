@@ -15,5 +15,7 @@ namespace LionKing.Models
 
         public string? Class_name { get; set; }
 
+       
+
     }
 }

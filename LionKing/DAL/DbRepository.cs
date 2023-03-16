@@ -65,8 +65,8 @@ namespace LionKing.DAL
                 //command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
                 command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? Or should it be "animal_name" instead of animal.Animal_name
 
-                command.Parameters.AddWithValue("class_id", animal.Class_id);
-                command.Parameters.AddWithValue("species_id", animal.Species_id);
+                command.Parameters.AddWithValue("class_id", animal.Species.Class.Class_id); // Added species as a prop in animal and class as a prop in species
+                command.Parameters.AddWithValue("species_id", animal.Species.Species_id);
                 animal.Animal_id =(int) await command .ExecuteScalarAsync();
                 return animal;
             }

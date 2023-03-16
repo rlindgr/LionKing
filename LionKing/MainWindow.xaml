@@ -7,24 +7,55 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnFetchAnimal" Content="Hämta ett djur" HorizontalAlignment="Left" Height="25" Margin="570,163,0,0" VerticalAlignment="Top" Width="85" Click="btnFetchAnimal_Click_1"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="253" Margin="16,10,0,0" VerticalAlignment="Top" Width="138">
-            <TextBox Name="txtCreateAnimal" HorizontalAlignment="Left" Height="24" Margin="19,72,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="84"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="424" Margin="328,10,0,0" VerticalAlignment="Top" Width="462">
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="161" Margin="176,261,0,0" VerticalAlignment="Top" Width="266"/>
         </Border>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="253" Margin="166,10,0,0" VerticalAlignment="Top" Width="138">
-            <Label Content="Remove" HorizontalAlignment="Left" Height="27" Margin="9,9,0,0" VerticalAlignment="Top" Width="53"/>
-        </Border>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="414" Margin="386,0,0,0" VerticalAlignment="Center" Width="398">
-            <Label Content="Find" HorizontalAlignment="Left" Height="31" Margin="19,9,0,0" VerticalAlignment="Top" Width="77"/>
-        </Border>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="149" Margin="16,275,0,0" VerticalAlignment="Top" Width="332"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="118" Margin="577,300,0,0" VerticalAlignment="Top" Width="193"/>
-        <Label Content="Create new animal" HorizontalAlignment="Left" Height="24" Margin="27,50,0,0" VerticalAlignment="Top" Width="111"/>
-        <Label Content="Create new species" HorizontalAlignment="Left" Height="24" Margin="30,112,0,0" VerticalAlignment="Top" Width="110"/>
-        <Label Content="Create new class" HorizontalAlignment="Left" Height="24" Margin="27,176,0,0" VerticalAlignment="Top" Width="111"/>
-        <Label Content="Create" HorizontalAlignment="Left" Height="24" Margin="27,20,0,0" VerticalAlignment="Top" Width="111"/>
-        <Label Content="Remove animal" HorizontalAlignment="Left" Height="24" Margin="180,50,0,0" VerticalAlignment="Top" Width="110"/>
-        <Label Content="Remove species" HorizontalAlignment="Left" Height="24" Margin="173,112,0,0" VerticalAlignment="Top" Width="110"/>
-        <Label Content="Remove class" HorizontalAlignment="Left" Height="24" Margin="193,176,0,0" VerticalAlignment="Top" Width="111"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="253" Margin="166,10,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button x:Name="btnFetchAnimal" Content="Hämta ett djur" HorizontalAlignment="Left" Height="26" Margin="339,101,0,0" VerticalAlignment="Top" Width="85" Click="btnFetchAnimal_Click_1"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="253" Margin="18,10,0,0" VerticalAlignment="Top" Width="138"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="149" Margin="10,275,0,0" VerticalAlignment="Top" Width="298"/>
+        <Label Content="Create new animal" HorizontalAlignment="Left" Height="24" Margin="30,38,0,0" VerticalAlignment="Top" Width="111"/>
+        <Label Content="Create new species" HorizontalAlignment="Left" Height="24" Margin="32,95,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Create new class" HorizontalAlignment="Left" Height="24" Margin="32,155,0,0" VerticalAlignment="Top" Width="111"/>
+        <Label Content="Create" HorizontalAlignment="Left" Height="24" Margin="28,10,0,0" VerticalAlignment="Top" Width="112"/>
+        <Label Content="Remove animal" HorizontalAlignment="Left" Height="24" Margin="182,38,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Remove species" HorizontalAlignment="Left" Height="24" Margin="182,95,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Remove class" HorizontalAlignment="Left" Height="24" Margin="182,155,0,0" VerticalAlignment="Top" Width="111"/>
+        <TextBox x:Name="txtCreateAnimal" HorizontalAlignment="Left" Height="28" Margin="32,62,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <TextBox x:Name="txtCreateSpecies" HorizontalAlignment="Left" Height="28" Margin="32,122,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <TextBox x:Name="txtCreateClass" HorizontalAlignment="Left" Height="28" Margin="32,184,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <Button x:Name="btnCreate" Content="Create" HorizontalAlignment="Left" Height="28" Margin="32,229,0,0" VerticalAlignment="Top" Width="111"/>
+        <Label Content="Remove" HorizontalAlignment="Left" Height="24" Margin="180,10,0,0" VerticalAlignment="Top" Width="110"/>
+        <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="28" Margin="182,67,0,0" VerticalAlignment="Top" Width="108"/>
+        <ComboBox x:Name="cbxRemoveSpecies" HorizontalAlignment="Left" Height="28" Margin="185,124,0,0" VerticalAlignment="Top" Width="108"/>
+        <ComboBox x:Name="cbxRemoveClass" HorizontalAlignment="Left" Height="28" Margin="185,184,0,0" VerticalAlignment="Top" Width="108"/>
+        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Height="28" Margin="182,229,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Lion King Population" HorizontalAlignment="Left" Height="30" Margin="28,282,0,0" VerticalAlignment="Top" Width="128"/>
+        <ListBox x:Name="lstPopulation" HorizontalAlignment="Left" Height="84" Margin="32,326,0,0" VerticalAlignment="Top" Width="111" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="170,332,0,0" VerticalAlignment="Top" Width="105"/>
+        <RadioButton x:Name="btnSortByClass" Content="Sorted by Class" HorizontalAlignment="Left" Height="18" Margin="170,355,0,0" VerticalAlignment="Top" Width="105"/>
+        <Label Content="Find" HorizontalAlignment="Left" Height="28" Margin="341,10,0,0" VerticalAlignment="Top" Width="85"/>
+        <Label Content="Edit Animal" HorizontalAlignment="Left" Height="28" Margin="600,273,0,0" VerticalAlignment="Top" Width="86"/>
+        <TextBox x:Name="txtSearchAnimal" HorizontalAlignment="Left" Height="28" Margin="336,67,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <ComboBox x:Name="cbxViewClass" HorizontalAlignment="Left" Margin="336,169,0,0" VerticalAlignment="Top" Width="111" Height="29"/>
+        <ComboBox x:Name="ViewAnimal" HorizontalAlignment="Left" Margin="336,352,0,0" VerticalAlignment="Top" Width="111" Height="28"/>
+        <ComboBox x:Name="ViewSpecies" HorizontalAlignment="Left" Margin="333,262,0,0" VerticalAlignment="Top" Width="111" Height="29"/>
+        <Label Content="View class" HorizontalAlignment="Left" Height="28" Margin="339,134,0,0" VerticalAlignment="Top" Width="85"/>
+        <Label Content="View animal" HorizontalAlignment="Left" Height="28" Margin="342,327,0,0" VerticalAlignment="Top" Width="84"/>
+        <Label Content="View species" HorizontalAlignment="Left" Height="28" Margin="336,235,0,0" VerticalAlignment="Top" Width="86"/>
+        <Label Content="Search for specific animal" HorizontalAlignment="Left" Height="28" Margin="337,38,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button x:Name="btnViewClass" Content="View" HorizontalAlignment="Left" Height="28" Margin="336,0,0,0" VerticalAlignment="Center" Width="111"/>
+        <Button x:Name="btnViewSpecies" Content="View" HorizontalAlignment="Left" Height="28" Margin="333,297,0,0" VerticalAlignment="Top" Width="111"/>
+        <Button x:Name="btnViewAnimal" Content="View" HorizontalAlignment="Left" Height="28" Margin="336,387,0,0" VerticalAlignment="Top" Width="111"/>
+        <ListBox x:Name="lstAnimal" HorizontalAlignment="Left" Height="211" Margin="508,17,0,0" VerticalAlignment="Top" Width="270" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <RadioButton x:Name="btnSortByAsc" Content="Sort by name Asc" HorizontalAlignment="Left" Height="18" Margin="516,233,0,0" VerticalAlignment="Top" Width="120"/>
+        <RadioButton x:Name="btnSortByDesc" Content="Sort by name Desc" HorizontalAlignment="Left" Height="18" Margin="516,249,0,0" VerticalAlignment="Top" Width="122"/>
+        <TextBox x:Name="txtCurrentName" HorizontalAlignment="Left" Height="28" Margin="522,301,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="643,301,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <TextBox x:Name="txtCurrentSpecies" HorizontalAlignment="Left" Height="28" Margin="523,334,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <TextBox x:Name="txtCurrentClass" HorizontalAlignment="Left" Height="28" Margin="522,367,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
+        <ComboBox x:Name="cbxEditSpecies" HorizontalAlignment="Left" Margin="643,333,0,0" VerticalAlignment="Top" Width="111" Height="29"/>
+        <ComboBox x:Name="btnEditClass" HorizontalAlignment="Left" Margin="643,367,0,0" VerticalAlignment="Top" Width="111" Height="29"/>
+        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Height="28" Margin="588,400,0,0" VerticalAlignment="Top" Width="110"/>
     </Grid>
 </Window>
