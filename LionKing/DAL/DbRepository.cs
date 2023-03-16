@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LionKing.Models;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace LionKing.DAL
                 await using var command = dataSource.CreateCommand(stmt);
 
                 //command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
-                command.Parameters.AddWithValue(ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? Or should it be "animal_name" instead of animal.Animal_name
+                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? Or should it be "animal_name" instead of animal.Animal_name
 
                 command.Parameters.AddWithValue("class_id", animal.Class_id);
                 command.Parameters.AddWithValue("species_id", animal.Species_id);
@@ -84,8 +85,84 @@ namespace LionKing.DAL
                 throw new Exception(errorMessage);
             }
         }
+        /// <summary>
+        /// Adds species to database and returns species_id
+        /// </summary>
+        /// <param name="species"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Animal> AddSpecies(Species species)
+        {
+            try
+            {
+                string stmt = "INSERT INTO Species(species_name, latin_name, class_id) VALUES (@species_name, @latin_name, @class_id) RETURNING species_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
 
-       
+                command.Parameters.AddWithValue("@species_name", species.Species_name); //NOT NULL in our table. Should set to not null here and in postrgresql
+                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(species.Latin_name)); //Nullable in our table as well. 
+                command.Parameters.AddWithValue("@class_id", species.Class_id); 
+
+              
+                species.Species_id = (int)await command.ExecuteScalarAsync();
+                return species; // i cant figure out why i get this error?
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes.:
+                    //    errorMessage = "";
+                    //    break;
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+        }
+
+       /// <summary>
+       /// Adds class to database and returns class_id
+       /// </summary>
+       /// <param name="animalClass"></param>
+       /// <returns></returns>
+       /// <exception cref="Exception"></exception>
+        public async Task<Animal> AddClass(AnimalClass animalClass)
+        {
+            try
+            {
+                string stmt = "INSERT INTO Species(class_name) VALUES (@class_name) RETURNING class_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+               
+                command.Parameters.AddWithValue("@class_name", ConvertToDBValue<string>(animalClass.Class_name)); //Nullable in our table as well. 
+                
+
+
+                animalClass.Class_id = (int)await command.ExecuteScalarAsync();
+                return animalClass; // i cant figure out why i get this error?
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes.:
+                    //    errorMessage = "";
+                    //    break;
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+        }
+
+
+
 
         /// <summary>
         /// Transforms null valu from database to null value in c#. If not null, returns object. 
