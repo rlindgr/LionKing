@@ -18,6 +18,14 @@ namespace LionKing.Models
 
         public AnimalClass Class { get; set; }
 
+        public Species(int id, string name, string latinName, AnimalClass animal_class)
+        {
+            id = Species_id;
+            name = Species_name;
+            latinName = Latin_name;
+            animal_class = Class;
+            
+        }
 
 
     }

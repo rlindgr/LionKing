@@ -101,7 +101,7 @@ namespace LionKing.DAL
 
                 command.Parameters.AddWithValue("@species_name", species.Species_name); //NOT NULL in our table. Should set to not null here and in postrgresql
                 command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(species.Latin_name)); //Nullable in our table as well. 
-                command.Parameters.AddWithValue("@class_id", species.Class_id); 
+                command.Parameters.AddWithValue("@class_id", species.Class.Class_id); 
 
               
                 species.Species_id = (int)await command.ExecuteScalarAsync();

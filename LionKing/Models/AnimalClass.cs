@@ -14,8 +14,13 @@ namespace LionKing.Models
         public int Class_id { get; set; }
 
         public string? Class_name { get; set; }
+        public AnimalClass(int id, string name)
+        {
+            id = Class_id;
+            name = Class_name;
+        }
 
-       
+
 
     }
 }

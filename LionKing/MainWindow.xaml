@@ -24,7 +24,7 @@
         <TextBox x:Name="txtCreateAnimal" HorizontalAlignment="Left" Height="28" Margin="32,62,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
         <TextBox x:Name="txtCreateSpecies" HorizontalAlignment="Left" Height="28" Margin="32,122,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
         <TextBox x:Name="txtCreateClass" HorizontalAlignment="Left" Height="28" Margin="32,184,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="108"/>
-        <Button x:Name="btnCreate" Content="Create" HorizontalAlignment="Left" Height="28" Margin="32,229,0,0" VerticalAlignment="Top" Width="111"/>
+        <Button x:Name="btnCreate" Content="Create" HorizontalAlignment="Left" Height="28" Margin="32,229,0,0" VerticalAlignment="Top" Width="111" Click="btnCreate_Click"/>
         <Label Content="Remove" HorizontalAlignment="Left" Height="24" Margin="180,10,0,0" VerticalAlignment="Top" Width="110"/>
         <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="28" Margin="182,67,0,0" VerticalAlignment="Top" Width="108"/>
         <ComboBox x:Name="cbxRemoveSpecies" HorizontalAlignment="Left" Height="28" Margin="185,124,0,0" VerticalAlignment="Top" Width="108"/>

@@ -19,5 +19,16 @@ namespace LionKing
         public Species Species { get; set; }
         //public AnimalClass Class { get; set; } kanske är bättre att ha den i species eftersom man då ändå får med den informationen hit. 
 
+        public Animal(string name, Species species)
+        {
+            name = Animal_name;
+            species = Species;
+
+        }
+        public Animal()
+        {
+            
+        }
+
     }
 }

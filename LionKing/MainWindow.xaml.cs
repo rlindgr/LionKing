@@ -1,4 +1,5 @@
 ﻿using LionKing.DAL;
+using LionKing.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,5 +40,27 @@ namespace LionKing
             
         }
 
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
+            
+            // I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
+            AnimalClass mammal = new AnimalClass(1, "Mammal");
+            Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
+            Animal kiara = new Animal("Kiara", masaiLion);
+            var animal = db.AddAnimal(kiara);
+            
+        }
+
+        private void CreateAnimal()
+        {
+            
+            Animal animal = new Animal(txtCreateAnimal.Text, );
+            string name = txtCreateAnimal.Text;
+            animal.Species.Species_name = txtCreateSpecies.Text;
+            animal.Species.Class.Class_name = txtCreateClass.Text;
+            animal.Animal_name = name; // can C# handle if the textbox isn't filled? Or how do we fix this?
+
+        }
     }
 }
