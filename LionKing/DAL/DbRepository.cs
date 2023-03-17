@@ -100,9 +100,11 @@ namespace LionKing.DAL
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("@species_name", species.Species_name); //NOT NULL in our table. Should set to not null here and in postrgresql
-                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(species.Latin_name)); //Nullable in our table as well. 
-                command.Parameters.AddWithValue("@class_id", species.Class.Class_id); 
+                //call for method searchng for class id
+
+                command.Parameters.AddWithValue("@species_name", specieName); //NOT NULL in our table. Should set to not null here and in postrgresql
+                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); //Nullable in our table as well. 
+                command.Parameters.AddWithValue("@class_id", ); 
 
               
                 newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
@@ -134,15 +136,14 @@ namespace LionKing.DAL
         {
             try
             {
-                 AnimalClass newClass = new AnimalClass(className);
                 string stmt = "INSERT INTO Animal_class(class_name) VALUES (@class_name) RETURNING class_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("@class_name", ConvertToDBValue<string>(className)); //Nullable in our table as well. 
-
-                newClass.Class_name = className;
-                newClass.Class_id = (int)await command.ExecuteScalarAsync();
+                command.Parameters.AddWithValue("@class_name", className);
+               
+                int id = (int)await command.ExecuteScalarAsync();
+                AnimalClass newClass = new AnimalClass(id, className);
                 return newClass; 
             }
             catch (PostgresException ex)
@@ -151,11 +152,10 @@ namespace LionKing.DAL
                 string errorCode = ex.SqlState;
                 switch (errorCode)
                 {
-                    //case PostgresErrorCodes.:
-                    //    errorMessage = "";
-                    //    break;
-                    default:
+                    case PostgresErrorCodes.UniqueViolation:
+                        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik";
                         break;
+                    
                 }
                 throw new Exception(errorMessage);
             }

@@ -45,11 +45,11 @@ namespace LionKing
         {
             DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
 
-            // I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
-            //AnimalClass mammal = new AnimalClass(1, "Mammal");
-            //Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
-            //Animal kiara = new Animal("Kiara", masaiLion, mammal);
-            //var animal = db.AddAnimal(kiara);
+            //I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
+            AnimalClass mammal = new AnimalClass(1, "Mammal");
+            Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
+            Animal kiara = new Animal("Kiara", masaiLion, mammal);
+            var animal = db.AddAnimal(kiara);
 
             // Create class
             string className = txtCreateClass.Text;

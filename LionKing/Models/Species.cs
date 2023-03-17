@@ -34,7 +34,7 @@ namespace LionKing.Models
             newLatinName = Latin_name;
         }
 
-        public static List<Species> SpeciesList = new List<Species>();
+       
 
     }
 }
