@@ -41,7 +41,7 @@ namespace LionKing
             
         }
 
-        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        private async void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
 
