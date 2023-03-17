@@ -37,6 +37,12 @@ namespace LionKing.Models
         {
             
         }
+        public Species(string name, string latinName, int classId)
+        {
+            name = Species_name;
+            latinName = Latin_name;
+            classId = Class.Class_id;
+        }
 
 
 

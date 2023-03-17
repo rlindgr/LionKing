@@ -41,7 +41,7 @@ namespace LionKing
             
         }
 
-        private async void btnCreate_Click(object sender, RoutedEventArgs e)
+        private async void btnCreate_Click(object sender, RoutedEventArgs e) // does this btn exists still?
         {
             DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
 
@@ -57,7 +57,15 @@ namespace LionKing
 
         }
 
-       
+        private void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            string animalName = txtCreateAnimal.Text;
+            string className = cbxSelectSpecies.Text; // or is it something with selected, unsure of cbx...
+            var animal = db.AddAnimal()
+        }
+
+
 
 
         //test

@@ -65,13 +65,13 @@ namespace LionKing.DAL
                 await using var command = dataSource.CreateCommand(stmt);
                 Species species = await GetSpeciesId(speciesName);
                 AnimalClass animalClass = await GetClassId(className);
-                //command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
+               
                 command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
                 
                 command.Parameters.AddWithValue("class_id", animalClass.Class_id);
                 command.Parameters.AddWithValue("species_id", species.Species_id);
-                Animal animal = new Animal(animalName, species, animalClass);
-                animal.Animal_id =(int) await command .ExecuteScalarAsync();
+                int animalId =(int) await command .ExecuteScalarAsync();
+                Animal animal = new Animal(animalName, species, animalClass, animalId);
                 return animal;
             }
             catch (PostgresException ex)
@@ -80,10 +80,11 @@ namespace LionKing.DAL
                 string errorCode = ex.SqlState;
                 switch (errorCode)
                 {
-                    //case PostgresErrorCodes.:
-                    //    errorMessage = "";
-                    //    break;
-                    default:
+                    case PostgresErrorCodes.CharacterNotInRepertoire:
+                        errorMessage = "Använd endast bokstäver när du anger namnet på ett djur, en art eller en klass"; //When searching for a class or species if a number has been inserted.(?)
+                        break;
+                    case PostgresErrorCodes.NullValueNotAllowed: //species txt can't be empty = null.
+                        errorMessage = "Du måste ange art när du skapar ett nytt djur"; 
                         break;
                 }
                 throw new Exception(errorMessage);
@@ -95,24 +96,28 @@ namespace LionKing.DAL
         /// <param name="species"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Species> AddSpecies(string speciesName, string speciesLatinName)
+        public async Task<Species> AddSpecies(string speciesName, string speciesLatinName, string className)
         {
             try
             {
-                Species newSpecies = new Species(speciesName, speciesLatinName);
+                
                 string stmt = "INSERT INTO Species(species_name, latin_name, class_id) VALUES (@species_name, @latin_name, @class_id) RETURNING species_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                //call for method searchng for class id
+                AnimalClass animalClass = await GetClassId(className);
 
                 command.Parameters.AddWithValue("@species_name", speciesName); //NOT NULL in our table. Should set to not null here and in postrgresql
                 command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); //Nullable in our table as well. 
-                command.Parameters.AddWithValue("@class_id", ); 
+                command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
 
-              
-                newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
-                return newSpecies; 
+                //Species newSpecies = new Species(speciesName, speciesLatinName);
+                //newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
+                //return newSpecies; 
+
+                int speciesId = (int)await command.ExecuteScalarAsync();
+                Species newSpecies = new Species(speciesName, speciesLatinName, speciesId);
+                return newSpecies;
             }
             catch (PostgresException ex)
             {
@@ -215,7 +220,8 @@ namespace LionKing.DAL
                 {
                     Species_id = reader.GetInt32(0),
                     Species_name = (string)reader["species_name"],
-                    Latin_name = ConvertFromDBVal<string>(reader["latin_name"]) // is this possible to use to retrive values from other co0lumns perhaps???
+                    Latin_name = ConvertFromDBVal<string>(reader["latin_name"]), // is this possible to use to retrive values from other co0lumns perhaps???
+                    Class.Class_id = reader.GetInt32(3) // why isn't this possible? Shouldn't i be able to acces class_id via prop AnimalClass Class in species??
                 };
             }
             return species;
