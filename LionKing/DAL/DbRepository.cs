@@ -167,7 +167,7 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Animal> GetAnimal(int id)
+        public async Task<Animal> GetAnimalById(int id)
         {
 
             string stmt = "select * from animal where animal_id = @id";
