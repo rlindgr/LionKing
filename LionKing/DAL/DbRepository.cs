@@ -3,10 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace LionKing.DAL
 {
@@ -54,19 +56,21 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="animal"></param>
         /// <returns></returns>
-        public async Task<Animal> AddAnimal(Animal animal)
+        public async Task<Animal> AddAnimal(string animalName, string speciesName, string className)
         {
             try
             {
                 string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
-
+                Species species = await GetSpeciesId(speciesName);
+                AnimalClass animalClass = await GetClassId(className);
                 //command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
-                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
-
-                command.Parameters.AddWithValue("class_id", animal.Class.Class_id);
-                command.Parameters.AddWithValue("species_id", animal.Species.Species_id);
+                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
+                
+                command.Parameters.AddWithValue("class_id", animalClass.Class_id);
+                command.Parameters.AddWithValue("species_id", species.Species_id);
+                Animal animal = new Animal(animalName, species, animalClass);
                 animal.Animal_id =(int) await command .ExecuteScalarAsync();
                 return animal;
             }
@@ -91,18 +95,18 @@ namespace LionKing.DAL
         /// <param name="species"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Species> AddSpecies(string specieName, string speciesLatinName)
+        public async Task<Species> AddSpecies(string speciesName, string speciesLatinName)
         {
             try
             {
-                Species newSpecies = new Species(specieName, speciesLatinName);
+                Species newSpecies = new Species(speciesName, speciesLatinName);
                 string stmt = "INSERT INTO Species(species_name, latin_name, class_id) VALUES (@species_name, @latin_name, @class_id) RETURNING species_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
                 //call for method searchng for class id
 
-                command.Parameters.AddWithValue("@species_name", specieName); //NOT NULL in our table. Should set to not null here and in postrgresql
+                command.Parameters.AddWithValue("@species_name", speciesName); //NOT NULL in our table. Should set to not null here and in postrgresql
                 command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); //Nullable in our table as well. 
                 command.Parameters.AddWithValue("@class_id", ); 
 
@@ -183,12 +187,64 @@ namespace LionKing.DAL
                 animal = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = (string)reader["animal_name"]
+                    Animal_name = (string)reader["animal_name"] // Use method for if the name is null. I don't want to change since im unsure if you are still working on it.
                 };
 
             }
 
             return animal;
+        }
+
+        /// <summary>
+        /// Retrives id for and sets name, and latin name for retrived species.
+        /// </summary>
+        /// <param name="speciesName"></param>
+        /// <returns></returns>
+        public async Task<Species> GetSpeciesId(string speciesName)
+        {
+            string stmt = "SELECT * FROM species WHERE species_name = @species_name";
+            await using var dataSource = NpgsqlDataSource.Create (_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("@species_name", speciesName);
+            await using var reader = await command.ExecuteReaderAsync();
+            Species species = new Species();
+            while (await reader.ReadAsync())
+            {
+                species = new Species()
+                {
+                    Species_id = reader.GetInt32(0),
+                    Species_name = (string)reader["species_name"],
+                    Latin_name = ConvertFromDBVal<string>(reader["latin_name"]) // is this possible to use to retrive values from other co0lumns perhaps???
+                };
+            }
+            return species;
+        }
+
+        /// <summary>
+        /// Retrives id and sets name for retrived class. 
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        public async Task<AnimalClass> GetClassId (string className)
+        {
+            string stmt = "SELECT * FROM animal_class WHERE class_name = @class_name";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("@class_name", className);
+            await using var reader = await command.ExecuteReaderAsync();
+            AnimalClass animalClass = new AnimalClass();
+            while (await reader.ReadAsync()) 
+            {
+                animalClass = new AnimalClass()
+                {
+                    Class_id = reader.GetInt32(0),
+                    Class_name = (string)reader["class_name"]
+                };
+
+            }
+            return animalClass;
         }
 
 
