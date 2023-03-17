@@ -91,10 +91,11 @@ namespace LionKing.DAL
         /// <param name="species"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Species> AddSpecies(Species species)
+        public async Task<Species> AddSpecies(string specieName, string speciesLatinName)
         {
             try
             {
+                Species newSpecies = new Species(specieName, speciesLatinName);
                 string stmt = "INSERT INTO Species(species_name, latin_name, class_id) VALUES (@species_name, @latin_name, @class_id) RETURNING species_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
@@ -104,8 +105,8 @@ namespace LionKing.DAL
                 command.Parameters.AddWithValue("@class_id", species.Class.Class_id); 
 
               
-                species.Species_id = (int)await command.ExecuteScalarAsync();
-                return species; 
+                newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
+                return newSpecies; 
             }
             catch (PostgresException ex)
             {
@@ -129,18 +130,20 @@ namespace LionKing.DAL
        /// <param name="animalClass"></param>
        /// <returns></returns>
        /// <exception cref="Exception"></exception>
-        public async Task<AnimalClass> AddClass(AnimalClass animalClass)
+        public async Task<AnimalClass> AddClass(string className)
         {
             try
             {
-                string stmt = "INSERT INTO Species(class_name) VALUES (@class_name) RETURNING class_id";
+                 AnimalClass newClass = new AnimalClass(className);
+                string stmt = "INSERT INTO Animal_class(class_name) VALUES (@class_name) RETURNING class_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("@class_name", ConvertToDBValue<string>(animalClass.Class_name)); //Nullable in our table as well. 
-                
-                animalClass.Class_id = (int)await command.ExecuteScalarAsync();
-                return animalClass; 
+                command.Parameters.AddWithValue("@class_name", ConvertToDBValue<string>(className)); //Nullable in our table as well. 
+
+                newClass.Class_name = className;
+                newClass.Class_id = (int)await command.ExecuteScalarAsync();
+                return newClass; 
             }
             catch (PostgresException ex)
             {

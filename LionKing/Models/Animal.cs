@@ -20,7 +20,7 @@ namespace LionKing
                                                                     //So here we can have all the information stored. Or is it better to retrive all the infornation from the database eachtime?
      
 
-        public Species Species { get; set; }
+        public Species Species { get; set; } // can these values be null??
         public AnimalClass Class { get; set; } 
 
 

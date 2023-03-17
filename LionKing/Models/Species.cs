@@ -26,7 +26,15 @@ namespace LionKing.Models
             animal_class = Class;
             
         }
+        public Species(string name, string latinName)
+        {
+            object newName = (object)name ?? DBNull.Value;
+            object newLatinName = (object)latinName ?? DBNull.Value;
+            newName = Species_name;
+            newLatinName = Latin_name;
+        }
 
+        public static List<Species> SpeciesList = new List<Species>();
 
     }
 }

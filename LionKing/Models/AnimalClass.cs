@@ -12,7 +12,7 @@ namespace LionKing.Models
         /// <summary>
         /// Primary key
         /// </summary>
-        public int Class_id { get; set; }
+        public int Class_id { get; set; } // do i have to set this to nullable in c# in order to create a new clas so that i can retriew the class id from database?
 
         public string? Class_name { get; set; }
         public AnimalClass(int id, string name)
@@ -24,6 +24,8 @@ namespace LionKing.Models
         {
             name = Class_name;
         }
+        public static List<AnimalClass> ClassList = new List<AnimalClass>();
+        
 
 
 
