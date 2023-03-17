@@ -61,8 +61,10 @@ namespace LionKing
         {
             DbRepository db = new();
             string animalName = txtCreateAnimal.Text;
-            string className = cbxSelectSpecies.Text; // or is it something with selected, unsure of cbx...
-            var animal = db.AddAnimal()
+            string speciesName = cbxSelectSpecies.Text; // or is it something with selected, unsure of cbx...  
+            var animal = db.AddAnimal(animalName, speciesName);
+           
+            MessageBox.Show($"Djuret {animalName} som är ett {animal.}"); // I can't retrive prop from animal??
         }
 
 

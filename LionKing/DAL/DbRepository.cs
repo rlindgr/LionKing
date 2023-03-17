@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Media.Animation;
 
 namespace LionKing.DAL
 {
@@ -56,19 +57,23 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="animal"></param>
         /// <returns></returns>
-        public async Task<Animal> AddAnimal(string animalName, string speciesName, string className)
+        public async Task<Animal> AddAnimal(string animalName, string speciesName)
         {
             try
             {
                 string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
-                Species species = await GetSpeciesId(speciesName);
-                AnimalClass animalClass = await GetClassId(className);
-               
+                Species species = await GetSpeciesId(speciesName);// perhaps it's enough with this if we can get class id as well?
+                                                                  //AnimalClass animalClass = await GetClassId(className); 
+
+                //We need a method that takes the class id and gives us class name.
+                int classId = species.Class.Class_id;
+                var animalClass = await GetClassById(classId);
+
                 command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
                 
-                command.Parameters.AddWithValue("class_id", animalClass.Class_id);
+                command.Parameters.AddWithValue("class_id", species.Class.Class_id);
                 command.Parameters.AddWithValue("species_id", species.Species_id);
                 int animalId =(int) await command .ExecuteScalarAsync();
                 Animal animal = new Animal(animalName, species, animalClass, animalId);
@@ -198,6 +203,34 @@ namespace LionKing.DAL
             }
 
             return animal;
+        }
+
+       /// <summary>
+       /// Retrives classed based on id
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
+        public async Task<AnimalClass> GetClassById(int id)
+        {
+
+            string stmt = "SELECT * FROM animal_class WHERE class_id = @id";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("id", id);
+            await using var reader = await command.ExecuteReaderAsync();
+
+            AnimalClass animalClass = new AnimalClass();
+            while (await reader.ReadAsync())
+            {
+                animalClass = new AnimalClass()
+                {
+                    Class_name = (string)reader["species_name"],
+                    Class_id = reader.GetInt32(0)
+                };
+            }
+
+            return animalClass;
         }
 
         /// <summary>
