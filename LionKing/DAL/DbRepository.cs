@@ -159,8 +159,37 @@ namespace LionKing.DAL
                 }
                 throw new Exception(errorMessage);
             }
+
         }
 
+        /// <summary>
+        /// Fetches animal_name based on animal_id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Animal> GetAnimal(int id)
+        {
+
+            string stmt = "select * from animal where animal_id = @id";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("id", id);
+            await using var reader = await command.ExecuteReaderAsync();
+
+            Animal animal = new Animal();
+            while (await reader.ReadAsync())
+            {
+                animal = new Animal()
+                {
+                    Animal_id = reader.GetInt32(0),
+                    Animal_name = (string)reader["animal_name"]
+                };
+
+            }
+
+            return animal;
+        }
 
 
 
