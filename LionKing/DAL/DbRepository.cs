@@ -63,9 +63,9 @@ namespace LionKing.DAL
                 await using var command = dataSource.CreateCommand(stmt);
 
                 //command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
-                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? Or should it be "animal_name" instead of animal.Animal_name
+                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
 
-                command.Parameters.AddWithValue("class_id", animal.Species.Class.Class_id); // Added species as a prop in animal and class as a prop in species
+                command.Parameters.AddWithValue("class_id", animal.Class.Class_id);
                 command.Parameters.AddWithValue("species_id", animal.Species.Species_id);
                 animal.Animal_id =(int) await command .ExecuteScalarAsync();
                 return animal;
@@ -91,7 +91,7 @@ namespace LionKing.DAL
         /// <param name="species"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Animal> AddSpecies(Species species)
+        public async Task<Species> AddSpecies(Species species)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace LionKing.DAL
 
               
                 species.Species_id = (int)await command.ExecuteScalarAsync();
-                return species; // i cant figure out why i get this error?
+                return species; 
             }
             catch (PostgresException ex)
             {
@@ -129,7 +129,7 @@ namespace LionKing.DAL
        /// <param name="animalClass"></param>
        /// <returns></returns>
        /// <exception cref="Exception"></exception>
-        public async Task<Animal> AddClass(AnimalClass animalClass)
+        public async Task<AnimalClass> AddClass(AnimalClass animalClass)
         {
             try
             {
@@ -137,13 +137,10 @@ namespace LionKing.DAL
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-               
                 command.Parameters.AddWithValue("@class_name", ConvertToDBValue<string>(animalClass.Class_name)); //Nullable in our table as well. 
                 
-
-
                 animalClass.Class_id = (int)await command.ExecuteScalarAsync();
-                return animalClass; // i cant figure out why i get this error?
+                return animalClass; 
             }
             catch (PostgresException ex)
             {

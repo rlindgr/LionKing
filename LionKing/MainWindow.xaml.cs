@@ -1,5 +1,6 @@
 ﻿using LionKing.DAL;
 using LionKing.Models;
+using Npgsql.Internal.TypeHandlers.LTreeHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,13 +48,14 @@ namespace LionKing
             // I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
             AnimalClass mammal = new AnimalClass(1, "Mammal");
             Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
-            Animal kiara = new Animal("Kiara", masaiLion);
+            Animal kiara = new Animal("Kiara", masaiLion, mammal);
             var animal = db.AddAnimal(kiara);
             
         }
 
         private void CreateAnimal()
         {
+            
             
             Animal animal = new Animal(txtCreateAnimal.Text, );
             string name = txtCreateAnimal.Text;
@@ -62,5 +64,12 @@ namespace LionKing
             animal.Animal_name = name; // can C# handle if the textbox isn't filled? Or how do we fix this?
 
         }
+
+        private void CreatClass(string name)
+        {            
+            AnimalClass newclass = new AnimalClass(name);
+        }
+       
+
     }
 }
