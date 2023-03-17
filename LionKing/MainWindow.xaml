@@ -7,19 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnFetchAnimal" Content="Hämta ett djur" HorizontalAlignment="Left" Height="39" Margin="594,68,0,0" VerticalAlignment="Top" Width="155" Click="btnFetchAnimal_Click_1"/>
-        <ComboBox x:Name="cbxAnimalClass" HorizontalAlignment="Left" Height="32" Margin="35,52,0,0" VerticalAlignment="Top" Width="199">
+        <Button x:Name="btnFetchAnimal" Content="Hämta ett djur" HorizontalAlignment="Left" Height="39" Margin="619,385,0,0" VerticalAlignment="Top" Width="155" Click="btnFetchAnimal_Click_1"/>
+        <ComboBox x:Name="cbxAnimalClass" HorizontalAlignment="Left" Height="32" Margin="308,176,0,0" VerticalAlignment="Top" Width="198">
             <ComboBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="199"/>
         </ComboBox>
-        <ComboBox x:Name="cbxSpecies" HorizontalAlignment="Left" Height="31" Margin="35,113,0,0" VerticalAlignment="Top" Width="199">
+        <ComboBox x:Name="cbxSpecies" HorizontalAlignment="Left" Height="31" Margin="308,236,0,0" VerticalAlignment="Top" Width="198">
             <ComboBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="199"/>
         </ComboBox>
-        <ComboBox x:Name="cbxAnimal" HorizontalAlignment="Left" Height="33" Margin="35,172,0,0" VerticalAlignment="Top" Width="199">
+        <ComboBox x:Name="cbxAnimal" HorizontalAlignment="Left" Height="33" Margin="308,293,0,0" VerticalAlignment="Top" Width="198">
             <ComboBox HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="199"/>
         </ComboBox>
-        <Label x:Name="lblSelectAnimalClass" Content="Select animal class&#xD;&#xA;" HorizontalAlignment="Left" Height="26" Margin="35,26,0,0" VerticalAlignment="Top" Width="142"/>
-        <Label x:Name="lblSelectSpecies" Content="Select species" HorizontalAlignment="Left" Height="26" Margin="35,89,0,0" VerticalAlignment="Top" Width="105"/>
-        <Label x:Name="lblSelectAnimal" Content="Select animal" HorizontalAlignment="Left" Height="26" Margin="35,144,0,0" VerticalAlignment="Top" Width="105"/>
-        <TextBlock x:Name="txtResults" HorizontalAlignment="Left" Height="301" Margin="282,52,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="281"/>
+        <Label x:Name="lblSelectAnimalClass" Content="Select animal class&#xD;&#xA;" HorizontalAlignment="Left" Height="26" Margin="308,151,0,0" VerticalAlignment="Top" Width="142"/>
+        <Label x:Name="lblSelectSpecies" Content="Select species" HorizontalAlignment="Left" Height="26" Margin="308,212,0,0" VerticalAlignment="Top" Width="104"/>
+        <Label x:Name="lblSelectAnimal" Content="Select animal" HorizontalAlignment="Left" Height="26" Margin="308,267,0,0" VerticalAlignment="Top" Width="104"/>
+        <ListBox x:Name="lstResults" HorizontalAlignment="Left" Height="258" Margin="529,35,0,0" VerticalAlignment="Top" Width="245" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="lstResults_MouseDoubleClick"/>
+        <Button x:Name="btnOk" Content="Ok" HorizontalAlignment="Left" Height="34" Margin="320,363,0,0" VerticalAlignment="Top" Width="118" Click="btnOk_Click"/>
+        <TextBox x:Name="txtFindAnimalName" HorizontalAlignment="Left" Height="41" Margin="308,35,0,0" TextWrapping="Wrap" Text="Enter name" VerticalAlignment="Top" Width="198" />
+        <Label Content="Search for a specific animal" HorizontalAlignment="Left" Height="25" Margin="308,10,0,0" VerticalAlignment="Top" Width="174"/>
+        <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Height="29" Margin="308,81,0,0" VerticalAlignment="Top" Width="75" Click="btnSearch_Click"/>
+        <RadioButton x:Name="rdbAsc" Content="Order by Name Asc" HorizontalAlignment="Left" Height="16" Margin="529,310,0,0" VerticalAlignment="Top" Width="245" IsChecked="True"/>
+        <RadioButton x:Name="rdbDesc" Content="Order by Name Desc" HorizontalAlignment="Left" Height="16" Margin="529,331,0,0" VerticalAlignment="Top" Width="245" IsChecked="True"/>
     </Grid>
 </Window>

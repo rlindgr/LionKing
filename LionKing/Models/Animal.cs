@@ -15,5 +15,11 @@ namespace LionKing
         public string? Animal_name { get; set; }   
         public int Class_id { get; set; }
         public int Species_id { get; set; }
+
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

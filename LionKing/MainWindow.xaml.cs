@@ -1,4 +1,5 @@
 ﻿using LionKing.DAL;
+using LionKing.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,15 @@ namespace LionKing
         public MainWindow()
         {
             InitializeComponent();
+
+            if (cbxAnimalClass.IsDropDownOpen == true) 
+            {
+                cbxAnimalClass.SelectedItem= null;
+                //cbxAnimalClass.SelectedItem = 
+            
+            }
+
+            
         }
 
 
@@ -31,13 +41,70 @@ namespace LionKing
         {
             //När vi klickar på knappen skapas ett nytt objekt av DbRepository
             DbRepository db = new();
-            var animal = await db.GetAnimal(5);
+            var animal = await db.GetAnimalById(5);
 
             MessageBox.Show($"{animal.Animal_name}");
 
-            //hej
 
         }
-      
+
+        private async void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var animals = await db.GetAnimals();
+            lstResults.ItemsSource = animals;
+            lstResults.DisplayMemberPath = "Animal_name"; 
+
+            //todo: fixa så det går att ordna namn asc, desc - ska det vara egna metoder likt godiskalkylatorn?
+            //if (rdbAsc.IsChecked == true) 
+            //{
+            //    animals.OrderBy(animal => animal.Animal_name);
+            
+            //}
+            // else 
+            //{
+            //    animals.OrderDescending();           
+            //}
+
+        }
+
+        private void lstResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+            if (lstResults.SelectedItem is Animal select)
+            {            
+                MessageBox.Show($" {select.Animal_name} är en art X som tillhör djurklass X"); 
+            }
+
+        }
+
+        private async  void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            string findName = txtFindAnimalName.Text;
+            var findAnimal = await db.FindAnimalByName(findName);
+
+
+            //todo: fixa så det går att visa info om ett specifikt djur i listboxen
+            //if (findAnimal != null) 
+            {
+                //lstResults.ItemsSource = findAnimal;
+                lstResults.DisplayMemberPath = "Animal_name";
+
+            }
+            //todo: om ingen träff, visa fel meddelande
+            //else 
+            {
+                MessageBox.Show("Det finns tyvärr inget djur med det namnet");
+            } 
+ 
+     
+        }
+
+
+
+
+
     }
+
 }
