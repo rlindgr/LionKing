@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LionKing.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,25 @@ namespace LionKing
         /// Primary key
         /// </summary>
         public int Animal_id { get; set; }
-        public string? Animal_name { get; set; }   
-        public int Class_id { get; set; }
-        public int Species_id { get; set; }
+        public string? Animal_name { get; set; }
+
+       
+
+        public Species Species { get; set; } // can these values be null??
+        public AnimalClass Class { get; set; } 
 
 
-        public override string ToString()
+        public Animal(string name, Species species, AnimalClass animalClass)
         {
-            return base.ToString();
+            name = Animal_name;
+            species = Species;
+            animalClass = Class;
+
         }
+        public Animal()
+        {
+            
+        }
+
     }
 }

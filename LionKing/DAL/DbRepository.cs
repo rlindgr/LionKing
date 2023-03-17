@@ -4,10 +4,9 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Animation;
 
 namespace LionKing.DAL
 {
@@ -22,16 +21,11 @@ namespace LionKing.DAL
             _connectionString = config.GetConnectionString("develop");
         }
 
-        #region Read
 
-        /// <summary>
-        /// Hämtar animal baserat på animal_id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<Animal> GetAnimalById(int id)
+        public async Task<Animal> GetAnimal(int id)
         {
-            string stmt = "select * from animal where animal_id=@id";
+
+            string stmt = "select * from animal where animal_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
             await using var command = dataSource.CreateCommand(stmt);
@@ -44,93 +38,160 @@ namespace LionKing.DAL
                 animal = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = (string)reader["animal_name"]
+                    //Animal_name = (string)reader["animal_name"]
+
+                    // If retrived value is null, transforms into null value in C#
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
                 };
 
             }
+
             return animal;
         }
 
         /// <summary>
-        /// Hämtar alla våra djur ifrån tabellen Animal
+        /// Adds animal to database, with species and class relations
         /// </summary>
+        /// <param name="animal"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Animal>> GetAnimals()
+        public async Task<Animal> AddAnimal(Animal animal)
         {
-            List<Animal> animals = new List<Animal>();
-            string stmt = "select * from animal where animal_name is not null";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-            await using var command = dataSource.CreateCommand(stmt);
-            await using var reader = await command.ExecuteReaderAsync();
-
-            Animal animal = new Animal();
-            while (await reader.ReadAsync())
+            try
             {
-                animal = new Animal()
-                {
-                    Animal_id = reader.GetInt32(0),
-                    Animal_name = (string)reader["animal_name"]
+                string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
 
-                };
-                animals.Add(animal);
+                //command.Parameters.AddWithValue("animal_name", (object) animal.Animal_name ?? DBNull.Value);
+                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animal.Animal_name)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
+
+                command.Parameters.AddWithValue("class_id", animal.Class.Class_id);
+                command.Parameters.AddWithValue("species_id", animal.Species.Species_id);
+                animal.Animal_id =(int) await command .ExecuteScalarAsync();
+                return animal;
             }
-            return animals;
-            #endregion
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel";
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes.:
+                    //    errorMessage = "";
+                    //    break;
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+        }
+        /// <summary>
+        /// Adds species to database and returns species_id
+        /// </summary>
+        /// <param name="species"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Species> AddSpecies(string specieName, string speciesLatinName)
+        {
+            try
+            {
+                Species newSpecies = new Species(specieName, speciesLatinName);
+                string stmt = "INSERT INTO Species(species_name, latin_name, class_id) VALUES (@species_name, @latin_name, @class_id) RETURNING species_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                //call for method searchng for class id
+
+                command.Parameters.AddWithValue("@species_name", specieName); //NOT NULL in our table. Should set to not null here and in postrgresql
+                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); //Nullable in our table as well. 
+                command.Parameters.AddWithValue("@class_id", ); 
+
+              
+                newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
+                return newSpecies; 
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes.:
+                    //    errorMessage = "";
+                    //    break;
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+        }
+
+       /// <summary>
+       /// Adds class to database and returns class_id
+       /// </summary>
+       /// <param name="animalClass"></param>
+       /// <returns></returns>
+       /// <exception cref="Exception"></exception>
+        public async Task<AnimalClass> AddClass(string className)
+        {
+            try
+            {
+                string stmt = "INSERT INTO Animal_class(class_name) VALUES (@class_name) RETURNING class_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@class_name", className);
+               
+                int id = (int)await command.ExecuteScalarAsync();
+                AnimalClass newClass = new AnimalClass(id, className);
+                return newClass; 
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    case PostgresErrorCodes.UniqueViolation:
+                        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik";
+                        break;
+                    
+                }
+                throw new Exception(errorMessage);
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// Transforms null valu from database to null value in c#. If not null, returns object. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private static T? ConvertFromDBVal<T>(object obj) // T is an arbitraty object, can be anything (string, int....)
+        {
+            if (obj == null || obj == DBNull.Value)
+            {
+                return default; // if database is null return null, otherwise return object. Default value is null!
+            }
+            return (T)obj;
         }
 
         /// <summary>
-        /// Letar efter djur som användaren angett i textbox
+        /// Transforms inserted null valu to null valu in database. If not null, returns obejct. 
         /// </summary>
-        /// <param name="findName"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
         /// <returns></returns>
-        public async Task<Animal> FindAnimalByName(string findName)
+        private static object ConvertToDBValue<T> (object obj)
         {
-            
-            string stmt = "select animal_name from animal where animal_name=@name";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-
-            await using var command = dataSource.CreateCommand(stmt);
-            command.Parameters.AddWithValue("name", findName);
-            await using var reader = await command.ExecuteReaderAsync();
-
-            Animal animal = new Animal();
-            while (await reader.ReadAsync())
+            if (obj == null || obj == string.Empty)
             {
-                animal = new Animal()
-                {
-                    Animal_name = (string)reader["animal_name"]
-                };
-
+                return DBNull.Value;
             }
-            return animal;
-            
-        }
-
-
-
-        //Försök till join fråga 
-        public async Task<IEnumerable<Animal>> GetAnimalsWithExtraInfo()
-        {
-            List<Animal> animals = new List<Animal>();
-            string stmt = "select species_name, latin_name, class_name FROM species JOIN animal_class ON species.class_id = animal_class.class_id;   ";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-            await using var command = dataSource.CreateCommand(stmt);
-            await using var reader = await command.ExecuteReaderAsync();
-
-            Animal animal = new Animal();
-            while (await reader.ReadAsync())
-            {
-                animal = new Animal();
-
-                {
-                    Animal_name = (string)reader["animal_name"];
-                    Latin_name = (string)reader["latin_name"];
-
-                };
-                animals.Add(animal);
-            }
-            return animals;
-
+            return (T)obj;
         }
     }
 }
