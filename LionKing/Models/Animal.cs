@@ -21,17 +21,18 @@ namespace LionKing
         public AnimalClass Class { get; set; } 
 
 
-        public Animal(string name, Species species, AnimalClass animalClass)
+        public Animal(string name, Species species, AnimalClass animalClass, int animalId)
         {
             name = Animal_name;
             species = Species;
             animalClass = Class;
+            animalId = Animal_id;
 
         }
         public Animal()
         {
             
         }
-
+     
     }
 }
