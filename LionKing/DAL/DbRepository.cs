@@ -24,144 +24,7 @@ namespace LionKing.DAL
             _connectionString = config.GetConnectionString("develop");
         }
 
-
-
-        /// <summary>
-        /// Get all animal classes for comboboxes
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<AnimalClass>> GetAllClasses()
-        {
-            List<AnimalClass> animalClasses = new List<AnimalClass>(); 
-            string stmt = "SELECT * FROM Animal_class";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString); 
-            await using var command = dataSource.CreateCommand(stmt);
-            await using var reader = await command.ExecuteReaderAsync();
-            AnimalClass newClass = new AnimalClass(); 
-            
-            while (await reader.ReadAsync())
-            {
-                newClass = new AnimalClass()
-                {
-                    Class_id = reader.GetInt32(0),
-                    Class_name = (string)reader.GetString(1)
-                };
-                animalClasses.Add(newClass);
-            }       
-            return animalClasses;
-        }
-        /// <summary>
-        /// Get all species for comboboxes
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Species>> GetAllSpecies()
-        {
-            List<Species> specieslist = new List<Species>();
-            string stmt = "SELECT * FROM Species";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-            await using var command = dataSource.CreateCommand(stmt);
-            await using var reader = await command.ExecuteReaderAsync();
-            Species species = new Species();
-
-            while (await reader.ReadAsync())
-            {
-                species = new Species()
-                {
-                    Species_id = reader.GetInt32(0),
-                    Species_name = (string)reader.GetString(1),
-                    Latin_name = (string)reader.GetString(2)
-                };
-                specieslist.Add(species);
-            }
-            return specieslist;
-        }
-
-        /// <summary>
-        /// Fetches animal by animal_name
-        /// </summary>
-        /// <param name="fetchAnimal"></param>
-        /// <returns></returns>
-        public async Task<Animal> GetAnimalByName(string fetchAnimal)
-        {
-            try
-            {
-                string stmt = "select animal_name from animal where animal_name=@name";
-                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-
-                await using var command = dataSource.CreateCommand(stmt);
-                command.Parameters.AddWithValue("name", fetchAnimal);
-                await using var reader = await command.ExecuteReaderAsync();
-
-                Animal animal = new Animal();
-                while (await reader.ReadAsync())
-                {
-                    animal = new Animal()
-                    {
-                        //Animal_name = (string)reader["animal_name"]
-                        Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
-                    };
-                }
-                return animal;
-            }
-            catch (PostgresException ex)
-            {
-                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
-                string errorCode = ex.SqlState;
-                switch (errorCode)
-                {
-                    //case PostgresErrorCodes.:
-                    //    errorMessage = "";
-                    //    break;
-                    default:
-                        break;
-                }
-                throw new Exception(errorMessage);
-            }
-
-        }
-
-        public async Task<Animal> GetAnimal(int id)
-        {
-            try
-            {
-                string stmt = "select * from animal where animal_id = @id";
-                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-
-                await using var command = dataSource.CreateCommand(stmt);
-                command.Parameters.AddWithValue("id", id);
-                await using var reader = await command.ExecuteReaderAsync();
-
-                Animal animal = new Animal();
-                while (await reader.ReadAsync())
-                {
-                    animal = new Animal()
-                    {
-                        Animal_id = reader.GetInt32(0),
-                        //Animal_name = (string)reader["animal_name"]
-
-                        // If retrived value is null, transforms into null value in C#
-                        Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
-                    };
-                }
-                return animal;
-            }
-            catch (PostgresException ex)
-            {
-                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
-                string errorCode = ex.SqlState;
-                switch (errorCode)
-                {
-                    //case PostgresErrorCodes.:
-                    //    errorMessage = "";
-                    //    break;
-                    default:
-                        break;
-                }
-                throw new Exception(errorMessage);
-            }
-
-
-        }
+        #region CREATE
 
         /// <summary>
         /// Adds animal to database, with species and class relations
@@ -287,6 +150,174 @@ namespace LionKing.DAL
 
         }
 
+        #endregion
+
+        #region READ
+
+        /// <summary>
+        /// Get all animal classes for comboboxes
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AnimalClass>> GetAllClasses()
+        {
+            List<AnimalClass> animalClasses = new List<AnimalClass>();
+            string stmt = "SELECT * FROM Animal_class";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+            await using var command = dataSource.CreateCommand(stmt);
+            await using var reader = await command.ExecuteReaderAsync();
+            AnimalClass newClass = new AnimalClass();
+
+            while (await reader.ReadAsync())
+            {
+                newClass = new AnimalClass()
+                {
+                    Class_id = reader.GetInt32(0),
+                    Class_name = (string)reader.GetString(1)
+                };
+                animalClasses.Add(newClass);
+            }
+            return animalClasses;
+        }
+        /// <summary>
+        /// Get all species for comboboxes
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Species>> GetAllSpecies()
+        {
+            List<Species> specieslist = new List<Species>();
+            string stmt = "SELECT * FROM Species";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+            await using var command = dataSource.CreateCommand(stmt);
+            await using var reader = await command.ExecuteReaderAsync();
+            Species species = new Species();
+
+            while (await reader.ReadAsync())
+            {
+                species = new Species()
+                {
+                    Species_id = reader.GetInt32(0),
+                    Species_name = (string)reader.GetString(1),
+                    Latin_name = (string)reader.GetString(2)
+                };
+                specieslist.Add(species);
+            }
+            return specieslist;
+        }
+        /// <summary>
+        /// Get all animals for comboboxes
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Animal>> GetAllAnimals()
+        {
+            List<Animal> animals = new List<Animal>();
+            string stmt = "SELECT * FROM Animal";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+            await using var command = dataSource.CreateCommand(stmt);
+            await using var reader = await command.ExecuteReaderAsync();
+            Animal newAnimals = new Animal();
+
+            while (await reader.ReadAsync()) //Need some sort of if statement removing animal_name that are null
+            {
+                newAnimals = new Animal()
+                {
+                    Animal_id = reader.GetInt32(0),
+                    Animal_name = (string)reader.GetString(1)
+                };
+                animals.Add(newAnimals);
+            }
+            return animals;
+        }
+        /// <summary>
+        /// Fetches animal by animal_name
+        /// </summary>
+        /// <param name="fetchAnimal"></param>
+        /// <returns></returns>
+        public async Task<Animal> GetAnimalByName(string fetchAnimal)
+        {
+            try
+            {
+                string stmt = "select animal_name from animal where animal_name=@name";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+                await using var command = dataSource.CreateCommand(stmt);
+                command.Parameters.AddWithValue("name", fetchAnimal);
+                await using var reader = await command.ExecuteReaderAsync();
+
+                Animal animal = new Animal();
+                while (await reader.ReadAsync())
+                {
+                    animal = new Animal()
+                    {
+                        //Animal_name = (string)reader["animal_name"]
+                        Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
+                    };
+                }
+                return animal;
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes.:
+                    //    errorMessage = "";
+                    //    break;
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+
+        }
+        /// <summary>
+        /// Get animal by animal id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Animal> GetAnimal(int id)
+        {
+            try
+            {
+                string stmt = "select * from animal where animal_id = @id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+                await using var command = dataSource.CreateCommand(stmt);
+                command.Parameters.AddWithValue("id", id);
+                await using var reader = await command.ExecuteReaderAsync();
+
+                Animal animal = new Animal();
+                while (await reader.ReadAsync())
+                {
+                    animal = new Animal()
+                    {
+                        Animal_id = reader.GetInt32(0),
+                        //Animal_name = (string)reader["animal_name"]
+
+                        // If retrived value is null, transforms into null value in C#
+                        Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
+                    };
+                }
+                return animal;
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes.:
+                    //    errorMessage = "";
+                    //    break;
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+
+
+        }
         /// <summary>
         /// Fetches animal_name based on animal_id
         /// </summary>
@@ -315,7 +346,6 @@ namespace LionKing.DAL
 
             return animal;
         }
-
         /// <summary>
         /// Retrives classed based on id
         /// </summary>
@@ -343,7 +373,6 @@ namespace LionKing.DAL
 
             return animalClass;
         }
-
         /// <summary>
         /// Retrives id for and sets name, and latin name for retrived species.
         /// </summary>
@@ -370,7 +399,6 @@ namespace LionKing.DAL
             }
             return species;
         }
-
         /// <summary>
         /// Retrives id and sets name for retrived class. 
         /// </summary>
@@ -442,6 +470,48 @@ namespace LionKing.DAL
                 throw new Exception(errorMessage);
             }
         }
+        /// <summary>
+        /// Uses class_id to get all species belonging to that class
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Species>> GetAllSpeciesFromClass(int id)
+        {
+            List<Species> speciesList = new List<Species>();
+
+            string stmt = "SELECT * FROM species WHERE class_id = @id";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("id", id);
+            await using var reader = await command.ExecuteReaderAsync();
+
+            Species species = new Species();
+            while (await reader.ReadAsync())
+            {
+                species = new Species()
+                {
+                    Species_name = (string)reader["species_name"],
+                    Latin_name = (string)reader["latin_name"],
+                    Species_id = reader.GetInt32(0)
+                };
+            }
+
+            return speciesList;
+        }
+
+        #endregion
+
+        #region UPDATE
+
+        #endregion
+
+        #region DELETE
+
+        #endregion
+
+
+
         /// <summary>
         /// Transforms null valu from database to null value in c#. If not null, returns object. 
         /// </summary>

@@ -14,9 +14,6 @@ namespace LionKing
         /// </summary>
         public int Animal_id { get; set; }
         public string? Animal_name { get; set; }
-
-       
-
         public Species Species { get; set; } // can these values be null??
         public AnimalClass Class { get; set; } 
 
@@ -27,12 +24,15 @@ namespace LionKing
             species = Species;
             animalClass = Class;
             animalId = Animal_id;
-
         }
         public Animal()
         {
             
         }
-     
+
+        public override string ToString()
+        {
+            return $"{Animal_name}";
+        }
     }
 }

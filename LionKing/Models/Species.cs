@@ -14,8 +14,6 @@ namespace LionKing.Models
         public int Species_id { get; set; }
         public string? Species_name { get; set; }
         public string? Latin_name { get; set; }
-       
-
         public AnimalClass Class { get; set; }
 
         public Species(int id, string name, string latinName, AnimalClass animal_class)

@@ -37,7 +37,5 @@ namespace LionKing.Models
             return $"{Class_name}";
         }
 
-
-
     }
 }

@@ -31,14 +31,13 @@ namespace LionKing
         }
         
 
-        private async void btnFetchAnimal_Click_1(object sender, RoutedEventArgs e)
+        private async void btnGetAnimal_Click_1(object sender, RoutedEventArgs e)
         {
-            //När vi klickar på knappen skapas ett nytt objekt av DbRepository
             DbRepository db = new();
-            string FetchAnimal = txtFetchAnimal.Text;
+            string GetAnimal = txtGetAnimal.Text;
             try
             {
-                var animal = await db.GetAnimalByName(FetchAnimal);
+                var animal = await db.GetAnimalByName(GetAnimal);
 
                 if (animal.Animal_name == null)
                 {
@@ -71,7 +70,6 @@ namespace LionKing
             //var newClass = await db.AddClass(className);
         }
 
-
         private void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
@@ -82,23 +80,59 @@ namespace LionKing
             //MessageBox.Show($"Djuret {animalName} som är ett {animal.}"); // I can't retrive prop from animal??
         }
 
-
-
+        //Presents all AnimalClasses in Combobox in View area
         private async void cbxViewClass_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
             var allClasses = await db.GetAllClasses();
-
             cbxViewClass.ItemsSource = allClasses;
-      
+
         }
 
+        //Presents all Species in Combobox in View area
         private async void ViewSpecies_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
             var allSpecies = await db.GetAllSpecies();
-
             cbxViewSpecies.ItemsSource = allSpecies;
+        }
+
+        //Presents all Animals in Combobox in View area - OBS! Need if-statement to handle null values
+        private async void cbxViewAnimal_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var allAnimals = await db.GetAllAnimals();
+            cbxViewAnimal.ItemsSource = allAnimals;
+        }
+
+        //Presents all AnimalClasses in Combobox in Create area - OBS! Not working properly
+        private async void cbxSelectClass_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var selectClass = await db.GetAllClasses();
+            cbxViewClass.ItemsSource = selectClass; // dont understand why this is not working? Why isn't animal classes shown in interface?
+        }
+
+        //Presents all Species in Combobox in Create area - OBS! Not working properly
+        private async void cbxSelectSpecies_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var allSpecies = await db.GetAllSpecies();
+            cbxViewSpecies.ItemsSource = allSpecies; //why isn't species shown in interface??
+
+        }
+
+        //Trying to enable showing info about species in listbox once an animalclass is shown - OBS! not working properly yet
+        private async void cbxViewClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DbRepository db = new();
+       
+            //How to we establish which animalclass is choosen? Can we reach/use class_id that is fetched in SelectClass_DropDownOpened somehow?
+            {
+                var allSpecies = await db.GetAllSpeciesFromClass(1);
+                lstAnimal.Items.Add(allSpecies);
+            }
+            
         }
     }
 }
