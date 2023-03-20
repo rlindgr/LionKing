@@ -27,7 +27,11 @@ namespace LionKing
         }
         public Animal()
         {
-            
+            Animal_id = Animal_id;
+            // tried to figure out a way to handel null values.
+            //object name = (object)Animal_name ?? DBNull.Value;
+            //name = Animal_name;
+
         }
 
         public override string ToString()

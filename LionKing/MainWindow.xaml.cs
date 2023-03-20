@@ -110,15 +110,16 @@ namespace LionKing
         {
             DbRepository db = new();
             var selectClass = await db.GetAllClasses();
-            cbxViewClass.ItemsSource = selectClass; // dont understand why this is not working? Why isn't animal classes shown in interface?
+            cbxSelectClass.ItemsSource = selectClass; // dont understand why this is not working? Why isn't animal classes shown in interface? 
+                                                      // You still used cbxViewClass but the btn pressed was cbxSelectClass :)  
         }
 
-        //Presents all Species in Combobox in Create area - OBS! Not working properly
+        
         private async void cbxSelectSpecies_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
             var allSpecies = await db.GetAllSpecies();
-            cbxViewSpecies.ItemsSource = allSpecies; //why isn't species shown in interface??
+            cbxSelectSpecies.ItemsSource = allSpecies; 
 
         }
 
@@ -132,7 +133,12 @@ namespace LionKing
                 var allSpecies = await db.GetAllSpeciesFromClass(1);
                 lstAnimal.Items.Add(allSpecies);
             }
-            
+
+            cbxViewClass.SelectedItem = ()
+            ComboboxItem selectedCar = (ComboboxItem)comboBox1.SelectedItem;
+
         }
+
+        
     }
 }

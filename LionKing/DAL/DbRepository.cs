@@ -198,6 +198,7 @@ namespace LionKing.DAL
                     Species_id = reader.GetInt32(0),
                     Species_name = (string)reader.GetString(1),
                     Latin_name = (string)reader.GetString(2)
+                    
                 };
                 specieslist.Add(species);
             }
@@ -221,7 +222,7 @@ namespace LionKing.DAL
                 newAnimals = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = (string)reader.GetString(1)
+                    Animal_name = ConvertFromDBVal<string>(reader.GetString(1)) //tried to fix the null issue, dind't really work..?
                 };
                 animals.Add(newAnimals);
             }
