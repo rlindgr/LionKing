@@ -78,8 +78,8 @@
         <Button x:Name="btnCreateAnimal" Content="Skapa" HorizontalAlignment="Left" Height="34" Margin="252,181,0,0" VerticalAlignment="Top" Width="133" Grid.Column="1"/>
         <Label x:Name="lblAddNewName" Content="Ange nytt namn" HorizontalAlignment="Left" Height="36" Margin="92,257,0,0" VerticalAlignment="Top" Width="126" Grid.Column="1" Grid.RowSpan="2"/>
         <Button x:Name="btnFetchAnimal" Content="Hämta ett djur" HorizontalAlignment="Center" Height="26" Margin="0,106,0,0" VerticalAlignment="Top" Width="85" Click="btnFetchAnimal_Click_1" Grid.Column="1"/>
-        <ComboBox x:Name="cbxViewClass" HorizontalAlignment="Left" Margin="410,163,0,0" VerticalAlignment="Top" Width="151" Height="29" Grid.Column="1"/>
-        <ComboBox x:Name="ViewSpecies" HorizontalAlignment="Left" Margin="410,217,0,0" VerticalAlignment="Top" Width="151" Height="29" Grid.Column="1"/>
-        <ComboBox x:Name="ViewAnimal" HorizontalAlignment="Left" Margin="411,14,0,0" VerticalAlignment="Top" Width="150" Height="28" Grid.Row="1" Grid.Column="1"/>
+        <ComboBox x:Name="cbxViewClass" HorizontalAlignment="Left" Margin="410,163,0,0" VerticalAlignment="Top" Width="151" Height="29" Grid.Column="1" DropDownOpened="cbxViewClass_DropDownOpened" />
+        <ComboBox x:Name="cbxViewSpecies" HorizontalAlignment="Left" Margin="410,217,0,0" VerticalAlignment="Top" Width="151" Height="29" Grid.Column="1" DropDownOpened="ViewSpecies_DropDownOpened"/>
+        <ComboBox x:Name="cbxViewAnimal" HorizontalAlignment="Left" Margin="411,14,0,0" VerticalAlignment="Top" Width="150" Height="28" Grid.Row="1" Grid.Column="1"/>
     </Grid>
 </Window>

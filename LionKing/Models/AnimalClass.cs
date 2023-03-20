@@ -27,10 +27,15 @@ namespace LionKing.Models
         }
         public AnimalClass()
         {
-            
+            Class_id = Class_id;
+            Class_name = Class_name;
+
         }
 
-
+        public override string ToString()
+        {
+            return $"{Class_name}";
+        }
 
 
 

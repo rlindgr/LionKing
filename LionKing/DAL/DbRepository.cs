@@ -25,6 +25,57 @@ namespace LionKing.DAL
         }
 
 
+
+        /// <summary>
+        /// Get all animal classes for comboboxes
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AnimalClass>> GetAllClasses()
+        {
+            List<AnimalClass> animalClasses = new List<AnimalClass>(); 
+            string stmt = "SELECT * FROM Animal_class";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString); 
+            await using var command = dataSource.CreateCommand(stmt);
+            await using var reader = await command.ExecuteReaderAsync();
+            AnimalClass newClass = new AnimalClass(); 
+            
+            while (await reader.ReadAsync())
+            {
+                newClass = new AnimalClass()
+                {
+                    Class_id = reader.GetInt32(0),
+                    Class_name = (string)reader.GetString(1)
+                };
+                animalClasses.Add(newClass);
+            }       
+            return animalClasses;
+        }
+        /// <summary>
+        /// Get all species for comboboxes
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Species>> GetAllSpecies()
+        {
+            List<Species> specieslist = new List<Species>();
+            string stmt = "SELECT * FROM Species";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+            await using var command = dataSource.CreateCommand(stmt);
+            await using var reader = await command.ExecuteReaderAsync();
+            Species species = new Species();
+
+            while (await reader.ReadAsync())
+            {
+                species = new Species()
+                {
+                    Species_id = reader.GetInt32(0),
+                    Species_name = (string)reader.GetString(1),
+                    Latin_name = (string)reader.GetString(2)
+                };
+                specieslist.Add(species);
+            }
+            return specieslist;
+        }
+
         /// <summary>
         /// Fetches animal by animal_name
         /// </summary>
@@ -314,7 +365,7 @@ namespace LionKing.DAL
                     Species_id = reader.GetInt32(0),
                     Species_name = (string)reader["species_name"],
                     Latin_name = ConvertFromDBVal<string>(reader["latin_name"]), // is this possible to use to retrive values from other co0lumns perhaps???
-                    Class.Class_id = reader.GetInt32(3) // why isn't this possible? Shouldn't i be able to acces class_id via prop AnimalClass Class in species??
+                    //Class.Class_id = reader.GetInt32(3) // why isn't this possible? Shouldn't i be able to acces class_id via prop AnimalClass Class in species??
                 };
             }
             return species;
@@ -357,7 +408,7 @@ namespace LionKing.DAL
 
             try
             {
-                string stmt = "select * from animal_class";
+                string stmt = "SELECT * FROM animal_class";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
                 await using var reader = await command.ExecuteReaderAsync();

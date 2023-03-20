@@ -58,17 +58,17 @@ namespace LionKing
 
         private void btnCreateClass_Click(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
+            //DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
 
-            //I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
-            AnimalClass mammal = new AnimalClass(1, "Mammal");
-            Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
-            Animal kiara = new Animal("Kiara", masaiLion, mammal);
-            var animal = db.AddAnimal(kiara);
+            ////I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
+            //AnimalClass mammal = new AnimalClass(1, "Mammal");
+            //Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
+            //Animal kiara = new Animal("Kiara", masaiLion, mammal);
+            //var animal = db.AddAnimal(kiara);
 
-            // Create class
-            string className = txtCreateClass.Text;
-            var newClass = await db.AddClass(className);
+            //// Create class
+            //string className = txtCreateClass.Text;
+            //var newClass = await db.AddClass(className);
         }
 
 
@@ -79,17 +79,26 @@ namespace LionKing
             string speciesName = cbxSelectSpecies.Text; // or is it something with selected, unsure of cbx...  
             var animal = db.AddAnimal(animalName, speciesName);
 
-            MessageBox.Show($"Djuret {animalName} som är ett {animal.}"); // I can't retrive prop from animal??
+            //MessageBox.Show($"Djuret {animalName} som är ett {animal.}"); // I can't retrive prop from animal??
         }
 
 
 
+        private async void cbxViewClass_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var allClasses = await db.GetAllClasses();
 
+            cbxViewClass.ItemsSource = allClasses;
+      
+        }
 
-        //test
+        private async void ViewSpecies_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var allSpecies = await db.GetAllSpecies();
 
-
-
-
+            cbxViewSpecies.ItemsSource = allSpecies;
+        }
     }
 }

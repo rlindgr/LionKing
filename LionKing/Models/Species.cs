@@ -45,6 +45,10 @@ namespace LionKing.Models
         }
 
 
+        public override string ToString()
+        {
+            return $"{Species_name}";
+        }
 
     }
 }
