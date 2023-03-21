@@ -62,7 +62,7 @@ namespace LionKing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnCreateClass(object sender, RoutedEventArgs e)
+        private void btnCreateClass_Click(object sender, RoutedEventArgs e)
         {
             //DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
 
@@ -77,15 +77,7 @@ namespace LionKing
             //var newClass = await db.AddClass(className);
 
         }
-        private void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            string animalName = txtCreateAnimal.Text;
-            string speciesName = cbxSelectSpecies.Text; // or is it something with selected, unsure of cbx...  
-            var animal = db.AddAnimal(animalName, speciesName);
-
-            //MessageBox.Show($"Djuret {animalName} som är ett {animal.}"); // I can't retrive prop from animal??
-        }
+       
 
 
         #endregion
