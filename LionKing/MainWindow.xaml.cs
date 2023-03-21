@@ -41,8 +41,7 @@ namespace LionKing
         {
             DbRepository db = new();
             var selectClass = await db.GetAllClasses();
-            cbxSelectClass.ItemsSource = selectClass; // dont understand why this is not working? Why isn't animal classes shown in interface? 
-                                                      // You still used cbxViewClass but the btn pressed was cbxSelectClass :)  
+            cbxSelectClass.ItemsSource = selectClass; 
         }
         /// <summary>
         /// Presents all species in combobox in Create area
@@ -73,6 +72,16 @@ namespace LionKing
 
 
         }
+
+        private async void btnCreateSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            string speciesName = txtCreateSpecies.Text;
+            string latinName = txtLatinName.Text;
+            AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem; //??
+            var newSpecies = await db.AddSpecies(speciesName, latinName, selectedClass);
+
+        } 
 
 
 
@@ -203,6 +212,7 @@ namespace LionKing
             //    }
         }
 
+       
     }
 
     

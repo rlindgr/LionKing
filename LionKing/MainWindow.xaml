@@ -29,9 +29,9 @@
         <Label Content="Ta bort djur" HorizontalAlignment="Left" Height="24" Margin="24,322,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
         <Label Content="Ta bort art" HorizontalAlignment="Left" Height="24" Margin="24,370,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
         <Label Content="Ta bort klass" HorizontalAlignment="Left" Height="24" Margin="218,324,0,0" VerticalAlignment="Top" Width="112" FontWeight="Bold"/>
-        <TextBox x:Name="txtCreateAnimal" HorizontalAlignment="Left" Height="35" Margin="332,64,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="137"/>
-        <TextBox x:Name="txtCreateSpecies" HorizontalAlignment="Left" Height="33" Margin="172,65,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="140"/>
-        <TextBox x:Name="txtCreateClass" HorizontalAlignment="Left" Height="39" Margin="13,74,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="133"/>
+        <TextBox x:Name="txtCreateAnimal" HorizontalAlignment="Left" Height="35" Margin="332,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="137"/>
+        <TextBox x:Name="txtCreateSpecies" HorizontalAlignment="Left" Height="33" Margin="172,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
+        <TextBox x:Name="txtCreateClass" HorizontalAlignment="Left" Height="39" Margin="13,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="133"/>
         <Label Content="Ta bort" HorizontalAlignment="Left" Height="31" Margin="18,296,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" FontSize="16"/>
         <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="28" Margin="28,346,0,0" VerticalAlignment="Top" Width="174"/>
         <ComboBox x:Name="cbxRemoveSpecies" HorizontalAlignment="Left" Height="28" Margin="28,394,0,0" VerticalAlignment="Top" Width="174"/>
@@ -49,9 +49,9 @@
         <RadioButton x:Name="btnSortByAsc" Content="Sortera efter namn (fallande)" HorizontalAlignment="Left" Height="18" Margin="761,355,0,0" VerticalAlignment="Top" Width="172"/>
         <RadioButton x:Name="btnSortByDesc" Content="Sortera efter namn (stigande)" HorizontalAlignment="Left" Height="18" Margin="761,371,0,0" VerticalAlignment="Top" Width="174"/>
         <TextBox x:Name="txtCurrentName" HorizontalAlignment="Left" Height="28" Margin="1169,506,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174"/>
-        <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="1169,556,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="174"/>
-        <TextBox x:Name="txtCurrentSpecies" HorizontalAlignment="Left" Height="28" Margin="964,506,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="177"/>
-        <TextBox x:Name="txtCurrentClass" HorizontalAlignment="Left" Height="28" Margin="761,506,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="172"/>
+        <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="1169,556,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174"/>
+        <TextBox x:Name="txtCurrentSpecies" HorizontalAlignment="Left" Height="28" Margin="964,506,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
+        <TextBox x:Name="txtCurrentClass" HorizontalAlignment="Left" Height="28" Margin="761,506,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="172"/>
         <ComboBox x:Name="cbxEditSpecies" HorizontalAlignment="Left" Margin="964,554,0,0" VerticalAlignment="Top" Width="177" Height="29" RenderTransformOrigin="0.5,0.5">
             <ComboBox.RenderTransform>
                 <TransformGroup>
@@ -81,6 +81,6 @@
         <Button x:Name="btnViewAnimalClass" Content="Visa djurklasser" HorizontalAlignment="Left" Height="42" Margin="761,394,0,0" VerticalAlignment="Top" Width="174" Click="btnViewAnimalClass_Click"/>
         <Button x:Name="BtnViewSpecies" Content="Visa arter" HorizontalAlignment="Left" Height="42" Margin="964,394,0,0" VerticalAlignment="Top" Width="177" Click="BtnViewSpecies_Click"/>
         <Button x:Name="btnViewAnimal" Content="Visa djur" HorizontalAlignment="Left" Height="42" Margin="1169,394,0,0" VerticalAlignment="Top" Width="169" Click="btnViewAnimal_Click"/>
-        <TextBox x:Name="txtLatinName" HorizontalAlignment="Left" Height="39" Margin="172,128,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="141"/>
+        <TextBox x:Name="txtLatinName" HorizontalAlignment="Left" Height="39" Margin="172,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141"/>
     </Grid>
 </Window>
