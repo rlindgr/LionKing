@@ -231,13 +231,13 @@ namespace LionKing.DAL
             await using var reader = await command.ExecuteReaderAsync();
             Animal newAnimals = new Animal();
 
-            while (await reader.ReadAsync()) //Need some sort of if statement removing animal_name that are null
+            while (await reader.ReadAsync()) 
             {
 
                 newAnimals = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"])//tried to fix the null issue, dind't really work..?
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
                 };
 
                animals.Add(newAnimals);

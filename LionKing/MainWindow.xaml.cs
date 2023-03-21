@@ -29,30 +29,32 @@ namespace LionKing
             InitializeComponent();
             
         }
-        
 
-        private async void btnGetAnimal_Click_1(object sender, RoutedEventArgs e)
+        #region CREATE
+
+        /// <summary>
+        /// Presents all AnimalClasses in Combobox in Create area 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void cbxSelectClass_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
-            string GetAnimal = txtGetAnimal.Text;
-            try
-            {
-                var animal = await db.GetAnimalByName(GetAnimal);
+            var selectClass = await db.GetAllClasses();
+            cbxSelectClass.ItemsSource = selectClass; // dont understand why this is not working? Why isn't animal classes shown in interface? 
+                                                      // You still used cbxViewClass but the btn pressed was cbxSelectClass :)  
+        }
+        /// <summary>
+        /// Presents all species in combobox in Create area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void cbxSelectSpecies_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var allSpecies = await db.GetAllSpecies();
+            cbxSelectSpecies.ItemsSource = allSpecies;
 
-                if (animal.Animal_name == null)
-                {
-                    MessageBox.Show("Det finns inget djur med det namnet");
-                }
-                else
-                {
-                    lstAnimal.Items.Clear();
-                    lstAnimal.Items.Add(animal.Animal_name);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
 
         private void btnCreateClass_Click(object sender, RoutedEventArgs e)
@@ -80,7 +82,16 @@ namespace LionKing
             //MessageBox.Show($"Djuret {animalName} som är ett {animal.}"); // I can't retrive prop from animal??
         }
 
-        //Presents all AnimalClasses in Combobox in View area
+
+        #endregion
+
+        #region READ
+
+        /// <summary>
+        /// Presents all AnimalClasses in Combobox in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void cbxViewClass_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
@@ -89,39 +100,56 @@ namespace LionKing
 
 
         }
-
-        //Presents all Species in Combobox in View area
+        /// <summary>
+        /// Presents all Species in Combobox in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ViewSpecies_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
             var allSpecies = await db.GetAllSpecies();
             cbxViewSpecies.ItemsSource = allSpecies;
         }
-
-        //Presents all Animals in Combobox in View area - OBS! Need if-statement to handle null values
+        /// <summary>
+        /// Presents all Animals in Combobox in View area 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
         private async void cbxViewAnimal_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
             var allAnimals = await db.GetAllAnimals();
             cbxViewAnimal.ItemsSource = allAnimals;
         }
-
-        //Presents all AnimalClasses in Combobox in Create area - OBS! Not working properly
-        private async void cbxSelectClass_DropDownOpened(object sender, EventArgs e)
+        /// <summary>
+        /// Gets animal based on animal name entered in textbox in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnGetAnimal_Click_1(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
-            var selectClass = await db.GetAllClasses();
-            cbxSelectClass.ItemsSource = selectClass; // dont understand why this is not working? Why isn't animal classes shown in interface? 
-                                                      // You still used cbxViewClass but the btn pressed was cbxSelectClass :)  
-        }
+            string GetAnimal = txtGetAnimal.Text;
+            try
+            {
+                var animal = await db.GetAnimalByName(GetAnimal);
 
-        
-        private async void cbxSelectSpecies_DropDownOpened(object sender, EventArgs e)
-        {
-            DbRepository db = new();
-            var allSpecies = await db.GetAllSpecies();
-            cbxSelectSpecies.ItemsSource = allSpecies; 
-
+                if (animal.Animal_name == null)
+                {
+                    MessageBox.Show("Det finns inget djur med det namnet");
+                }
+                else
+                {
+                    lstAnimal.Items.Clear();
+                    lstAnimal.Items.Add(animal.Animal_name);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         //Trying to enable showing info about animals in listbox once an animalclass is shown - OBS! not working properly yet
@@ -130,7 +158,7 @@ namespace LionKing
             DbRepository db = new();
             AnimalClass animalClass = new AnimalClass();
             //SelectClass(animalClass); 
-            
+
             //How to we establish which animalclass is choosen? Can we reach/use class_id that is fetched in SelectClass_DropDownOpened somehow?
             //{
             //    var allSpecies = await db.GetAllSpeciesFromClass(1);
@@ -141,7 +169,24 @@ namespace LionKing
             //ComboboxItem selectedCar = (ComboboxItem)comboBox1.SelectedItem;
 
         }
-        //Method used to find class_id from selected item in combobox
+        #endregion
+
+        #region UPDATE
+
+        #endregion
+
+        #region DELETE
+
+        #endregion
+
+
+
+
+
+        /// <summary>
+        /// Method used to find class_id from selected item in combobox
+        /// </summary>
+        /// <param name="animalClass"></param>
         private void SelectClass(AnimalClass animalClass)
         {
 

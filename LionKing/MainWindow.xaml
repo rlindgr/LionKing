@@ -8,14 +8,12 @@
         Title="MainWindow" Height="612" Width="997">
     <Grid Margin="-1,-2,10,11" Width="NaN">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="9*"/>
-            <ColumnDefinition Width="101*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="14*"/>
-            <RowDefinition Height="17*"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="209" Margin="8,233,0,0" VerticalAlignment="Top" Width="469" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" Grid.RowSpan="2">
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="209" Margin="8,233,0,0" VerticalAlignment="Top" Width="469" RenderTransformOrigin="0.5,0.5">
             <Border.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -26,60 +24,60 @@
             </Border.RenderTransform>
             <Label Content="Nuvarande namn" HorizontalAlignment="Left" Height="24" Margin="9,26,0,0" VerticalAlignment="Top" Width="136"/>
         </Border>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="219" Margin="244,7,0,0" VerticalAlignment="Top" Width="154" Grid.Column="1"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="221" Margin="84,5,0,0" VerticalAlignment="Top" Width="154" Grid.Column="1"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="582" Margin="402,5,0,0" VerticalAlignment="Top" Width="505" Grid.RowSpan="2" Grid.Column="1"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="140" Margin="10,182,0,0" VerticalAlignment="Top" Width="466" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="220" Margin="5,6,0,0" VerticalAlignment="Top" Width="154" Grid.ColumnSpan="2"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="192" Margin="415,127,0,0" VerticalAlignment="Top" Width="480" Grid.Row="1" Grid.Column="1"/>
-        <Label Content="Ange namn (valfritt)" HorizontalAlignment="Left" Height="28" Margin="252,35,0,0" VerticalAlignment="Top" Width="133" Grid.Column="1"/>
-        <Label Content="Ange namn på art" HorizontalAlignment="Left" Height="26" Margin="88,37,0,0" VerticalAlignment="Top" Width="110" Grid.Column="1"/>
-        <Label Content="Ange namn på klass" HorizontalAlignment="Left" Height="30" Margin="11,43,0,0" VerticalAlignment="Top" Width="122" Grid.ColumnSpan="2"/>
-        <Label Content="Skapa ny klass" HorizontalAlignment="Left" Height="33" Margin="6,12,0,0" VerticalAlignment="Top" Width="153" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2"/>
-        <Label Content="Ta bort djur" HorizontalAlignment="Left" Height="24" Margin="24,208,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <Label Content="Ta bort art" HorizontalAlignment="Left" Height="24" Margin="24,256,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <Label Content="Ta bort klass" HorizontalAlignment="Left" Height="24" Margin="136,210,0,0" VerticalAlignment="Top" Width="112" FontWeight="Bold" Grid.Row="1" Grid.Column="1"/>
-        <TextBox x:Name="txtCreateAnimal" HorizontalAlignment="Left" Height="35" Margin="251,64,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="137" Grid.Column="1"/>
-        <TextBox x:Name="txtCreateSpecies" HorizontalAlignment="Left" Height="33" Margin="91,65,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="140" Grid.Column="1"/>
-        <TextBox x:Name="txtCreateClass" HorizontalAlignment="Left" Height="39" Margin="13,74,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="133" Grid.ColumnSpan="2"/>
-        <Label Content="Ta bort" HorizontalAlignment="Left" Height="31" Margin="18,182,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" FontSize="16" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="28" Margin="28,232,0,0" VerticalAlignment="Top" Width="174" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="cbxRemoveSpecies" HorizontalAlignment="Left" Height="28" Margin="28,280,0,0" VerticalAlignment="Top" Width="174" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="cbxRemoveClass" HorizontalAlignment="Left" Height="28" Margin="138,232,0,0" VerticalAlignment="Top" Width="174" Grid.Row="1" Grid.Column="1"/>
-        <Button x:Name="btnRemove" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="138,280,0,0" VerticalAlignment="Top" Width="174" Grid.Row="1" Grid.Column="1"/>
-        <Label Content="Antal djur i djurriket" HorizontalAlignment="Left" Height="30" Margin="414,127,0,0" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="16" Grid.Row="1" Grid.Column="1"/>
-        <ListBox x:Name="lstPopulation" HorizontalAlignment="Left" Height="149" Margin="589,159,0,0" VerticalAlignment="Top" Width="293" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Row="1" Grid.Column="1"/>
-        <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="423,165,0,0" VerticalAlignment="Top" Width="105" Grid.Row="1" Grid.Column="1"/>
-        <RadioButton x:Name="btnSortByClass" Content="Sortera efter djurklass" HorizontalAlignment="Left" Height="18" Margin="423,188,0,0" VerticalAlignment="Top" Width="138" Grid.Row="1" Grid.Column="1"/>
-        <Label Content="Hitta" HorizontalAlignment="Left" Height="28" Margin="402,15,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold" FontSize="16" Grid.Column="1"/>
-        <Label Content="Ändra ett djur" HorizontalAlignment="Left" Height="28" Margin="18,236,0,0" VerticalAlignment="Top" Width="118" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="txtGetAnimal" HorizontalAlignment="Left" Height="28" Margin="410,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" Grid.Column="1"/>
-        <Label Content="Djurklass" HorizontalAlignment="Center" Height="28" Margin="0,139,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold" Grid.Column="1"/>
-        <Label Content="Djur" HorizontalAlignment="Left" Height="28" Margin="411,247,0,0" VerticalAlignment="Top" Width="84" FontWeight="Bold" Grid.RowSpan="2" Grid.Column="1"/>
-        <Label Content="Art" HorizontalAlignment="Left" Height="28" Margin="410,192,0,0" VerticalAlignment="Top" Width="86" FontWeight="Bold" Grid.Column="1"/>
-        <Label Content="Sök efter ett djur" HorizontalAlignment="Left" Height="28" Margin="411,43,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
-        <ListBox x:Name="lstAnimal" HorizontalAlignment="Left" Height="295" Margin="583,30,0,0" VerticalAlignment="Top" Width="309" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="2" Grid.Column="1"/>
-        <RadioButton x:Name="btnSortByAsc" Content="Sortera efter namn (fallande)" HorizontalAlignment="Left" Height="18" Margin="708,67,0,0" VerticalAlignment="Top" Width="172" Grid.Row="1" Grid.Column="1"/>
-        <RadioButton x:Name="btnSortByDesc" Content="Sortera efter namn (stigande)" HorizontalAlignment="Left" Height="18" Margin="708,83,0,0" VerticalAlignment="Top" Width="174" Grid.Row="1" Grid.Column="1"/>
-        <TextBox x:Name="txtCurrentName" HorizontalAlignment="Left" Height="28" Margin="20,18,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="89,17,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="146" Grid.Column="1" Grid.Row="1"/>
-        <TextBox x:Name="txtCurrentSpecies" HorizontalAlignment="Left" Height="28" Margin="20,72,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <TextBox x:Name="txtCurrentClass" HorizontalAlignment="Left" Height="28" Margin="20,140,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143" Grid.ColumnSpan="2" Grid.Row="1"/>
-        <ComboBox x:Name="cbxEditSpecies" HorizontalAlignment="Left" Margin="87,73,0,0" VerticalAlignment="Top" Width="145" Height="29" Grid.Column="1" Grid.Row="1"/>
-        <ComboBox x:Name="btnEditClass" HorizontalAlignment="Left" Margin="88,140,0,0" VerticalAlignment="Top" Width="142" Height="29" Grid.Column="1" Grid.Row="1"/>
-        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="28" Margin="244,141,0,0" VerticalAlignment="Top" Width="139" Grid.Column="1" Grid.Row="1"/>
-        <Label x:Name="lblCreateSpecies" Content="Skapa ny art" HorizontalAlignment="Left" Height="40" Margin="84,12,0,0" VerticalAlignment="Top" Width="154" FontWeight="Bold" FontSize="16" Grid.Column="1"/>
-        <ComboBox x:Name="cbxSelectClass" HorizontalAlignment="Left" Height="37" Margin="92,133,0,0" VerticalAlignment="Top" Width="140" Grid.Column="1" DropDownOpened="cbxSelectClass_DropDownOpened"/>
-        <Label Content="Ange klasstillhörighet" HorizontalAlignment="Left" Height="28" Margin="88,99,0,0" VerticalAlignment="Top" Width="128" Grid.Column="1"/>
-        <Button x:Name="btnCreateSpecies" Content="Skapa" HorizontalAlignment="Left" Height="31" Margin="91,183,0,0" VerticalAlignment="Top" Width="140" Grid.Column="1"/>
-        <Label Content="Skapa nytt djur" HorizontalAlignment="Left" Height="38" Margin="249,7,0,0" VerticalAlignment="Top" Width="146" FontWeight="Bold" FontSize="16" Grid.Column="1"/>
-        <ComboBox x:Name="cbxSelectSpecies" HorizontalAlignment="Left" Height="37" Margin="252,133,0,0" VerticalAlignment="Top" Width="133" Grid.Column="1" DropDownOpened="cbxSelectSpecies_DropDownOpened"/>
-        <Label Content="Välj arttillhörighet" HorizontalAlignment="Left" Height="29" Margin="251,105,0,0" VerticalAlignment="Top" Width="123" Grid.Column="1"/>
-        <Button x:Name="btnCreateAnimal" Content="Skapa" HorizontalAlignment="Left" Height="34" Margin="252,181,0,0" VerticalAlignment="Top" Width="133" Grid.Column="1"/>
-        <Label x:Name="lblAddNewName" Content="Ange nytt namn" HorizontalAlignment="Left" Height="36" Margin="92,257,0,0" VerticalAlignment="Top" Width="126" Grid.Column="1" Grid.RowSpan="2"/>
-        <Button x:Name="btnGetAnimal" Content="Hämta ett djur" HorizontalAlignment="Center" Height="26" Margin="0,106,0,0" VerticalAlignment="Top" Width="85" Click="btnGetAnimal_Click_1" Grid.Column="1"/>
-        <ComboBox x:Name="cbxViewClass" HorizontalAlignment="Left" Margin="410,163,0,0" VerticalAlignment="Top" Width="151" Height="29" Grid.Column="1" DropDownOpened="cbxViewClass_DropDownOpened" SelectionChanged="cbxViewClass_SelectionChanged" />
-        <ComboBox x:Name="cbxViewSpecies" HorizontalAlignment="Left" Margin="410,217,0,0" VerticalAlignment="Top" Width="151" Height="29" Grid.Column="1" DropDownOpened="ViewSpecies_DropDownOpened"/>
-        <ComboBox x:Name="cbxViewAnimal" HorizontalAlignment="Left" Margin="411,14,0,0" VerticalAlignment="Top" Width="150" Height="28" Grid.Row="1" Grid.Column="1" DropDownOpened="cbxViewAnimal_DropDownOpened"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="219" Margin="325,7,0,0" VerticalAlignment="Top" Width="154"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="221" Margin="165,5,0,0" VerticalAlignment="Top" Width="154"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="582" Margin="483,5,0,0" VerticalAlignment="Top" Width="505"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="140" Margin="10,447,0,0" VerticalAlignment="Top" Width="466"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="220" Margin="5,6,0,0" VerticalAlignment="Top" Width="154"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="192" Margin="496,392,0,0" VerticalAlignment="Top" Width="480"/>
+        <Label Content="Ange namn (valfritt)" HorizontalAlignment="Left" Height="28" Margin="333,35,0,0" VerticalAlignment="Top" Width="133"/>
+        <Label Content="Ange namn på art" HorizontalAlignment="Left" Height="26" Margin="169,37,0,0" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Ange namn på klass" HorizontalAlignment="Left" Height="30" Margin="11,43,0,0" VerticalAlignment="Top" Width="122"/>
+        <Label Content="Skapa ny klass" HorizontalAlignment="Left" Height="33" Margin="6,12,0,0" VerticalAlignment="Top" Width="153" FontWeight="Bold" FontSize="16"/>
+        <Label Content="Ta bort djur" HorizontalAlignment="Left" Height="24" Margin="24,473,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
+        <Label Content="Ta bort art" HorizontalAlignment="Left" Height="24" Margin="24,521,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
+        <Label Content="Ta bort klass" HorizontalAlignment="Left" Height="24" Margin="217,475,0,0" VerticalAlignment="Top" Width="112" FontWeight="Bold"/>
+        <TextBox x:Name="txtCreateAnimal" HorizontalAlignment="Left" Height="35" Margin="332,64,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="137"/>
+        <TextBox x:Name="txtCreateSpecies" HorizontalAlignment="Left" Height="33" Margin="172,65,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="140"/>
+        <TextBox x:Name="txtCreateClass" HorizontalAlignment="Left" Height="39" Margin="13,74,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="133"/>
+        <Label Content="Ta bort" HorizontalAlignment="Left" Height="31" Margin="18,447,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" FontSize="16"/>
+        <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="28" Margin="28,497,0,0" VerticalAlignment="Top" Width="174"/>
+        <ComboBox x:Name="cbxRemoveSpecies" HorizontalAlignment="Left" Height="28" Margin="28,545,0,0" VerticalAlignment="Top" Width="174"/>
+        <ComboBox x:Name="cbxRemoveClass" HorizontalAlignment="Left" Height="28" Margin="219,497,0,0" VerticalAlignment="Top" Width="174"/>
+        <Button x:Name="btnRemove" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="219,545,0,0" VerticalAlignment="Top" Width="174"/>
+        <Label Content="Antal djur i djurriket" HorizontalAlignment="Left" Height="30" Margin="495,392,0,0" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="16"/>
+        <ListBox x:Name="lstPopulation" HorizontalAlignment="Left" Height="149" Margin="670,424,0,0" VerticalAlignment="Top" Width="293" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="504,430,0,0" VerticalAlignment="Top" Width="105"/>
+        <RadioButton x:Name="btnSortByClass" Content="Sortera efter djurklass" HorizontalAlignment="Left" Height="18" Margin="504,453,0,0" VerticalAlignment="Top" Width="138"/>
+        <Label Content="Hitta" HorizontalAlignment="Left" Height="28" Margin="483,15,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold" FontSize="16"/>
+        <Label Content="Ändra ett djur" HorizontalAlignment="Left" Height="28" Margin="18,236,0,0" VerticalAlignment="Top" Width="118" FontWeight="Bold" FontSize="16"/>
+        <TextBox x:Name="txtGetAnimal" HorizontalAlignment="Left" Height="28" Margin="491,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
+        <Label Content="Djurklass" HorizontalAlignment="Left" Height="28" Margin="492,139,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold"/>
+        <Label Content="Djur" HorizontalAlignment="Left" Height="28" Margin="492,247,0,0" VerticalAlignment="Top" Width="84" FontWeight="Bold"/>
+        <Label Content="Art" HorizontalAlignment="Left" Height="28" Margin="491,192,0,0" VerticalAlignment="Top" Width="86" FontWeight="Bold"/>
+        <Label Content="Sök efter ett djur" HorizontalAlignment="Left" Height="28" Margin="492,43,0,0" VerticalAlignment="Top" Width="150"/>
+        <ListBox x:Name="lstAnimal" HorizontalAlignment="Left" Height="295" Margin="664,30,0,0" VerticalAlignment="Top" Width="309" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+        <RadioButton x:Name="btnSortByAsc" Content="Sortera efter namn (fallande)" HorizontalAlignment="Left" Height="18" Margin="789,332,0,0" VerticalAlignment="Top" Width="172"/>
+        <RadioButton x:Name="btnSortByDesc" Content="Sortera efter namn (stigande)" HorizontalAlignment="Left" Height="18" Margin="789,348,0,0" VerticalAlignment="Top" Width="174"/>
+        <TextBox x:Name="txtCurrentName" HorizontalAlignment="Left" Height="28" Margin="20,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
+        <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="170,282,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="146"/>
+        <TextBox x:Name="txtCurrentSpecies" HorizontalAlignment="Left" Height="28" Margin="20,337,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <TextBox x:Name="txtCurrentClass" HorizontalAlignment="Left" Height="28" Margin="20,405,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <ComboBox x:Name="cbxEditSpecies" HorizontalAlignment="Left" Margin="168,338,0,0" VerticalAlignment="Top" Width="145" Height="29"/>
+        <ComboBox x:Name="btnEditClass" HorizontalAlignment="Left" Margin="169,405,0,0" VerticalAlignment="Top" Width="142" Height="29"/>
+        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="28" Margin="325,406,0,0" VerticalAlignment="Top" Width="139"/>
+        <Label x:Name="lblCreateSpecies" Content="Skapa ny art" HorizontalAlignment="Left" Height="40" Margin="165,12,0,0" VerticalAlignment="Top" Width="154" FontWeight="Bold" FontSize="16"/>
+        <ComboBox x:Name="cbxSelectClass" HorizontalAlignment="Left" Height="37" Margin="173,133,0,0" VerticalAlignment="Top" Width="140" DropDownOpened="cbxSelectClass_DropDownOpened"/>
+        <Label Content="Ange klasstillhörighet" HorizontalAlignment="Left" Height="28" Margin="169,99,0,0" VerticalAlignment="Top" Width="128"/>
+        <Button x:Name="btnCreateSpecies" Content="Skapa" HorizontalAlignment="Left" Height="31" Margin="172,183,0,0" VerticalAlignment="Top" Width="140"/>
+        <Label Content="Skapa nytt djur" HorizontalAlignment="Left" Height="38" Margin="330,7,0,0" VerticalAlignment="Top" Width="146" FontWeight="Bold" FontSize="16"/>
+        <ComboBox x:Name="cbxSelectSpecies" HorizontalAlignment="Left" Height="37" Margin="333,133,0,0" VerticalAlignment="Top" Width="133" DropDownOpened="cbxSelectSpecies_DropDownOpened"/>
+        <Label Content="Välj arttillhörighet" HorizontalAlignment="Left" Height="29" Margin="332,105,0,0" VerticalAlignment="Top" Width="123"/>
+        <Button x:Name="btnCreateAnimal" Content="Skapa" HorizontalAlignment="Left" Height="34" Margin="333,181,0,0" VerticalAlignment="Top" Width="133"/>
+        <Label x:Name="lblAddNewName" Content="Ange nytt namn" HorizontalAlignment="Left" Height="36" Margin="173,257,0,0" VerticalAlignment="Top" Width="126"/>
+        <Button x:Name="btnGetAnimal" Content="Hämta ett djur" HorizontalAlignment="Left" Height="26" Margin="492,106,0,0" VerticalAlignment="Top" Width="85" Click="btnGetAnimal_Click_1"/>
+        <ComboBox x:Name="cbxViewClass" HorizontalAlignment="Left" Margin="491,163,0,0" VerticalAlignment="Top" Width="151" Height="29" DropDownOpened="cbxViewClass_DropDownOpened" SelectionChanged="cbxViewClass_SelectionChanged" />
+        <ComboBox x:Name="cbxViewSpecies" HorizontalAlignment="Left" Margin="491,217,0,0" VerticalAlignment="Top" Width="151" Height="29" DropDownOpened="ViewSpecies_DropDownOpened"/>
+        <ComboBox x:Name="cbxViewAnimal" HorizontalAlignment="Left" Margin="492,275,0,0" VerticalAlignment="Top" Width="150" Height="28" DropDownOpened="cbxViewAnimal_DropDownOpened"/>
     </Grid>
 </Window>
