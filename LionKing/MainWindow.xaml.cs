@@ -56,42 +56,26 @@ namespace LionKing
             cbxSelectSpecies.ItemsSource = allSpecies;
 
         }
+
         /// <summary>
-        /// Creates new class, indata from txtbox
+        /// Creates new class and presents results in ?
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void btnCreateClass_Click(object sender, RoutedEventArgs e)
+        private void btnCreateClass_Click(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            try
-            {
-                var newClass = await db.AddClass(txtCreateClass.Text);
+            //DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
 
-                MessageBox.Show($"Du har lagt till {newClass} som en ny djurklass");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-       /// <summary>
-       /// Create Species, indata txtbox and cbxbox
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
-        private async void btnCreateSpecies_Click(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            try
-            {
-                var newSpecies = await db.AddSpecies();
-            }
-            catch (Exception ex.Message)
-            {
+            ////I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
+            //AnimalClass mammal = new AnimalClass(1, "Mammal");
+            //Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
+            //Animal kiara = new Animal("Kiara", masaiLion, mammal);
+            //var animal = db.AddAnimal(kiara);
 
-                throw;
-            }
+            //// Create class
+            //string className = txtCreateClass.Text;
+            //var newClass = await db.AddClass(className);
+
         }
 
 
@@ -101,41 +85,41 @@ namespace LionKing
         #region READ
 
         /// <summary>
-        /// Presents all AnimalClasses in Combobox in View area
+        /// Displays all animals classes in listbox in View area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void cbxViewClass_DropDownOpened(object sender, EventArgs e)
+        private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
             var allClasses = await db.GetAllClasses();
-            cbxViewClass.ItemsSource = allClasses;
-
+            lstAnimalClass.ItemsSource = allClasses;
 
         }
         /// <summary>
-        /// Presents all Species in Combobox in View area
+        /// Displays all species in listbox in View Area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void ViewSpecies_DropDownOpened(object sender, EventArgs e)
+        private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
             var allSpecies = await db.GetAllSpecies();
-            cbxViewSpecies.ItemsSource = allSpecies;
+            lstSpecies.ItemsSource = allSpecies;
         }
         /// <summary>
-        /// Presents all Animals in Combobox in View area 
+        /// Displays all animals in listbox in View area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// 
-        private async void cbxViewAnimal_DropDownOpened(object sender, EventArgs e)
+        private async void btnViewAnimal_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
             var allAnimals = await db.GetAllAnimals();
-            cbxViewAnimal.ItemsSource = allAnimals;
+            lstAnimal.ItemsSource = allAnimals;
         }
+
+
         /// <summary>
         /// Gets animal based on animal name entered in textbox in View area
         /// </summary>
@@ -203,12 +187,12 @@ namespace LionKing
         private void SelectClass(AnimalClass animalClass)
         {
 
-            foreach (AnimalClass c in cbxViewClass.Items)
+            foreach (AnimalClass c in lstAnimalClass.Items)
             {
                 if (c.Class_id == animalClass.Class_id)
                 {
-                    int index = cbxViewClass.Items.IndexOf(c);
-                    cbxViewClass.SelectedItem = c;
+                    int index = lstAnimalClass.Items.IndexOf(c);
+                    lstAnimalClass.SelectedItem = c;
                     break;
                 }
             }
@@ -223,7 +207,6 @@ namespace LionKing
             //    }
         }
 
-       
     }
 
     
