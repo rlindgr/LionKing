@@ -98,6 +98,7 @@ namespace LionKing.DAL
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
+                // Retrives id of class for the inserted class name. Mabey we can solve this by reaching the id from classes in cbxbox
                 AnimalClass animalClass = await GetClassId(className);
 
                 command.Parameters.AddWithValue("@species_name", speciesName); //NOT NULL in our table. Should set to not null here and in postrgresql
@@ -107,9 +108,11 @@ namespace LionKing.DAL
                 //Species newSpecies = new Species(speciesName, speciesLatinName);
                 //newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
                 //return newSpecies; 
-
-                int speciesId = (int)await command.ExecuteScalarAsync();
-                Species newSpecies = new Species(speciesName, speciesLatinName, speciesId);
+                Species newSpecies = new Species();
+                newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
+                newSpecies.Latin_name = speciesLatinName;
+                newSpecies.Species_name = speciesName;
+                newSpecies.Class.Class_id = animalClass.Class_id;
                 return newSpecies;
             }
             catch (PostgresException ex)

@@ -56,9 +56,44 @@ namespace LionKing
             cbxSelectSpecies.ItemsSource = allSpecies;
 
         }
+        /// <summary>
+        /// Creates new class, indata from txtbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnCreateClass_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            try
+            {
+                var newClass = await db.AddClass(txtCreateClass.Text);
 
-        
-       
+                MessageBox.Show($"Du har lagt till {newClass} som en ny djurklass");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+       /// <summary>
+       /// Create Species, indata txtbox and cbxbox
+       /// </summary>
+       /// <param name="sender"></param>
+       /// <param name="e"></param>
+        private async void btnCreateSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            try
+            {
+                var newSpecies = await db.AddSpecies();
+            }
+            catch (Exception ex.Message)
+            {
+
+                throw;
+            }
+        }
+
 
 
         #endregion
@@ -188,20 +223,7 @@ namespace LionKing
             //    }
         }
 
-        private async void btnCreateClass_Click(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            try
-            {
-               var newClass = await db.AddClass(txtCreateClass.Text);
-               
-                MessageBox.Show($"Du har lagt till {newClass} som en ny djurklass");
-            }
-            catch (Exception ex) 
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+       
     }
 
     
