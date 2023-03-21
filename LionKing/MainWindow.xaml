@@ -19,7 +19,7 @@
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="140" Margin="10,296,0,0" VerticalAlignment="Top" Width="466"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="220" Margin="5,6,0,0" VerticalAlignment="Top" Width="154">
-            <Button x:Name="btnCreateClass" Content="Skapa" HorizontalAlignment="Center" Height="38" Margin="0,171,0,0" VerticalAlignment="Top" Width="126"/>
+            <Button x:Name="btnCreateClass" Content="Skapa" HorizontalAlignment="Center" Height="38" Margin="0,171,0,0" VerticalAlignment="Top" Width="126" Click="btnCreateClass_Click"/>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="192" Margin="20,501,0,0" VerticalAlignment="Top" Width="480"/>
         <Label Content="Ange namn (valfritt)" HorizontalAlignment="Left" Height="28" Margin="333,35,0,0" VerticalAlignment="Top" Width="133"/>
