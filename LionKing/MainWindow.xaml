@@ -28,7 +28,9 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="221" Margin="165,5,0,0" VerticalAlignment="Top" Width="154"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="582" Margin="483,5,0,0" VerticalAlignment="Top" Width="505"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="140" Margin="10,447,0,0" VerticalAlignment="Top" Width="466"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="220" Margin="5,6,0,0" VerticalAlignment="Top" Width="154"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="220" Margin="5,6,0,0" VerticalAlignment="Top" Width="154">
+            <Button x:Name="btnCreateClass" Content="Skapa" HorizontalAlignment="Center" Height="38" Margin="0,171,0,0" VerticalAlignment="Top" Width="126" Click="btnCreateClass"/>
+        </Border>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="192" Margin="496,392,0,0" VerticalAlignment="Top" Width="480"/>
         <Label Content="Ange namn (valfritt)" HorizontalAlignment="Left" Height="28" Margin="333,35,0,0" VerticalAlignment="Top" Width="133"/>
         <Label Content="Ange namn på art" HorizontalAlignment="Left" Height="26" Margin="169,37,0,0" VerticalAlignment="Top" Width="110"/>

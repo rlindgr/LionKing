@@ -28,7 +28,7 @@ namespace LionKing.DAL
         #endregion
 
 
-        #region Lists
+    #region Lists
         List<AnimalClass> animalClasses = new List<AnimalClass>();
         List<Species> specieslist = new List<Species>();
         List<Animal> animals = new List<Animal>();
@@ -37,7 +37,7 @@ namespace LionKing.DAL
 
 
 
-        #region CREATE
+    #region CREATE
 
         /// <summary>
         /// Adds animal to database, with species and class relations
@@ -165,7 +165,7 @@ namespace LionKing.DAL
 
         #endregion
 
-        #region READ
+    #region READ
 
         /// <summary>
         /// Get all animal classes for comboboxes
