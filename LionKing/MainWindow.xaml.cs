@@ -85,41 +85,41 @@ namespace LionKing
         #region READ
 
         /// <summary>
-        /// Presents all AnimalClasses in Combobox in View area - TO BE REMOVED!!
+        /// Displays all animals classes in listbox in View area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void cbxViewClass_DropDownOpened(object sender, EventArgs e)
+        private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
             var allClasses = await db.GetAllClasses();
-            cbxViewClass.ItemsSource = allClasses;
-
+            lstAnimalClass.ItemsSource = allClasses;
 
         }
         /// <summary>
-        /// Presents all Species in Combobox in View area - TO BE REMOVED!!
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param> 
-        private async void ViewSpecies_DropDownOpened(object sender, EventArgs e)
-        {
-            DbRepository db = new();
-            var allSpecies = await db.GetAllSpecies();
-            cbxViewSpecies.ItemsSource = allSpecies;
-        }
-        /// <summary>
-        /// Presents all Animals in Combobox in View area - TO BE REMOVED!!
+        /// Displays all species in listbox in View Area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// 
-        private async void cbxViewAnimal_DropDownOpened(object sender, EventArgs e)
+        private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allSpecies = await db.GetAllSpecies();
+            lstSpecies.ItemsSource = allSpecies;
+        }
+        /// <summary>
+        /// Displays all animals in listbox in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnViewAnimal_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
             var allAnimals = await db.GetAllAnimals();
-            cbxViewAnimal.ItemsSource = allAnimals;
+            lstAnimal.ItemsSource = allAnimals;
         }
+
+
         /// <summary>
         /// Gets animal based on animal name entered in textbox in View area
         /// </summary>
@@ -187,12 +187,12 @@ namespace LionKing
         private void SelectClass(AnimalClass animalClass)
         {
 
-            foreach (AnimalClass c in cbxViewClass.Items)
+            foreach (AnimalClass c in lstAnimalClass.Items)
             {
                 if (c.Class_id == animalClass.Class_id)
                 {
-                    int index = cbxViewClass.Items.IndexOf(c);
-                    cbxViewClass.SelectedItem = c;
+                    int index = lstAnimalClass.Items.IndexOf(c);
+                    lstAnimalClass.SelectedItem = c;
                     break;
                 }
             }
@@ -207,27 +207,6 @@ namespace LionKing
             //    }
         }
 
-        private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            var allClasses = await db.GetAllClasses();
-            lstAnimalClass.ItemsSource= allClasses;
-
-        }
-
-        private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            var allSpecies = await db.GetAllSpecies();
-            lstSpecies.ItemsSource = allSpecies;
-        }
-
-        private async void btnViewAnimal_Click(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            var allAnimals = await db.GetAllAnimals();
-            lstAnimal.ItemsSource = allAnimals;
-        }
     }
 
     
