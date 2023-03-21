@@ -36,6 +36,7 @@ namespace LionKing.Models
             Species_id = Species_id;
             Species_name = Species_name;
             Latin_name = Latin_name;
+            Class.Class_id = Class.Class_id;
            
             
         }

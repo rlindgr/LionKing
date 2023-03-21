@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
@@ -143,8 +144,10 @@ namespace LionKing.DAL
 
                 command.Parameters.AddWithValue("@class_name", className);
 
-                int id = (int)await command.ExecuteScalarAsync();
-                AnimalClass newClass = new AnimalClass(id, className);
+                AnimalClass newClass = new AnimalClass();
+                newClass.Class_id = (int)await command.ExecuteScalarAsync();
+                newClass.Class_name = className;
+
                 return newClass;
             }
             catch (PostgresException ex)
