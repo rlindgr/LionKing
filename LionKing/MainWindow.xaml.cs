@@ -210,7 +210,15 @@ namespace LionKing
             //    }
         }
 
-        
+        /// <summary>
+        /// Test for adding class
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCreateSpecies_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     

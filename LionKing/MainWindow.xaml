@@ -69,7 +69,7 @@
         <Label x:Name="lblCreateSpecies" Content="Skapa ny art" HorizontalAlignment="Left" Height="40" Margin="165,12,0,0" VerticalAlignment="Top" Width="154" FontWeight="Bold" FontSize="16"/>
         <ComboBox x:Name="cbxSelectClass" HorizontalAlignment="Left" Height="37" Margin="173,133,0,0" VerticalAlignment="Top" Width="140" DropDownOpened="cbxSelectClass_DropDownOpened"/>
         <Label Content="Ange klasstillhörighet" HorizontalAlignment="Left" Height="28" Margin="169,99,0,0" VerticalAlignment="Top" Width="128"/>
-        <Button x:Name="btnCreateSpecies" Content="Skapa" HorizontalAlignment="Left" Height="31" Margin="172,183,0,0" VerticalAlignment="Top" Width="140"/>
+        <Button x:Name="btnCreateSpecies" Content="Skapa" HorizontalAlignment="Left" Height="31" Margin="172,183,0,0" VerticalAlignment="Top" Width="140" Click="btnCreateSpecies_Click"/>
         <Label Content="Skapa nytt djur" HorizontalAlignment="Left" Height="38" Margin="330,7,0,0" VerticalAlignment="Top" Width="146" FontWeight="Bold" FontSize="16"/>
         <ComboBox x:Name="cbxSelectSpecies" HorizontalAlignment="Left" Height="37" Margin="333,133,0,0" VerticalAlignment="Top" Width="133" DropDownOpened="cbxSelectSpecies_DropDownOpened"/>
         <Label Content="Välj arttillhörighet" HorizontalAlignment="Left" Height="29" Margin="332,105,0,0" VerticalAlignment="Top" Width="123"/>
