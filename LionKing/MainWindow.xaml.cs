@@ -57,7 +57,12 @@ namespace LionKing
 
         }
 
-        private void btnCreateClass_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Creates new class and presents results in ?
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCreateClass(object sender, RoutedEventArgs e)
         {
             //DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
 
@@ -70,8 +75,8 @@ namespace LionKing
             //// Create class
             //string className = txtCreateClass.Text;
             //var newClass = await db.AddClass(className);
-        }
 
+        }
         private void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
@@ -210,15 +215,7 @@ namespace LionKing
             //    }
         }
 
-        /// <summary>
-        /// Test for adding class
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnCreateSpecies_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
     }
 
     
