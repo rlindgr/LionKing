@@ -77,7 +77,7 @@ namespace LionKing
             //var newClass = await db.AddClass(className);
 
         }
-       
+
 
 
         #endregion
@@ -85,7 +85,7 @@ namespace LionKing
         #region READ
 
         /// <summary>
-        /// Presents all AnimalClasses in Combobox in View area
+        /// Presents all AnimalClasses in Combobox in View area - TO BE REMOVED!!
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -98,10 +98,10 @@ namespace LionKing
 
         }
         /// <summary>
-        /// Presents all Species in Combobox in View area
+        /// Presents all Species in Combobox in View area - TO BE REMOVED!!
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="e"></param> 
         private async void ViewSpecies_DropDownOpened(object sender, EventArgs e)
         {
             DbRepository db = new();
@@ -109,7 +109,7 @@ namespace LionKing
             cbxViewSpecies.ItemsSource = allSpecies;
         }
         /// <summary>
-        /// Presents all Animals in Combobox in View area 
+        /// Presents all Animals in Combobox in View area - TO BE REMOVED!!
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -207,7 +207,27 @@ namespace LionKing
             //    }
         }
 
-       
+        private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allClasses = await db.GetAllClasses();
+            lstAnimalClass.ItemsSource= allClasses;
+
+        }
+
+        private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allSpecies = await db.GetAllSpecies();
+            lstSpecies.ItemsSource = allSpecies;
+        }
+
+        private async void btnViewAnimal_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allAnimals = await db.GetAllAnimals();
+            lstAnimal.ItemsSource = allAnimals;
+        }
     }
 
     
