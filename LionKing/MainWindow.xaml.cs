@@ -87,6 +87,7 @@ namespace LionKing
             var allClasses = await db.GetAllClasses();
             cbxViewClass.ItemsSource = allClasses;
 
+
         }
 
         //Presents all Species in Combobox in View area
@@ -123,22 +124,49 @@ namespace LionKing
 
         }
 
-        //Trying to enable showing info about species in listbox once an animalclass is shown - OBS! not working properly yet
-        private async void cbxViewClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //Trying to enable showing info about animals in listbox once an animalclass is shown - OBS! not working properly yet
+        private void cbxViewClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DbRepository db = new();
-       
+            AnimalClass animalClass = new AnimalClass();
+            //SelectClass(animalClass); 
+            
             //How to we establish which animalclass is choosen? Can we reach/use class_id that is fetched in SelectClass_DropDownOpened somehow?
+            //{
+            //    var allSpecies = await db.GetAllSpeciesFromClass(1);
+            //    lstAnimal.Items.Add(allSpecies);
+            //}
+
+            //cbxViewClass.SelectedItem = ()
+            //ComboboxItem selectedCar = (ComboboxItem)comboBox1.SelectedItem;
+
+        }
+        //Method used to find class_id from selected item in combobox
+        private void SelectClass(AnimalClass animalClass)
+        {
+
+            foreach (AnimalClass c in cbxViewClass.Items)
             {
-                var allSpecies = await db.GetAllSpeciesFromClass(1);
-                lstAnimal.Items.Add(allSpecies);
+                if (c.Class_id == animalClass.Class_id)
+                {
+                    int index = cbxViewClass.Items.IndexOf(c);
+                    cbxViewClass.SelectedItem = c;
+                    break;
+                }
             }
 
-            cbxViewClass.SelectedItem = ()
-            ComboboxItem selectedCar = (ComboboxItem)comboBox1.SelectedItem;
-
+            //foreach (Film f in listBox.Items)
+            //{
+            //    if (f.Film_id == film.Film_id)
+            //    {
+            //        int index = listBox.Items.IndexOf(f);
+            //        listBox.SelectedItem = f;
+            //        break;
+            //    }
         }
 
         
     }
+
+    
 }

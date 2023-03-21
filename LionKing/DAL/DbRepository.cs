@@ -9,13 +9,15 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LionKing.DAL
 {
     public class DbRepository
     {
-
+        #region Database connection
         private readonly string _connectionString;
         //när vi skapar ett objekt av DbRepository då vill vi också få tillgång till vår connectionString dvs vi använder konstruktorn
         public DbRepository()
@@ -23,6 +25,17 @@ namespace LionKing.DAL
             var config = new ConfigurationBuilder().AddUserSecrets<DbRepository>().Build();
             _connectionString = config.GetConnectionString("develop");
         }
+        #endregion
+
+
+        #region Lists
+        List<AnimalClass> animalClasses = new List<AnimalClass>();
+        List<Species> specieslist = new List<Species>();
+        List<Animal> animals = new List<Animal>();
+        #endregion
+
+
+
 
         #region CREATE
 
@@ -160,7 +173,8 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<AnimalClass>> GetAllClasses()
         {
-            List<AnimalClass> animalClasses = new List<AnimalClass>();
+            
+            animalClasses.Clear();
             string stmt = "SELECT * FROM Animal_class";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
             await using var command = dataSource.CreateCommand(stmt);
@@ -184,7 +198,7 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<Species>> GetAllSpecies()
         {
-            List<Species> specieslist = new List<Species>();
+            specieslist.Clear();
             string stmt = "SELECT * FROM Species";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
             await using var command = dataSource.CreateCommand(stmt);
@@ -210,7 +224,7 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<Animal>> GetAllAnimals()
         {
-            List<Animal> animals = new List<Animal>();
+            animals.Clear();
             string stmt = "SELECT * FROM Animal";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
             await using var command = dataSource.CreateCommand(stmt);
@@ -219,12 +233,14 @@ namespace LionKing.DAL
 
             while (await reader.ReadAsync()) //Need some sort of if statement removing animal_name that are null
             {
+
                 newAnimals = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = ConvertFromDBVal<string>(reader.GetString(1)) //tried to fix the null issue, dind't really work..?
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"])//tried to fix the null issue, dind't really work..?
                 };
-                animals.Add(newAnimals);
+
+               animals.Add(newAnimals);
             }
             return animals;
         }
@@ -501,25 +517,25 @@ namespace LionKing.DAL
             return speciesList;
         }
 
-        #endregion
+    #endregion
 
-        #region UPDATE
+    #region UPDATE
 
-        #endregion
+    #endregion
 
-        #region DELETE
+    #region DELETE
 
-        #endregion
+    #endregion
 
 
 
-        /// <summary>
-        /// Transforms null valu from database to null value in c#. If not null, returns object. 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        private static T? ConvertFromDBVal<T>(object obj) // T is an arbitraty object, can be anything (string, int....)
+    /// <summary>
+    /// Transforms null valu from database to null value in c#. If not null, returns object. 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private static T? ConvertFromDBVal<T>(object obj) // T is an arbitraty object, can be anything (string, int....)
         {
             if (obj == null || obj == DBNull.Value)
             {
