@@ -62,19 +62,15 @@ namespace LionKing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnCreateClass_Click(object sender, RoutedEventArgs e)
+        private async void btnCreateClass_Click(object sender, RoutedEventArgs e)
         {
-            //DbRepository db = new(); // can we have this in the constructor instead? Or why have it here?
+            DbRepository db = new();
+            var newClass = await db.AddClass(txtCreateClass.Text);
+            MessageBox.Show($"Djurarten {newClass} har skapats och lagts till i databasen");
+            lstAnimalClass.Items.Clear();
+            var selectClass = await db.GetAllClasses();
+            lstAnimalClass.ItemsSource = selectClass;
 
-            ////I just tried to think about what we need in order to create a new animal, haven't figured out yet how to retrive it from txtBoxes....
-            //AnimalClass mammal = new AnimalClass(1, "Mammal");
-            //Species masaiLion = new Species(1, "Masai Lion", "Panthera leo nubica ", mammal);
-            //Animal kiara = new Animal("Kiara", masaiLion, mammal);
-            //var animal = db.AddAnimal(kiara);
-
-            //// Create class
-            //string className = txtCreateClass.Text;
-            //var newClass = await db.AddClass(className);
 
         }
 
