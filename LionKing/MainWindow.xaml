@@ -13,6 +13,10 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="338,355,0,0" VerticalAlignment="Top" Width="154"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="179,355,0,0" VerticalAlignment="Top" Width="154"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="22,355,0,0" VerticalAlignment="Top" Width="154"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="221" Margin="13,299,0,0" VerticalAlignment="Top" Width="492"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="219" Margin="325,7,0,0" VerticalAlignment="Top" Width="154"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="283" Margin="165,5,0,0" VerticalAlignment="Top" Width="154">
             <Label x:Name="lblLatinName" Content="Ange latinskt namn" HorizontalAlignment="Left" Height="41" Margin="6,95,0,0" VerticalAlignment="Top" Width="146"/>
@@ -25,15 +29,15 @@
         <Label Content="Ange namn på art" HorizontalAlignment="Left" Height="26" Margin="169,37,0,0" VerticalAlignment="Top" Width="110"/>
         <Label Content="Ange namn på klass" HorizontalAlignment="Left" Height="30" Margin="11,43,0,0" VerticalAlignment="Top" Width="122"/>
         <Label Content="Skapa ny klass" HorizontalAlignment="Left" Height="33" Margin="6,12,0,0" VerticalAlignment="Top" Width="153" FontWeight="Bold" FontSize="16"/>
-        <Label Content="Ta bort djur" HorizontalAlignment="Left" Height="24" Margin="39,363,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
-        <Label Content="Ta bort art" HorizontalAlignment="Left" Height="24" Margin="188,363,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
-        <Label Content="Ta bort klass" HorizontalAlignment="Left" Height="24" Margin="346,363,0,0" VerticalAlignment="Top" Width="112" FontWeight="Bold"/>
+        <Label Content="Välj djur" HorizontalAlignment="Left" Height="24" Margin="39,363,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
+        <Label Content="Välj art" HorizontalAlignment="Left" Height="24" Margin="188,363,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold"/>
+        <Label Content="Välj klass" HorizontalAlignment="Left" Height="24" Margin="346,363,0,0" VerticalAlignment="Top" Width="112" FontWeight="Bold"/>
         <TextBox x:Name="txtCreateAnimal" HorizontalAlignment="Left" Height="35" Margin="332,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="137"/>
         <TextBox x:Name="txtCreateSpecies" HorizontalAlignment="Left" Height="33" Margin="172,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140"/>
         <TextBox x:Name="txtCreateClass" HorizontalAlignment="Left" Height="39" Margin="13,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="133"/>
         <Label Content="Ta bort" HorizontalAlignment="Left" Height="31" Margin="30,315,0,0" VerticalAlignment="Top" Width="110" FontWeight="Bold" FontSize="16"/>
-        <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="38" Margin="36,389,0,0" VerticalAlignment="Top" Width="126"/>
-        <Button x:Name="btnRemove" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="39,455,0,0" VerticalAlignment="Top" Width="110"/>
+        <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="38" Margin="36,389,0,0" VerticalAlignment="Top" Width="126" DropDownOpened="cbxRemoveAnimal_DropDownOpened"/>
+        <Button x:Name="btnRemoveAnimal" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="39,455,0,0" VerticalAlignment="Top" Width="110" Click="btnRemoveAnimal_Click"/>
         <Label Content="Antal djur i djurriket" HorizontalAlignment="Left" Height="30" Margin="24,566,0,0" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="16"/>
         <ListBox x:Name="lstPopulation" HorizontalAlignment="Left" Height="148" Margin="199,598,0,0" VerticalAlignment="Top" Width="293" d:ItemsSource="{d:SampleData ItemCount=5}"/>
         <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="33,604,0,0" VerticalAlignment="Top" Width="105"/>
@@ -79,13 +83,9 @@
         <Button x:Name="BtnViewSpecies" Content="Visa arter" HorizontalAlignment="Left" Height="42" Margin="964,394,0,0" VerticalAlignment="Top" Width="177" Click="BtnViewSpecies_Click"/>
         <Button x:Name="btnViewAnimal" Content="Visa djur" HorizontalAlignment="Left" Height="42" Margin="1169,394,0,0" VerticalAlignment="Top" Width="169" Click="btnViewAnimal_Click"/>
         <TextBox x:Name="txtLatinName" HorizontalAlignment="Left" Height="39" Margin="172,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141"/>
-        <ComboBox x:Name="cbxRemoveAnimal_Copy" HorizontalAlignment="Left" Height="38" Margin="345,390,0,0" VerticalAlignment="Top" Width="126"/>
-        <ComboBox x:Name="cbxRemoveAnimal_Copy1" HorizontalAlignment="Left" Height="38" Margin="188,390,0,0" VerticalAlignment="Top" Width="126"/>
+        <ComboBox x:Name="cbxRemoveClass" HorizontalAlignment="Left" Height="38" Margin="345,390,0,0" VerticalAlignment="Top" Width="126" DropDownOpened="cbxRemoveClass_DropDownOpened"/>
+        <ComboBox x:Name="cbxRemoveSpecies" HorizontalAlignment="Left" Height="38" Margin="188,390,0,0" VerticalAlignment="Top" Width="126" DropDownOpened="cbxRemoveSpecies_DropDownOpened"/>
         <Button x:Name="btnRemove_Copy" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="194,455,0,0" VerticalAlignment="Top" Width="110"/>
         <Button x:Name="btnRemove_Copy1" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="356,453,0,0" VerticalAlignment="Top" Width="110"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="22,355,0,0" VerticalAlignment="Top" Width="154"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="179,355,0,0" VerticalAlignment="Top" Width="154"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="145" Margin="338,355,0,0" VerticalAlignment="Top" Width="154"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="221" Margin="13,299,0,0" VerticalAlignment="Top" Width="492"/>
     </Grid>
 </Window>

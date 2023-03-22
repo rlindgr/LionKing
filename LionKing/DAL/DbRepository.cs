@@ -585,9 +585,32 @@ namespace LionKing.DAL
     #endregion
 
     #region DELETE
-        public async Task<Animal> RemoveAnimal()
+        public async Task<Animal> DeleteAnimal(Animal animal)
         {
-            string stmt = ""
+            try
+            {
+                string stmt = "DELETE FROM animal WHERE animal_id=@animal_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@animal_id", animal.Animal_id);
+                await using var reader = await command.ExecuteReaderAsync();
+
+                return animal;
+            }
+            catch (PostgresException ex) 
+            {
+                string errorMessage = "Något gick fel";
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes. // error code if the animal doesn't exist??
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+
         }
     #endregion
 

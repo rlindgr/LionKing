@@ -272,7 +272,38 @@ namespace LionKing
             lstAnimalClass.Items.Add(matchingClasses);
         }
 
-        
+        private async void btnRemoveAnimal_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var selectedAnimal = (Animal)cbxRemoveAnimal.SelectedItem;
+            var deletedAnimal = await db.DeleteAnimal(selectedAnimal);
+            var animalClass = await db.GetClassById(selectedAnimal.Class_id);
+            var animalSpecies = await db.GetSpeciesById(selectedAnimal.Species_id);
+            MessageBox.Show($"Du har nu tagit bort djuret {selectedAnimal} som är en/ett {animalSpecies} som tillhör {animalClass} från databasen");
+            
+
+        }
+
+        private async void cbxRemoveAnimal_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new DbRepository();
+            var getAllAnimals = await db.GetAllAnimals();
+            cbxRemoveAnimal.ItemsSource = getAllAnimals;
+        }
+
+        private async void cbxRemoveClass_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db=new DbRepository();
+            var getAllClasses = await db.GetAllClasses();
+            cbxRemoveClass.ItemsSource = getAllClasses;
+        }
+
+        private async void cbxRemoveSpecies_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new DbRepository();
+            var getAllSpecies = await db.GetAllSpecies();
+            cbxRemoveSpecies.ItemsSource = getAllSpecies;
+        }
     }
 
     
