@@ -3,6 +3,7 @@ using LionKing.Models;
 using Npgsql.Internal.TypeHandlers.LTreeHandlers;
 using NpgsqlTypes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -45,7 +46,7 @@ namespace LionKing
             cbxSelectClass.ItemsSource = selectClass; 
         }
         /// <summary>
-        /// Presents all species in combobox in Create area
+        /// Presents all Species in combobox in Create area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -54,11 +55,10 @@ namespace LionKing
             DbRepository db = new();
             var allSpecies = await db.GetAllSpecies();
             cbxSelectSpecies.ItemsSource = allSpecies;
-
         }
 
         /// <summary>
-        /// Creates new class and presents results in ?
+        /// Creates new Class and presents results in ?
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -82,59 +82,14 @@ namespace LionKing
             AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem; //??
             var newSpecies = await db.AddSpecies(speciesName, latinName, selectedClass);
 
-        } 
-
-
+        }
 
         #endregion
 
         #region READ
 
         /// <summary>
-        /// Displays all animals classes in listbox in View area
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
-        {
-            lstSpecies.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
-            lstAnimal.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
-
-            DbRepository db = new();
-            var allClasses = await db.GetAllClasses();
-            lstAnimalClass.ItemsSource = allClasses;
-
-        }
-        /// <summary>
-        /// Displays all species in listbox in View Area
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
-        {
-            lstAnimalClass.ItemsSource = null;
-            lstAnimal.ItemsSource= null;
-            
-            DbRepository db = new();
-            var allSpecies = await db.GetAllSpecies();
-            lstSpecies.ItemsSource = allSpecies;
-        }
-        /// <summary>
-        /// Displays all animals in listbox in View area
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void btnViewAnimal_Click(object sender, RoutedEventArgs e)
-        {
-            lstAnimalClass.ItemsSource = null;
-            lstSpecies.ItemsSource = null; 
-            
-            DbRepository db = new();
-            var allAnimals = await db.GetAllAnimals();
-            lstAnimal.ItemsSource = allAnimals;
-        }
-        /// <summary>
-        /// Gets animal based on animal name entered in textbox in View area
+        /// Gets Animal based on Animal_Name entered in textbox in View area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -151,13 +106,18 @@ namespace LionKing
                     MessageBox.Show("Det finns inget djur med det namnet");
                 }
                 else
-                {                                      
-                    var matchingSpecies = await db.GetSpeciesById(animal.Species_id);                   
+                {
+                    var matchingSpecies = await db.GetSpeciesById(animal.Species_id);
                     var matchingClasses = await db.GetClassById(animal.Class_id);
-            
+
                     lstAnimal.Items.Add(animal.Animal_name);
                     lstSpecies.Items.Add(matchingSpecies);
                     lstAnimalClass.Items.Add(matchingClasses);
+
+                    txtCurrentClass.Text = matchingClasses.ToString();
+                    txtCreateSpecies.Text = matchingSpecies.ToString();
+                    txtCurrentName.Text = GetAnimal;
+
                 }
             }
             catch (Exception ex)
@@ -166,49 +126,53 @@ namespace LionKing
             }
         }
 
-        #endregion
-
-        #region UPDATE
-
-        #endregion
-
-        #region DELETE
-
-        #endregion
-
-
-
-
-
         /// <summary>
-        /// Method used to find class_id from selected item in combobox
+        /// Displays all AnimalClasses in listbox in View area
         /// </summary>
-        /// <param name="animalClass"></param>
-        private void SelectClass(AnimalClass animalClass)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
         {
+            lstSpecies.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
+            lstAnimal.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
 
-            foreach (AnimalClass c in lstAnimalClass.Items)
-            {
-                if (c.Class_id == animalClass.Class_id)
-                {
-                    int index = lstAnimalClass.Items.IndexOf(c);
-                    lstAnimalClass.SelectedItem = c;
-                    break;
-                }
-            }
+            DbRepository db = new();
+            var allClasses = await db.GetAllClasses();
+            lstAnimalClass.ItemsSource = allClasses;
 
-            //foreach (Film f in listBox.Items)
-            //{
-            //    if (f.Film_id == film.Film_id)
-            //    {
-            //        int index = listBox.Items.IndexOf(f);
-            //        listBox.SelectedItem = f;
-            //        break;
-            //    }
-        }  //OBS! Is this code needed now?
+            
+        }
+        /// <summary>
+        /// Displays all Species in listbox in View Area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            lstAnimalClass.ItemsSource = null;
+            lstAnimal.ItemsSource= null;
+            
+            DbRepository db = new();
+            var allSpecies = await db.GetAllSpecies();
+            lstSpecies.ItemsSource = allSpecies;
+        }
+        /// <summary>
+        /// Displays all Animals in listbox in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnViewAnimal_Click(object sender, RoutedEventArgs e)
+        {
+            lstAnimalClass.ItemsSource = null;
+            lstSpecies.ItemsSource = null; 
+            
+            DbRepository db = new();
+            var allAnimals = await db.GetAllAnimals();     
+            lstAnimal.ItemsSource = allAnimals;
+        }
 
         /// <summary>
-        /// Event for when user chooses an animalClass in listbox in View area
+        /// Event for when user chooses an AnimalClass in listbox in View area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -217,21 +181,24 @@ namespace LionKing
             AnimalClass animalClass = (AnimalClass)lstAnimalClass.SelectedItem;
             DbRepository db = new DbRepository();
             var matchingSpecies = await db.GetAllSpeciesFromClass(animalClass.Class_id);
-            lstSpecies.ItemsSource = matchingSpecies;            
+            lstSpecies.ItemsSource = matchingSpecies;
         }
-
-
+        /// <summary>
+        /// Event for when user chooses a Species in listbox in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void lstSpecies_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Species species= (Species)lstSpecies.SelectedItem;
+            Species species = (Species)lstSpecies.SelectedItem;
             DbRepository db = new DbRepository();
             var matchingAnimals = await db.GetAnimalsBySpeciesId(species.Species_id);
             lstAnimal.ItemsSource = matchingAnimals;
+            var matchingClasses = await db.GetClassById(species.Class_id);
+            lstAnimalClass.Items.Add(matchingClasses);  
         }
-
-
         /// <summary>
-        /// Presents which species and class that a selected animal belongs to in View area
+        /// Presents which Species and Class that a selected Animal belongs to in View area
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -240,16 +207,65 @@ namespace LionKing
             lstAnimalClass.ItemsSource = null;
             lstSpecies.ItemsSource = null;
 
+
             Animal animal = (Animal)lstAnimal.SelectedItem;
-            DbRepository db = new DbRepository();           
-            var matchingSpecies = await db.GetSpeciesById(animal.Species_id);          
+            DbRepository db = new DbRepository();
+            var matchingSpecies = await db.GetSpeciesById(animal.Species_id);
             var matchingClasses = await db.GetClassById(animal.Class_id);
 
-            lstSpecies.Items.Add(matchingSpecies); 
+            lstSpecies.Items.Add(matchingSpecies);
             lstAnimalClass.Items.Add(matchingClasses);
+
         }
 
-       
+
+        #endregion
+
+        #region UPDATE
+
+        private async void cbxEditClass_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var selectClass = await db.GetAllClasses();
+            cbxEditClass.ItemsSource= selectClass;
+        }
+
+        private async void cbxEditSpecies_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var allSpecies = await db.GetAllSpecies();           
+            cbxEditSpecies.ItemsSource = allSpecies;
+        }
+
+        //first draft of edit animal function
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            string newAnimalName = txtEditName.Text;
+
+        }
+
+
+
+
+
+
+        #endregion
+
+        #region DELETE
+
+        #endregion
+
+        private async void rbtnSortByAsc_Checked(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new ();
+            var allAnimals = await db.GetAllAnimals();
+            db.SortAnimalByName();
+            var list = db.animals; 
+            lstAnimal.ItemsSource = null;
+            lstAnimal.ItemsSource = list; 
+            
+           
+        }
     }
 
     

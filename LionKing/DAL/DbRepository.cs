@@ -29,16 +29,17 @@ namespace LionKing.DAL
         #endregion
 
 
-    #region Lists
+        #region Lists
         List<AnimalClass> animalClasses = new List<AnimalClass>();
         List<Species> specieslist = new List<Species>();
-        List<Animal> animals = new List<Animal>();
+        public List<Animal> animals { get; set; } = new List<Animal>(); //To be changed to Animals (Listname)
+        
         #endregion
 
 
 
 
-    #region CREATE
+        #region CREATE
 
         /// <summary>
         /// Adds animal to database, with species and class relations
@@ -171,7 +172,7 @@ namespace LionKing.DAL
 
         #endregion
 
-    #region READ
+        #region READ
 
         /// <summary>
         /// Get all animal classes for comboboxes
@@ -252,6 +253,7 @@ namespace LionKing.DAL
             }
             return animals;
         }
+
         /// <summary>
         /// Retrieves animal by animal_name
         /// </summary>
@@ -261,11 +263,11 @@ namespace LionKing.DAL
         {
             try
             {
-                string stmt = "select animal_name from animal where animal_name=@name";
+                string stmt = "SELECT animal_name FROM animal WHERE animal_name=@name";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
                 await using var command = dataSource.CreateCommand(stmt);
-                command.Parameters.AddWithValue("name", fetchAnimal);
+                command.Parameters.AddWithValue("@name", fetchAnimal);
                 await using var reader = await command.ExecuteReaderAsync();
 
                 Animal animal = new Animal();
@@ -273,9 +275,10 @@ namespace LionKing.DAL
                 {
                     animal = new Animal()
                     {
+                        //Animal_id = reader.GetInt32(0),
                         Animal_name = ConvertFromDBVal<string>(reader["animal_name"]),
-                        //Species_id = reader.GetInt32(0), - Not sure how to fetch this data, got error when I tried this way
-                        //Class_id = reader.GetInt32(3) - Not sure how to fetch this data, got error when I tried this way
+                        Class_id = reader.GetInt32(2), 
+                        //Species_id = reader.GetInt32(3)
                     };
                 }
                 return animal;
@@ -294,7 +297,7 @@ namespace LionKing.DAL
                 }
                 throw new Exception(errorMessage);
             }
-
+           
         }
         /// <summary>
         /// Get animal by animal id
@@ -582,47 +585,53 @@ namespace LionKing.DAL
             return speciesList;
         }
 
-    #endregion
+        #endregion
 
-    #region UPDATE
+        #region UPDATE
 
-    #endregion
+        #endregion
 
-    #region DELETE
+        #region DELETE
 
-    #endregion
+        #endregion
 
 
 
-    /// <summary>
-    /// Transforms null valu from database to null value in c#. If not null, returns object. 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    private static T? ConvertFromDBVal<T>(object obj) // T is an arbitraty object, can be anything (string, int....)
-        {
-            if (obj == null || obj == DBNull.Value)
-            {
-                return default; // if database is null return null, otherwise return object. Default value is null!
-            }
-            return (T)obj;
-        }
         /// <summary>
-        /// Transforms inserted null valu to null valu in database. If not null, returns obejct. 
+        /// Transforms null valu from database to null value in c#. If not null, returns object. 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
+        private static T? ConvertFromDBVal<T>(object obj) // T is an arbitraty object, can be anything (string, int....)
+        {
+                if (obj == null || obj == DBNull.Value)
+                {
+                    return default; // if database is null return null, otherwise return object. Default value is null!
+                }
+                return (T)obj;
+        }
+        /// <summary>
+            /// Transforms inserted null valu to null valu in database. If not null, returns obejct. 
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="obj"></param>
+            /// <returns></returns>
         private static object ConvertToDBValue<T>(object obj)
         {
-            if (obj == null || obj == string.Empty)
-            {
-                return DBNull.Value;
-            }
-            return (T)obj;
+                if (obj == null || obj == string.Empty)
+                {
+                    return DBNull.Value;
+                }
+                return (T)obj;
         }
 
+        public void SortAnimalByName() 
+        {
+
+            animals = animals.OrderBy(animals => animals.Animal_name).ToList();
+            
+        }
     }
 }  
 

@@ -42,17 +42,17 @@
         <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="28,539,0,0" VerticalAlignment="Top" Width="105"/>
         <RadioButton x:Name="btnSortByClass" Content="Sortera efter djurklass" HorizontalAlignment="Left" Height="18" Margin="28,561,0,0" VerticalAlignment="Top" Width="138"/>
         <Label Content="Hitta" HorizontalAlignment="Left" Height="28" Margin="579,18,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold" FontSize="16"/>
-        <Label Content="Ändra ett djur" HorizontalAlignment="Left" Height="28" Margin="761,461,0,0" VerticalAlignment="Top" Width="118" FontWeight="Bold" FontSize="16"/>
+        <Label Content="Ändra ett djur" HorizontalAlignment="Left" Height="34" Margin="761,451,0,0" VerticalAlignment="Top" Width="118" FontWeight="Bold" FontSize="16"/>
         <TextBox x:Name="txtGetAnimal" HorizontalAlignment="Left" Height="28" Margin="581,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
         <Label Content="Sök efter ett djur" HorizontalAlignment="Left" Height="28" Margin="582,46,0,0" VerticalAlignment="Top" Width="150"/>
         <ListBox x:Name="lstAnimal" HorizontalAlignment="Left" Height="295" Margin="1169,51,0,0" VerticalAlignment="Top" Width="169" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="lstAnimal_MouseDoubleClick"/>
-        <RadioButton x:Name="btnSortByAsc" Content="Sortera efter namn (fallande)" HorizontalAlignment="Left" Height="18" Margin="761,355,0,0" VerticalAlignment="Top" Width="172"/>
-        <RadioButton x:Name="btnSortByDesc" Content="Sortera efter namn (stigande)" HorizontalAlignment="Left" Height="18" Margin="761,371,0,0" VerticalAlignment="Top" Width="174"/>
+        <RadioButton x:Name="rbtnSortByAsc" Content="Sortera efter namn (stigande)" HorizontalAlignment="Left" Height="18" Margin="1171,355,0,0" VerticalAlignment="Top" Width="172" Checked="rbtnSortByAsc_Checked"/>
+        <RadioButton x:Name="rbtnSortByDesc" Content="Sortera efter namn (fallande)" HorizontalAlignment="Left" Height="18" Margin="1171,371,0,0" VerticalAlignment="Top" Width="174"/>
         <TextBox x:Name="txtCurrentName" HorizontalAlignment="Left" Height="28" Margin="1169,506,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174"/>
-        <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="1169,556,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174"/>
+        <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="1169,578,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174"/>
         <TextBox x:Name="txtCurrentSpecies" HorizontalAlignment="Left" Height="28" Margin="964,506,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
         <TextBox x:Name="txtCurrentClass" HorizontalAlignment="Left" Height="28" Margin="761,506,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="172"/>
-        <ComboBox x:Name="cbxEditSpecies" HorizontalAlignment="Left" Margin="964,554,0,0" VerticalAlignment="Top" Width="177" Height="29" RenderTransformOrigin="0.5,0.5">
+        <ComboBox x:Name="cbxEditSpecies" HorizontalAlignment="Left" Margin="964,578,0,0" VerticalAlignment="Top" Width="177" Height="29" RenderTransformOrigin="0.5,0.5" DropDownOpened="cbxEditSpecies_DropDownOpened">
             <ComboBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -62,8 +62,7 @@
                 </TransformGroup>
             </ComboBox.RenderTransform>
         </ComboBox>
-        <ComboBox x:Name="btnEditClass" HorizontalAlignment="Left" Margin="763,555,0,0" VerticalAlignment="Top" Width="172" Height="29"/>
-        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="1169,599,0,0" VerticalAlignment="Top" Width="174"/>
+        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="1169,642,0,0" VerticalAlignment="Top" Width="174" Click="btnEdit_Click"/>
         <Label x:Name="lblCreateSpecies" Content="Skapa ny art" HorizontalAlignment="Left" Height="40" Margin="165,12,0,0" VerticalAlignment="Top" Width="154" FontWeight="Bold" FontSize="16"/>
         <ComboBox x:Name="cbxSelectClass" HorizontalAlignment="Left" Height="37" Margin="173,199,0,0" VerticalAlignment="Top" Width="140" DropDownOpened="cbxSelectClass_DropDownOpened"/>
         <Label Content="Ange klasstillhörighet" HorizontalAlignment="Left" Height="28" Margin="169,169,0,0" VerticalAlignment="Top" Width="128"/>
@@ -82,5 +81,9 @@
         <Button x:Name="BtnViewSpecies" Content="Visa arter" HorizontalAlignment="Left" Height="42" Margin="964,394,0,0" VerticalAlignment="Top" Width="177" Click="BtnViewSpecies_Click"/>
         <Button x:Name="btnViewAnimal" Content="Visa djur" HorizontalAlignment="Left" Height="42" Margin="1169,394,0,0" VerticalAlignment="Top" Width="169" Click="btnViewAnimal_Click"/>
         <TextBox x:Name="txtLatinName" HorizontalAlignment="Left" Height="39" Margin="172,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141"/>
+        <Label x:Name="lblSelectNewClass" Content="Välj ny klass" HorizontalAlignment="Left" Height="27" Margin="761,551,0,0" VerticalAlignment="Top" Width="108"/>
+        <Label x:Name="lblSelectNewSpecies" Content="Välj ny art" HorizontalAlignment="Left" Height="27" Margin="964,551,0,0" VerticalAlignment="Top" Width="129"/>
+        <Label x:Name="lblAddNewName" Content="Ange nytt namn" HorizontalAlignment="Left" Height="27" Margin="1169,552,0,0" VerticalAlignment="Top" Width="152"/>
+        <ComboBox x:Name="cbxEditClass" HorizontalAlignment="Left" Height="29" Margin="761,578,0,0" VerticalAlignment="Top" Width="174" DropDownOpened="cbxEditClass_DropDownOpened"/>
     </Grid>
 </Window>
