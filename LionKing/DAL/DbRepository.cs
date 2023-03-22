@@ -585,7 +585,10 @@ namespace LionKing.DAL
     #endregion
 
     #region DELETE
-
+        public async Task<Animal> RemoveAnimal()
+        {
+            string stmt = ""
+        }
     #endregion
 
 

@@ -88,6 +88,11 @@ namespace LionKing
            
 
         }
+        /// <summary>
+        /// Create animal and returns name, class and species.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
@@ -97,7 +102,7 @@ namespace LionKing
             var newAnimal = await db.AddAnimal(animalName, selectedSpecies);
             var className = await db.GetClassById(newAnimal.Class_id);
 
-            MessageBox.Show($"Djuret {newAnimal} har lagts till i databasen som en/ett {selectedSpecies} som tillhör {className}"); // nu finns ju ingen info att få från dessa eftersom vi inte använder dem
+            MessageBox.Show($"Djuret {newAnimal} har lagts till i databasen som en/ett {selectedSpecies} som tillhör {className}"); 
             
 
         }
