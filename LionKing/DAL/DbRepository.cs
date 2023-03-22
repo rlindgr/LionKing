@@ -45,44 +45,44 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="animal"></param>
         /// <returns></returns>
-        public async Task<Animal> AddAnimal(string animalName, string speciesName)
-        {
-            try
-            {
-                string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
-                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-                await using var command = dataSource.CreateCommand(stmt);
-                Species species = await GetSpeciesId(speciesName);// perhaps it's enough with this if we can get class id as well?
-                                                                  //AnimalClass animalClass = await GetClassId(className); 
+        //public async Task<Animal> AddAnimal(string animalName, string speciesName)
+        //{
+        //    try
+        //    {
+        //        string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
+        //        await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+        //        await using var command = dataSource.CreateCommand(stmt);
+        //        Species species = await GetSpeciesId(speciesName);// perhaps it's enough with this if we can get class id as well?
+        //                                                          //AnimalClass animalClass = await GetClassId(className); 
 
-                //We need a method that takes the class id and gives us class name.
-                int classId = species.Class.Class_id;
-                var animalClass = await GetClassById(classId);
+        //        //We need a method that takes the class id and gives us class name.
+        //        //int classId = species.Class.Class_id;
+        //        //var animalClass = await GetClassById(classId);
 
-                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
+        //        command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
 
-                command.Parameters.AddWithValue("class_id", species.Class.Class_id);
-                command.Parameters.AddWithValue("species_id", species.Species_id);
-                int animalId = (int)await command.ExecuteScalarAsync();
-                Animal animal = new Animal(animalName, species, animalClass, animalId);
-                return animal;
-            }
-            catch (PostgresException ex)
-            {
-                string errorMessage = "Något gick fel";
-                string errorCode = ex.SqlState;
-                switch (errorCode)
-                {
-                    case PostgresErrorCodes.CharacterNotInRepertoire:
-                        errorMessage = "Använd endast bokstäver när du anger namnet på ett djur, en art eller en klass"; //When searching for a class or species if a number has been inserted.(?)
-                        break;
-                    case PostgresErrorCodes.NullValueNotAllowed: //species txt can't be empty = null.
-                        errorMessage = "Du måste ange art när du skapar ett nytt djur";
-                        break;
-                }
-                throw new Exception(errorMessage);
-            }
-        }
+        //        //command.Parameters.AddWithValue("class_id", species.Class.Class_id);
+        //        command.Parameters.AddWithValue("species_id", species.Species_id);
+        //        int animalId = (int)await command.ExecuteScalarAsync();
+        //        //Animal animal = new Animal(animalName, species, animalClass, animalId);
+        //        //return animal;
+        //    }
+        //    catch (PostgresException ex)
+        //    {
+        //        string errorMessage = "Något gick fel";
+        //        string errorCode = ex.SqlState;
+        //        switch (errorCode)
+        //        {
+        //            case PostgresErrorCodes.CharacterNotInRepertoire:
+        //                errorMessage = "Använd endast bokstäver när du anger namnet på ett djur, en art eller en klass"; //When searching for a class or species if a number has been inserted.(?)
+        //                break;
+        //            case PostgresErrorCodes.NullValueNotAllowed: //species txt can't be empty = null.
+        //                errorMessage = "Du måste ange art när du skapar ett nytt djur";
+        //                break;
+        //        }
+        //        throw new Exception(errorMessage);
+        //    }
+        //}
         /// <summary>
         /// Adds species to database and returns species_id
         /// </summary>
@@ -112,7 +112,7 @@ namespace LionKing.DAL
                 newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
                 newSpecies.Latin_name = speciesLatinName;
                 newSpecies.Species_name = speciesName;
-                newSpecies.Class.Class_id = animalClass.Class_id;
+                //newSpecies.Class.Class_id = animalClass.Class_id;
                 return newSpecies;
             }
             catch (PostgresException ex)
@@ -243,7 +243,9 @@ namespace LionKing.DAL
                 newAnimals = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"]),
+                    Class_id = reader.GetInt32(2),
+                    Species_id = reader.GetInt32(3)
                 };
 
                animals.Add(newAnimals);
@@ -251,7 +253,7 @@ namespace LionKing.DAL
             return animals;
         }
         /// <summary>
-        /// Fetches animal by animal_name
+        /// Retrieves animal by animal_name
         /// </summary>
         /// <param name="fetchAnimal"></param>
         /// <returns></returns>
@@ -271,8 +273,9 @@ namespace LionKing.DAL
                 {
                     animal = new Animal()
                     {
-                        //Animal_name = (string)reader["animal_name"]
-                        Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
+                        Animal_name = ConvertFromDBVal<string>(reader["animal_name"]),
+                        //Species_id = reader.GetInt32(0), - Not sure how to fetch this data, got error when I tried this way
+                        //Class_id = reader.GetInt32(3) - Not sure how to fetch this data, got error when I tried this way
                     };
                 }
                 return animal;
@@ -299,7 +302,7 @@ namespace LionKing.DAL
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Animal> GetAnimal(int id)
+        public async Task<Animal> GetAnimal(int id) //Is this two identical methods??
         {
             try
             {
@@ -340,15 +343,15 @@ namespace LionKing.DAL
             }
 
 
-        }
+        } 
         /// <summary>
-        /// Fetches animal_name based on animal_id
+        /// Retrieves animal_name based on animal_id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Animal> GetAnimalById(int id)
-        {
+        public async Task<Animal> GetAnimalByAnimalId(int id) //Is this two identical methods??
 
+        {
             string stmt = "select * from animal where animal_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
@@ -366,11 +369,39 @@ namespace LionKing.DAL
                 };
 
             }
-
             return animal;
         }
         /// <summary>
-        /// Retrives classed based on id
+        /// Retrieves animal_names based on Species_id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Animal>> GetAnimalsBySpeciesId(int id)
+        {
+            List<Animal> animalList = new List<Animal>();
+
+            string stmt = "select * from animal where species_id = @id";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("id", id);
+            await using var reader = await command.ExecuteReaderAsync();
+
+            Animal animal = new Animal();
+            while (await reader.ReadAsync())
+            {
+                animal = new Animal()
+                {
+                    Animal_id = reader.GetInt32(0),
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"]) // Use method for if the name is null. I don't want to change since im unsure if you are still working on it.
+                }; 
+                animalList.Add(animal);
+
+            }
+            return animalList;
+        }
+        /// <summary>
+        /// Retrives Class_name based on Class_id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -389,7 +420,7 @@ namespace LionKing.DAL
             {
                 animalClass = new AnimalClass()
                 {
-                    Class_name = (string)reader["species_name"],
+                    Class_name = (string)reader["class_name"],
                     Class_id = reader.GetInt32(0)
                 };
             }
@@ -423,6 +454,33 @@ namespace LionKing.DAL
             return species;
         }
         /// <summary>
+        /// Retrives Species_name based on Species_id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Species> GetSpeciesById(int id)
+        {
+            string stmt = "SELECT * FROM species WHERE species_id = @id";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("id", id);
+            await using var reader = await command.ExecuteReaderAsync();
+
+            Species species = new Species();
+            while (await reader.ReadAsync())
+            {
+                species = new Species()
+                {
+                    Species_id = reader.GetInt32(0),
+                    Species_name = (string)reader["species_name"], 
+                    Latin_name = (string)reader["latin_name"]
+                };
+
+            }
+            return species;
+        }
+        /// <summary>
         /// Retrives id and sets name for retrived class. 
         /// </summary>
         /// <param name="className"></param>
@@ -448,7 +506,7 @@ namespace LionKing.DAL
             return animalClass;
         }
         /// <summary>
-        /// Fetches all animal classes (to be put in combobox in interface)
+        /// Retrieves all animal classes (to be put in combobox in interface)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -518,6 +576,7 @@ namespace LionKing.DAL
                     Latin_name = (string)reader["latin_name"],
                     Species_id = reader.GetInt32(0)
                 };
+               speciesList.Add(species);
             }
 
             return speciesList;
