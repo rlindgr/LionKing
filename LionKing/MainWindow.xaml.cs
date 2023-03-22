@@ -312,6 +312,27 @@ namespace LionKing
             
 
         }
+
+        private async void btnRemoveSpecies_Click(object sender, RoutedEventArgs e)
+        {
+            // create list with all animals in said class, if there are any. Are you sure about this..?
+            DbRepository db = new();
+            var selectedSpecies = (Species)cbxRemoveSpecies.SelectedItem;
+            var animalsBySpecies = await db.GetAnimalsBySpeciesId(selectedSpecies.Species_id);
+            if (animalsBySpecies != null)
+            {
+                MessageBox.Show($"Du kan inte ta bort en klass som inhåller djur. Du måste först radera alla djur som tillhör denna klassen");
+                //if (true) // add some way of making it possible to choose in messagebox yes/no.
+                //{
+                    db.DeleteAllAnimalsInSpecies(selectedSpecies);
+                    db.DeleteSpecies(selectedSpecies);
+                //}
+            }
+            else
+            {
+                db.DeleteSpecies(selectedSpecies);
+            }
+        }
     }
 
     

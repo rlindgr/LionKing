@@ -1,6 +1,7 @@
 ﻿using LionKing.Models;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using Npgsql.Replication.PgOutput.Messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,10 +31,11 @@ namespace LionKing.DAL
 
 
         #region Lists
-        List<AnimalClass> animalClasses = new List<AnimalClass>();
-        List<Species> specieslist = new List<Species>();
+        public List<AnimalClass> animalClasses { get; set; } = new List<AnimalClass>();
+
+        public List<Species> specieslist { get; set; } = new List<Species>();
         public List<Animal> animals { get; set; } = new List<Animal>(); //To be changed to Animals (Listname)
-        
+
         #endregion
 
 
@@ -59,7 +61,7 @@ namespace LionKing.DAL
                 command.Parameters.AddWithValue("@class_id", species.Class_id);
                 command.Parameters.AddWithValue("@species_id", species.Species_id);
 
-                
+
                 Animal animal = new Animal();
                 animal.Animal_id = (int)await command.ExecuteScalarAsync();
                 animal.Animal_name = animalName;
@@ -98,11 +100,11 @@ namespace LionKing.DAL
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("@species_name", speciesName); 
-                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); 
+                command.Parameters.AddWithValue("@species_name", speciesName);
+                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName));
                 command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
 
-                
+
                 Species newSpecies = new Species();
                 newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
                 newSpecies.Latin_name = speciesLatinName;
@@ -112,7 +114,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel"; 
+                string errorMessage = "Något gick fel";
                 string errorCode = ex.SqlState;
                 switch (errorCode)
                 {
@@ -175,7 +177,7 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<AnimalClass>> GetAllClasses()
         {
-            
+
             animalClasses.Clear();
             string stmt = "SELECT * FROM Animal_class";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
@@ -215,7 +217,7 @@ namespace LionKing.DAL
                     Species_name = (string)reader.GetString(1),
                     Latin_name = ConvertFromDBVal<string>(reader["latin_name"]),
                     Class_id = reader.GetInt32(3)
-                    
+
                 };
                 specieslist.Add(species);
             }
@@ -234,7 +236,7 @@ namespace LionKing.DAL
             await using var reader = await command.ExecuteReaderAsync();
             Animal newAnimals = new Animal();
 
-            while (await reader.ReadAsync()) 
+            while (await reader.ReadAsync())
             {
 
                 newAnimals = new Animal()
@@ -245,7 +247,7 @@ namespace LionKing.DAL
                     Species_id = reader.GetInt32(3)
                 };
 
-               animals.Add(newAnimals);
+                animals.Add(newAnimals);
             }
             return animals;
         }
@@ -273,7 +275,7 @@ namespace LionKing.DAL
                     {
                         //Animal_id = reader.GetInt32(0),
                         Animal_name = ConvertFromDBVal<string>(reader["animal_name"]),
-                        Class_id = reader.GetInt32(2), 
+                        Class_id = reader.GetInt32(2),
                         //Species_id = reader.GetInt32(3)
                     };
                 }
@@ -293,7 +295,7 @@ namespace LionKing.DAL
                 }
                 throw new Exception(errorMessage);
             }
-           
+
         }
         /// <summary>
         /// Get animal by animal id
@@ -342,7 +344,7 @@ namespace LionKing.DAL
             }
 
 
-        } 
+        }
         /// <summary>
         /// Retrieves animal_name based on animal_id
         /// </summary>
@@ -377,13 +379,13 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<Animal>> GetAnimalsBySpeciesId(int id)
         {
-            List<Animal> animalList = new List<Animal>();
+            List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
             string stmt = "select * from animal where species_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
             await using var command = dataSource.CreateCommand(stmt);
-            command.Parameters.AddWithValue("id", id);
+            command.Parameters.AddWithValue("@id", id);
             await using var reader = await command.ExecuteReaderAsync();
 
             Animal animal = new Animal();
@@ -393,7 +395,7 @@ namespace LionKing.DAL
                 {
                     Animal_id = reader.GetInt32(0),
                     Animal_name = ConvertFromDBVal<string>(reader["animal_name"]) // Use method for if the name is null. I don't want to change since im unsure if you are still working on it.
-                }; 
+                };
                 animalList.Add(animal);
 
             }
@@ -472,7 +474,7 @@ namespace LionKing.DAL
                 species = new Species()
                 {
                     Species_id = reader.GetInt32(0),
-                    Species_name = (string)reader["species_name"], 
+                    Species_name = (string)reader["species_name"],
                     Latin_name = (string)reader["latin_name"]
                 };
 
@@ -575,7 +577,7 @@ namespace LionKing.DAL
                     Latin_name = (string)reader["latin_name"],
                     Species_id = reader.GetInt32(0)
                 };
-               speciesList.Add(species);
+                speciesList.Add(species);
             }
 
             return speciesList;
@@ -587,14 +589,14 @@ namespace LionKing.DAL
 
         #endregion
 
-    #region DELETE
+        #region DELETE
 
-       /// <summary>
-       /// Delete animal from database
-       /// </summary>
-       /// <param name="animal"></param>
-       /// <returns></returns>
-       /// <exception cref="Exception"></exception>
+        /// <summary>
+        /// Delete animal from database
+        /// </summary>
+        /// <param name="animal"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<Animal> DeleteAnimal(Animal animal)
         {
             try
@@ -608,7 +610,7 @@ namespace LionKing.DAL
 
                 return animal;
             }
-            catch (PostgresException ex) 
+            catch (PostgresException ex)
             {
                 string errorMessage = "Något gick fel, vänligen försök igen";
                 throw new Exception(errorMessage);
@@ -616,6 +618,66 @@ namespace LionKing.DAL
 
         }
 
+        public async void DeleteAllAnimalsInSpecies(Species species)
+        {
+            try
+            {
+
+                string stmt = "DELETE FROM animal WHERE species_id=@species_id;";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@species_id", species.Species_id);
+                await using var reader = await command.ExecuteReaderAsync();
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel";
+                throw new Exception(errorMessage);
+            }
+           
+        }
+        public async void DeleteAllAnimalsInClass(AnimalClass animalClass)
+        {
+            try
+            {
+
+                string stmt = "DELETE FROM animal WHERE class_id=@class_id;";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
+                await using var reader = await command.ExecuteReaderAsync();
+            
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel";
+                throw new Exception(errorMessage);
+            }
+
+        }
+
+        public async Task<Species> DeleteSpecies(Species species)
+        {
+            try
+            {
+                string stmt = "DELETE FROM species WHERE species_id=@species_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@species_id", species.Species_id);
+                await using var reader = await command.ExecuteReaderAsync(); // Reader when i want to delete? why, there are other alternatives??
+
+                return species;
+
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel, vänligen försök igen";
+                throw new Exception (errorMessage);
+            }
+        }
         
     #endregion
 
