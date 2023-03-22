@@ -1,6 +1,7 @@
 ﻿using LionKing.DAL;
 using LionKing.Models;
 using Npgsql.Internal.TypeHandlers.LTreeHandlers;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,6 +97,9 @@ namespace LionKing
         /// <param name="e"></param>
         private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
         {
+            lstSpecies.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
+            lstAnimal.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
+
             DbRepository db = new();
             var allClasses = await db.GetAllClasses();
             lstAnimalClass.ItemsSource = allClasses;
@@ -108,6 +112,9 @@ namespace LionKing
         /// <param name="e"></param>
         private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
         {
+            lstAnimalClass.ItemsSource = null;
+            lstAnimal.ItemsSource= null;
+            
             DbRepository db = new();
             var allSpecies = await db.GetAllSpecies();
             lstSpecies.ItemsSource = allSpecies;
@@ -119,12 +126,13 @@ namespace LionKing
         /// <param name="e"></param>
         private async void btnViewAnimal_Click(object sender, RoutedEventArgs e)
         {
+            lstAnimalClass.ItemsSource = null;
+            lstSpecies.ItemsSource = null; 
+            
             DbRepository db = new();
             var allAnimals = await db.GetAllAnimals();
             lstAnimal.ItemsSource = allAnimals;
         }
-
-
         /// <summary>
         /// Gets animal based on animal name entered in textbox in View area
         /// </summary>
@@ -143,9 +151,13 @@ namespace LionKing
                     MessageBox.Show("Det finns inget djur med det namnet");
                 }
                 else
-                {
-                    lstAnimal.Items.Clear();
+                {                                      
+                    var matchingSpecies = await db.GetSpeciesById(animal.Species_id);                   
+                    var matchingClasses = await db.GetClassById(animal.Class_id);
+            
                     lstAnimal.Items.Add(animal.Animal_name);
+                    lstSpecies.Items.Add(matchingSpecies);
+                    lstAnimalClass.Items.Add(matchingClasses);
                 }
             }
             catch (Exception ex)
@@ -154,23 +166,6 @@ namespace LionKing
             }
         }
 
-        //Trying to enable showing info about animals in listbox once an animalclass is shown - OBS! not working properly yet
-        private void cbxViewClass_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DbRepository db = new();
-            AnimalClass animalClass = new AnimalClass();
-            //SelectClass(animalClass); 
-
-            //How to we establish which animalclass is choosen? Can we reach/use class_id that is fetched in SelectClass_DropDownOpened somehow?
-            //{
-            //    var allSpecies = await db.GetAllSpeciesFromClass(1);
-            //    lstAnimal.Items.Add(allSpecies);
-            //}
-
-            //cbxViewClass.SelectedItem = ()
-            //ComboboxItem selectedCar = (ComboboxItem)comboBox1.SelectedItem;
-
-        }
         #endregion
 
         #region UPDATE
@@ -210,6 +205,48 @@ namespace LionKing
             //        listBox.SelectedItem = f;
             //        break;
             //    }
+        }  //OBS! Is this code needed now?
+
+        /// <summary>
+        /// Event for when user chooses an animalClass in listbox in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void lstAnimalClass_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AnimalClass animalClass = (AnimalClass)lstAnimalClass.SelectedItem;
+            DbRepository db = new DbRepository();
+            var matchingSpecies = await db.GetAllSpeciesFromClass(animalClass.Class_id);
+            lstSpecies.ItemsSource = matchingSpecies;            
+        }
+
+
+        private async void lstSpecies_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Species species= (Species)lstSpecies.SelectedItem;
+            DbRepository db = new DbRepository();
+            var matchingAnimals = await db.GetAnimalsBySpeciesId(species.Species_id);
+            lstAnimal.ItemsSource = matchingAnimals;
+        }
+
+
+        /// <summary>
+        /// Presents which species and class that a selected animal belongs to in View area
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void lstAnimal_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            lstAnimalClass.ItemsSource = null;
+            lstSpecies.ItemsSource = null;
+
+            Animal animal = (Animal)lstAnimal.SelectedItem;
+            DbRepository db = new DbRepository();           
+            var matchingSpecies = await db.GetSpeciesById(animal.Species_id);          
+            var matchingClasses = await db.GetClassById(animal.Class_id);
+
+            lstSpecies.Items.Add(matchingSpecies); 
+            lstAnimalClass.Items.Add(matchingClasses);
         }
 
        
