@@ -401,6 +401,36 @@ namespace LionKing.DAL
             }
             return animalList;
         }
+
+       /// <summary>
+       /// Retrives animals based on Class_id.
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
+        public async Task<IEnumerable<Animal>> GetAnimalsByClassId(int id)
+        {
+            List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
+
+            string stmt = "SELECT * FROM animal where class_id = @id";
+            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+
+            await using var command = dataSource.CreateCommand(stmt);
+            command.Parameters.AddWithValue("@id", id);
+            await using var reader = await command.ExecuteReaderAsync();
+
+            Animal animal = new Animal();
+            while (await reader.ReadAsync())
+            {
+                animal = new Animal()
+                {
+                    Animal_id = reader.GetInt32(0),
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"]) // Use method for if the name is null. I don't want to change since im unsure if you are still working on it.
+                };
+                animalList.Add(animal);
+
+            }
+            return animalList;
+        }
         /// <summary>
         /// Retrives Class_name based on Class_id
         /// </summary>
@@ -583,6 +613,8 @@ namespace LionKing.DAL
             return speciesList;
         }
 
+
+
         #endregion
 
         #region UPDATE
@@ -618,6 +650,11 @@ namespace LionKing.DAL
 
         }
 
+       /// <summary>
+       /// Deletes all animals with specific species_id
+       /// </summary>
+       /// <param name="species"></param>
+       /// <exception cref="Exception"></exception>
         public async void DeleteAllAnimalsInSpecies(Species species)
         {
             try
@@ -637,6 +674,11 @@ namespace LionKing.DAL
             }
            
         }
+       /// <summary>
+       /// Deletes all animals with specific class_id
+       /// </summary>
+       /// <param name="animalClass"></param>
+       /// <exception cref="Exception"></exception>
         public async void DeleteAllAnimalsInClass(AnimalClass animalClass)
         {
             try
@@ -658,6 +700,12 @@ namespace LionKing.DAL
 
         }
 
+        /// <summary>
+        /// Deletes choosen species
+        /// </summary>
+        /// <param name="species"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<Species> DeleteSpecies(Species species)
         {
             try
@@ -678,8 +726,35 @@ namespace LionKing.DAL
                 throw new Exception (errorMessage);
             }
         }
-        
-    #endregion
+
+        /// <summary>
+        /// Deletes choosen animalClass
+        /// </summary>
+        /// <param name="animalClass"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<AnimalClass> DeleteAnimalClass (AnimalClass animalClass)
+        {
+            try
+            {
+                string stmt = "DELETE FROM animal_class WHERE class_id=@class_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
+                await using var reader = await command.ExecuteReaderAsync(); // Reader when i want to delete? why, there are other alternatives??
+
+                return animalClass;
+
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel, vänligen försök igen";
+                throw new Exception(errorMessage);
+            }
+        }
+
+        #endregion
 
 
 

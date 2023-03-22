@@ -313,6 +313,11 @@ namespace LionKing
 
         }
 
+        /// <summary>
+        /// Removes selcted species and anmilas belonging to it 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btnRemoveSpecies_Click(object sender, RoutedEventArgs e)
         {
             // create list with all animals in said class, if there are any. Are you sure about this..?
@@ -332,6 +337,28 @@ namespace LionKing
             {
                 db.DeleteSpecies(selectedSpecies);
             }
+        }
+
+        private async void btnRemove_Copy1_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var selectedAnimalClass = (AnimalClass)cbxRemoveClass.SelectedItem;
+            var animalsByClass = await db.GetAnimalsByClassId(selectedAnimalClass.Class_id);
+            if (animalsByClass != null)
+            {
+                MessageBox.Show($"Du kan inte ta bort en klass som inhåller djur. Du måste först radera alla djur som tillhör denna klassen");
+                //if (true) // add some way of making it possible to choose in messagebox yes/no.
+                //{
+                db.DeleteAllAnimalsInClass(selectedAnimalClass);
+                db.DeleteAnimalClass(selectedAnimalClass);
+                MessageBox.Show($"Du har nu tgait bort klassen {selectedAnimalClass} och alla tillhörande djur från databasen");
+            }
+            else
+            {
+                db.DeleteAnimalClass(selectedAnimalClass);
+                MessageBox.Show($"Du har nu tagit bort {selectedAnimalClass} från databsen");
+            }
+
         }
     }
 
