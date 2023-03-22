@@ -66,7 +66,7 @@ namespace LionKing
         {
             DbRepository db = new();
             var newClass = await db.AddClass(txtCreateClass.Text);
-            MessageBox.Show($"Djurarten {newClass} har skapats och lagts till i databasen");
+            MessageBox.Show($"Djurklassen {newClass} har skapats och lagts till i databasen");
             lstAnimalClass.Items.Clear();
             var selectClass = await db.GetAllClasses();
             lstAnimalClass.ItemsSource = selectClass;
@@ -81,8 +81,26 @@ namespace LionKing
             string latinName = txtLatinName.Text;
             AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem;
             var newSpecies = await db.AddSpecies(speciesName, latinName, selectedClass);
+            
+            MessageBox.Show($"Djurarten {newSpecies} har skapats och lagts till i klassen {selectedClass}");
+            
+            
+           
 
-        } 
+        }
+        private async void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            string animalName = txtCreateAnimal.Text;
+            Species selectedSpecies = (Species)cbxSelectSpecies.SelectedItem;
+            
+            var newAnimal = await db.AddAnimal(animalName, selectedSpecies);
+            var className = await db.GetClassById(newAnimal.Class_id);
+
+            MessageBox.Show($"Djuret {newAnimal} har lagts till i databasen som en/ett {selectedSpecies} som tillhör {className}"); // nu finns ju ingen info att få från dessa eftersom vi inte använder dem
+            
+
+        }
 
 
 
@@ -249,7 +267,7 @@ namespace LionKing
             lstAnimalClass.Items.Add(matchingClasses);
         }
 
-       
+        
     }
 
     
