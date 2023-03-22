@@ -585,6 +585,13 @@ namespace LionKing.DAL
     #endregion
 
     #region DELETE
+
+       /// <summary>
+       /// Delete animal from database
+       /// </summary>
+       /// <param name="animal"></param>
+       /// <returns></returns>
+       /// <exception cref="Exception"></exception>
         public async Task<Animal> DeleteAnimal(Animal animal)
         {
             try
@@ -600,18 +607,13 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex) 
             {
-                string errorMessage = "Något gick fel";
-                string errorCode = ex.SqlState;
-                switch (errorCode)
-                {
-                    //case PostgresErrorCodes. // error code if the animal doesn't exist??
-                    default:
-                        break;
-                }
+                string errorMessage = "Något gick fel, vänligen försök igen";
                 throw new Exception(errorMessage);
             }
 
         }
+
+        
     #endregion
 
 
