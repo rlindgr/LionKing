@@ -39,8 +39,8 @@ namespace LionKing.Models
             Species_id = Species_id;
             Species_name = Species_name;
             Latin_name = Latin_name;
-            Class_id = Class_id; 
-            //Class.Class_id = Class.Class_id; //- Can this be replaced by code above? I get error: System.NullReferenceException: 'Object reference not set to an instance of an object.'
+            Class_id = Class_id;
+            /*Class.Class_id = Class.Class_id;*/ //- Can this be replaced by code above? I get error: System.NullReferenceException: 'Object reference not set to an instance of an object.'
 
 
         }
@@ -54,8 +54,15 @@ namespace LionKing.Models
 
         public override string ToString()
         {
-            return $"""{Species_name} "{Latin_name}" """;
-        }
+            if (Latin_name == null)
+            {
+                return ($"{Species_name}, Latinskt namn saknas"); // not working, why?
+            }
+            else
+            {
+                return $"""{Species_name} "{Latin_name}" """;
 
+            }
+        }
     }
 }

@@ -46,44 +46,43 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="animal"></param>
         /// <returns></returns>
-        //public async Task<Animal> AddAnimal(string animalName, string speciesName)
-        //{
-        //    try
-        //    {
-        //        string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
-        //        await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-        //        await using var command = dataSource.CreateCommand(stmt);
-        //        Species species = await GetSpeciesId(speciesName);// perhaps it's enough with this if we can get class id as well?
-        //                                                          //AnimalClass animalClass = await GetClassId(className); 
+        public async Task<Animal> AddAnimal(string animalName, Species species)
+        {
+            try
+            {
+                string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
 
-        //        //We need a method that takes the class id and gives us class name.
-        //        //int classId = species.Class.Class_id;
-        //        //var animalClass = await GetClassById(classId);
 
-        //        command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
+                command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
+                command.Parameters.AddWithValue("@class_id", species.Class_id);
+                command.Parameters.AddWithValue("@species_id", species.Species_id);
 
-        //        //command.Parameters.AddWithValue("class_id", species.Class.Class_id);
-        //        command.Parameters.AddWithValue("species_id", species.Species_id);
-        //        int animalId = (int)await command.ExecuteScalarAsync();
-        //        //Animal animal = new Animal(animalName, species, animalClass, animalId);
-        //        //return animal;
-        //    }
-        //    catch (PostgresException ex)
-        //    {
-        //        string errorMessage = "Något gick fel";
-        //        string errorCode = ex.SqlState;
-        //        switch (errorCode)
-        //        {
-        //            case PostgresErrorCodes.CharacterNotInRepertoire:
-        //                errorMessage = "Använd endast bokstäver när du anger namnet på ett djur, en art eller en klass"; //When searching for a class or species if a number has been inserted.(?)
-        //                break;
-        //            case PostgresErrorCodes.NullValueNotAllowed: //species txt can't be empty = null.
-        //                errorMessage = "Du måste ange art när du skapar ett nytt djur";
-        //                break;
-        //        }
-        //        throw new Exception(errorMessage);
-        //    }
-        //}
+                
+                Animal animal = new Animal();
+                animal.Animal_id = (int)await command.ExecuteScalarAsync();
+                animal.Animal_name = animalName;
+                animal.Species_id = species.Species_id;
+                animal.Class_id = species.Class_id;
+                return animal;
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel";
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    case PostgresErrorCodes.CharacterNotInRepertoire:
+                        errorMessage = "Använd endast bokstäver när du anger namnet på ett djur, en art eller en klass"; //When searching for a class or species if a number has been inserted.(?)
+                        break;
+                    case PostgresErrorCodes.NullValueNotAllowed: //species txt can't be empty = null.
+                        errorMessage = "Du måste ange art när du skapar ett nytt djur";
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+        }
         /// <summary>
         /// Adds species to database and returns species_id
         /// </summary>
@@ -99,33 +98,29 @@ namespace LionKing.DAL
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                // Retrives id of class for the inserted class name. Mabey we can solve this by reaching the id from classes in cbxbox
-                //AnimalClass animalClass = await GetClassId(className);
-
                 command.Parameters.AddWithValue("@species_name", speciesName); 
                 command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); 
                 command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
 
-                //Species newSpecies = new Species(speciesName, speciesLatinName);
-                //newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
-                //return newSpecies; 
+                
                 Species newSpecies = new Species();
                 newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
                 newSpecies.Latin_name = speciesLatinName;
                 newSpecies.Species_name = speciesName;
-                //newSpecies.Class.Class_id = animalClass.Class_id;
+                newSpecies.Class_id = animalClass.Class_id;
                 return newSpecies;
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorMessage = "Något gick fel"; 
                 string errorCode = ex.SqlState;
                 switch (errorCode)
                 {
-                    //case PostgresErrorCodes.:
-                    //    errorMessage = "";
-                    //    break;
-                    default:
+                    case PostgresErrorCodes.UniqueViolation:
+                        errorMessage = "Denna art finns redan, arten som skapas måste vara unik";
+                        break;
+                    case PostgresErrorCodes.NullValueNotAllowed:
+                        errorMessage = "Du måste ange ett namn för arten du skapar, textrutan för namn får ej lämnas tom";
                         break;
                 }
                 throw new Exception(errorMessage);
@@ -218,7 +213,8 @@ namespace LionKing.DAL
                 {
                     Species_id = reader.GetInt32(0),
                     Species_name = (string)reader.GetString(1),
-                    Latin_name = (string)reader.GetString(2)
+                    Latin_name = ConvertFromDBVal<string>(reader["latin_name"]),
+                    Class_id = reader.GetInt32(3)
                     
                 };
                 specieslist.Add(species);
@@ -592,8 +588,35 @@ namespace LionKing.DAL
         #endregion
 
         #region DELETE
+    #region DELETE
+        public async Task<Animal> DeleteAnimal(Animal animal)
+        {
+            try
+            {
+                string stmt = "DELETE FROM animal WHERE animal_id=@animal_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
 
-        #endregion
+                command.Parameters.AddWithValue("@animal_id", animal.Animal_id);
+                await using var reader = await command.ExecuteReaderAsync();
+
+                return animal;
+            }
+            catch (PostgresException ex) 
+            {
+                string errorMessage = "Något gick fel";
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    //case PostgresErrorCodes. // error code if the animal doesn't exist??
+                    default:
+                        break;
+                }
+                throw new Exception(errorMessage);
+            }
+
+        }
+    #endregion
 
 
 

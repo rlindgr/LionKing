@@ -66,7 +66,7 @@ namespace LionKing
         {
             DbRepository db = new();
             var newClass = await db.AddClass(txtCreateClass.Text);
-            MessageBox.Show($"Djurarten {newClass} har skapats och lagts till i databasen");
+            MessageBox.Show($"Djurklassen {newClass} har skapats och lagts till i databasen");
             lstAnimalClass.Items.Clear();
             var selectClass = await db.GetAllClasses();
             lstAnimalClass.ItemsSource = selectClass;
@@ -79,10 +79,35 @@ namespace LionKing
             DbRepository db = new();
             string speciesName = txtCreateSpecies.Text;
             string latinName = txtLatinName.Text;
-            AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem; //??
+            AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem;
             var newSpecies = await db.AddSpecies(speciesName, latinName, selectedClass);
+            
+            MessageBox.Show($"Djurarten {newSpecies} har skapats och lagts till i klassen {selectedClass}");
+            
+            
+           
 
         }
+        /// <summary>
+        /// Create animal and returns name, class and species.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            string animalName = txtCreateAnimal.Text;
+            Species selectedSpecies = (Species)cbxSelectSpecies.SelectedItem;
+            
+            var newAnimal = await db.AddAnimal(animalName, selectedSpecies);
+            var className = await db.GetClassById(newAnimal.Class_id);
+
+            MessageBox.Show($"Djuret {newAnimal} har lagts till i databasen som en/ett {selectedSpecies} som tillhör {className}"); 
+            
+
+        }
+
+
 
         #endregion
 
@@ -244,27 +269,37 @@ namespace LionKing
 
         }
 
-
-
-
-
-
-        #endregion
-
-        #region DELETE
-
-        #endregion
-
-        private async void rbtnSortByAsc_Checked(object sender, RoutedEventArgs e)
+        private async void btnRemoveAnimal_Click(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new ();
-            var allAnimals = await db.GetAllAnimals();
-            db.SortAnimalByName();
-            var list = db.animals; 
-            lstAnimal.ItemsSource = null;
-            lstAnimal.ItemsSource = list; 
+            DbRepository db = new();
+            var selectedAnimal = (Animal)cbxRemoveAnimal.SelectedItem;
+            var deletedAnimal = await db.DeleteAnimal(selectedAnimal);
+            var animalClass = await db.GetClassById(selectedAnimal.Class_id);
+            var animalSpecies = await db.GetSpeciesById(selectedAnimal.Species_id);
+            MessageBox.Show($"Du har nu tagit bort djuret {selectedAnimal} som är en/ett {animalSpecies} som tillhör {animalClass} från databasen");
             
-           
+
+        }
+
+        private async void cbxRemoveAnimal_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new DbRepository();
+            var getAllAnimals = await db.GetAllAnimals();
+            cbxRemoveAnimal.ItemsSource = getAllAnimals;
+        }
+
+        private async void cbxRemoveClass_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db=new DbRepository();
+            var getAllClasses = await db.GetAllClasses();
+            cbxRemoveClass.ItemsSource = getAllClasses;
+        }
+
+        private async void cbxRemoveSpecies_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new DbRepository();
+            var getAllSpecies = await db.GetAllSpecies();
+            cbxRemoveSpecies.ItemsSource = getAllSpecies;
         }
     }
 
