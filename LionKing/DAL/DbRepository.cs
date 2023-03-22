@@ -588,7 +588,7 @@ namespace LionKing.DAL
         #endregion
 
         #region DELETE
-    #region DELETE
+    
         public async Task<Animal> DeleteAnimal(Animal animal)
         {
             try
@@ -616,7 +616,7 @@ namespace LionKing.DAL
             }
 
         }
-    #endregion
+        #endregion
 
 
 

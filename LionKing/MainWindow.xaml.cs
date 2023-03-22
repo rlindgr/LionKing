@@ -244,16 +244,11 @@ namespace LionKing
         }
 
 
+
         #endregion
 
         #region UPDATE
 
-        private async void cbxEditClass_DropDownOpened(object sender, EventArgs e)
-        {
-            DbRepository db = new();
-            var selectClass = await db.GetAllClasses();
-            cbxEditClass.ItemsSource= selectClass;
-        }
 
         private async void cbxEditSpecies_DropDownOpened(object sender, EventArgs e)
         {
@@ -269,6 +264,10 @@ namespace LionKing
 
         }
 
+        #endregion
+
+        #region DELETE
+
         private async void btnRemoveAnimal_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
@@ -277,7 +276,7 @@ namespace LionKing
             var animalClass = await db.GetClassById(selectedAnimal.Class_id);
             var animalSpecies = await db.GetSpeciesById(selectedAnimal.Species_id);
             MessageBox.Show($"Du har nu tagit bort djuret {selectedAnimal} som är en/ett {animalSpecies} som tillhör {animalClass} från databasen");
-            
+
 
         }
 
@@ -290,7 +289,7 @@ namespace LionKing
 
         private async void cbxRemoveClass_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db=new DbRepository();
+            DbRepository db = new DbRepository();
             var getAllClasses = await db.GetAllClasses();
             cbxRemoveClass.ItemsSource = getAllClasses;
         }
@@ -300,6 +299,18 @@ namespace LionKing
             DbRepository db = new DbRepository();
             var getAllSpecies = await db.GetAllSpecies();
             cbxRemoveSpecies.ItemsSource = getAllSpecies;
+        }
+        #endregion
+
+        private async void rbtnSortByAsc_Checked(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allAnimals = await db.GetAllAnimals();
+            db.SortAnimalByName(); 
+            lstAnimal.ItemsSource = null;
+            lstAnimal.ItemsSource = db.animals;
+            
+
         }
     }
 

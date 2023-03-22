@@ -47,7 +47,7 @@
         <TextBox x:Name="txtGetAnimal" HorizontalAlignment="Left" Height="28" Margin="581,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
         <Label Content="Sök efter ett djur" HorizontalAlignment="Left" Height="28" Margin="582,46,0,0" VerticalAlignment="Top" Width="150"/>
         <ListBox x:Name="lstAnimal" HorizontalAlignment="Left" Height="295" Margin="1169,51,0,0" VerticalAlignment="Top" Width="169" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="lstAnimal_MouseDoubleClick"/>
-        <RadioButton x:Name="rbtnSortByAsc" Content="Sortera efter namn (stigande)" HorizontalAlignment="Left" Height="18" Margin="1171,355,0,0" VerticalAlignment="Top" Width="172" Checked="rbtnSortByAsc_Checked"/>
+        <RadioButton x:Name="rbtnSortByAsc" Content="Sortera efter namn (stigande)" HorizontalAlignment="Left" Height="18" Margin="1171,355,0,0" VerticalAlignment="Top" Width="172" Checked="rbtnSortByAsc_Checked" />
         <RadioButton x:Name="rbtnSortByDesc" Content="Sortera efter namn (fallande)" HorizontalAlignment="Left" Height="18" Margin="1171,371,0,0" VerticalAlignment="Top" Width="174"/>
         <TextBox x:Name="txtCurrentName" HorizontalAlignment="Left" Height="28" Margin="1169,506,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174"/>
         <TextBox x:Name="txtEditName" HorizontalAlignment="Left" Height="28" Margin="1169,578,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174"/>
