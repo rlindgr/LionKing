@@ -271,10 +271,10 @@ namespace LionKing.DAL
                 {
                     animal = new Animal()
                     {
-                        //Animal_id = reader.GetInt32(0),
+                        Animal_id = reader.GetInt32(0),
                         Animal_name = ConvertFromDBVal<string>(reader["animal_name"]),
                         Class_id = reader.GetInt32(2), 
-                        //Species_id = reader.GetInt32(3)
+                        Species_id = reader.GetInt32(3)
                     };
                 }
                 return animal;
@@ -307,7 +307,6 @@ namespace LionKing.DAL
             {
                 string stmt = "select * from animal where animal_id = @id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-
                 await using var command = dataSource.CreateCommand(stmt);
                 command.Parameters.AddWithValue("id", id);
                 await using var reader = await command.ExecuteReaderAsync();
@@ -649,11 +648,16 @@ namespace LionKing.DAL
                 return (T)obj;
         }
 
-        public void SortAnimalByName() 
+        public void SortAnimalByNameAcs() 
         {
+            animals = animals.OrderBy(animals => animals.Animal_name).ToList();          
+        }
 
-            animals = animals.OrderBy(animals => animals.Animal_name).ToList();
-            
+        public void SortAnimalByNameDecs()
+        {
+           SortAnimalByNameAcs();
+           animals.Reverse();
+
         }
     }
 }  

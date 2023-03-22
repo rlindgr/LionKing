@@ -220,7 +220,7 @@ namespace LionKing
             var matchingAnimals = await db.GetAnimalsBySpeciesId(species.Species_id);
             lstAnimal.ItemsSource = matchingAnimals;
             var matchingClasses = await db.GetClassById(species.Class_id);
-            lstAnimalClass.Items.Add(matchingClasses);  
+            lstAnimalClass.SelectedItem = matchingClasses;  
         }
         /// <summary>
         /// Presents which Species and Class that a selected Animal belongs to in View area
@@ -249,6 +249,13 @@ namespace LionKing
 
         #region UPDATE
 
+        private async void cbxEditAnimalClass_DropDownOpened(object sender, EventArgs e)
+        {
+            DbRepository db = new();
+            var selectClass = await db.GetAllClasses();
+            cbxEditAnimalClass.ItemsSource = selectClass;
+
+        }
 
         private async void cbxEditSpecies_DropDownOpened(object sender, EventArgs e)
         {
@@ -306,12 +313,29 @@ namespace LionKing
         {
             DbRepository db = new();
             var allAnimals = await db.GetAllAnimals();
-            db.SortAnimalByName(); 
+            db.SortAnimalByNameAcs(); 
             lstAnimal.ItemsSource = null;
             lstAnimal.ItemsSource = db.animals;
-            
+        }
+
+        private async void rbtnSortByDesc_Checked(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allAnimals = await db.GetAllAnimals();
+            db.SortAnimalByNameDecs();
+            lstAnimal.ItemsSource = null;
+            lstAnimal.ItemsSource = db.animals;
 
         }
+
+        private void btnClearLists_Click(object sender, RoutedEventArgs e)
+        {
+            lstAnimalClass.ItemsSource = null;
+            lstSpecies.ItemsSource= null;
+            lstAnimal.ItemsSource = null;
+        }
+
+        
     }
 
     

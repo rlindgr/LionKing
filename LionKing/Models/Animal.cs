@@ -42,7 +42,7 @@ namespace LionKing
         {
             if(Animal_name == null) 
             {
-                return ("Namnlöst djur");
+                return ("(namnlöst djur)");
             }
             else
             {
