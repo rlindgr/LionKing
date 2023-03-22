@@ -89,7 +89,7 @@ namespace LionKing.DAL
         /// <param name="species"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Species> AddSpecies(string speciesName, string speciesLatinName, string className)
+        public async Task<Species> AddSpecies(string speciesName, string speciesLatinName, AnimalClass animalClass)
         {
             try
             {
@@ -99,10 +99,10 @@ namespace LionKing.DAL
                 await using var command = dataSource.CreateCommand(stmt);
 
                 // Retrives id of class for the inserted class name. Mabey we can solve this by reaching the id from classes in cbxbox
-                AnimalClass animalClass = await GetClassId(className);
+                //AnimalClass animalClass = await GetClassId(className);
 
-                command.Parameters.AddWithValue("@species_name", speciesName); //NOT NULL in our table. Should set to not null here and in postrgresql
-                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); //Nullable in our table as well. 
+                command.Parameters.AddWithValue("@species_name", speciesName); 
+                command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName)); 
                 command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
 
                 //Species newSpecies = new Species(speciesName, speciesLatinName);
