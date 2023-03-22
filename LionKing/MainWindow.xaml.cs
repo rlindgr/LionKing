@@ -78,7 +78,7 @@ namespace LionKing
             DbRepository db = new();
             string speciesName = txtCreateSpecies.Text;
             string latinName = txtLatinName.Text;
-            AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem; //??
+            AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem;
             var newSpecies = await db.AddSpecies(speciesName, latinName, selectedClass);
 
         } 
