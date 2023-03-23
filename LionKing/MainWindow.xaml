@@ -63,7 +63,7 @@
                 </TransformGroup>
             </ComboBox.RenderTransform>
         </ComboBox>
-        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="1169,642,0,0" VerticalAlignment="Top" Width="174"/>
+        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="1169,642,0,0" VerticalAlignment="Top" Width="174" Click="btnEdit_Click"/>
         <Label x:Name="lblCreateSpecies" Content="Skapa ny art" HorizontalAlignment="Left" Height="40" Margin="165,12,0,0" VerticalAlignment="Top" Width="154" FontWeight="Bold" FontSize="16"/>
         <ComboBox x:Name="cbxSelectClass" HorizontalAlignment="Left" Height="37" Margin="173,199,0,0" VerticalAlignment="Top" Width="140" DropDownOpened="cbxSelectClass_DropDownOpened"/>
         <Label Content="Ange klasstillhörighet" HorizontalAlignment="Left" Height="28" Margin="169,169,0,0" VerticalAlignment="Top" Width="128"/>
