@@ -297,80 +297,6 @@ namespace LionKing.DAL
             }
 
         }
-        /// <summary>
-        /// Get animal by animal id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public async Task<Animal> GetAnimal(int id) //Is this two identical methods?? also, 0 references - can we remove?
-        {
-            try
-            {
-                string stmt = "select * from animal where animal_id = @id";
-                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-                await using var command = dataSource.CreateCommand(stmt);
-                command.Parameters.AddWithValue("id", id);
-                await using var reader = await command.ExecuteReaderAsync();
-
-                Animal animal = new Animal();
-                while (await reader.ReadAsync())
-                {
-                    animal = new Animal()
-                    {
-                        Animal_id = reader.GetInt32(0),
-                        //Animal_name = (string)reader["animal_name"]
-
-                        // If retrived value is null, transforms into null value in C#
-                        Animal_name = ConvertFromDBVal<string>(reader["animal_name"])
-                    };
-                }
-                return animal;
-            }
-            catch (PostgresException ex)
-            {
-                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
-                string errorCode = ex.SqlState;
-                switch (errorCode)
-                {
-                    //case PostgresErrorCodes.:
-                    //    errorMessage = "";
-                    //    break;
-                    default:
-                        break;
-                }
-                throw new Exception(errorMessage);
-            }
-
-
-        } 
-        /// <summary>
-        /// Retrieves animal_name based on animal_id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<Animal> GetAnimalByAnimalId(int id) //Is this two identical methods?? also, 0 references - can we remove?
-
-        {
-            string stmt = "select * from animal where animal_id = @id";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-
-            await using var command = dataSource.CreateCommand(stmt);
-            command.Parameters.AddWithValue("id", id);
-            await using var reader = await command.ExecuteReaderAsync();
-
-            Animal animal = new Animal();
-            while (await reader.ReadAsync())
-            {
-                animal = new Animal()
-                {
-                    Animal_id = reader.GetInt32(0),
-                    Animal_name = (string)reader["animal_name"] // Use method for if the name is null. I don't want to change since im unsure if you are still working on it.
-                };
-
-            }
-            return animal;
-        }
         
         /// <summary>
         /// Retrieves animal_names based on Species_id
@@ -460,32 +386,7 @@ namespace LionKing.DAL
 
             return animalClass;
         }
-        /// <summary>
-        /// Retrives id for and sets name, and latin name for retrived species.
-        /// </summary>
-        /// <param name="speciesName"></param>
-        /// <returns></returns>
-        public async Task<Species> GetSpeciesId(string speciesName) // 0 references - can we remove?
-        {
-            string stmt = "SELECT * FROM species WHERE species_name = @species_name";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-
-            await using var command = dataSource.CreateCommand(stmt);
-            command.Parameters.AddWithValue("@species_name", speciesName);
-            await using var reader = await command.ExecuteReaderAsync();
-            Species species = new Species();
-            while (await reader.ReadAsync())
-            {
-                species = new Species()
-                {
-                    Species_id = reader.GetInt32(0),
-                    Species_name = (string)reader["species_name"],
-                    Latin_name = ConvertFromDBVal<string>(reader["latin_name"]), // is this possible to use to retrive values from other co0lumns perhaps???
-                    //Class.Class_id = reader.GetInt32(3) // why isn't this possible? Shouldn't i be able to acces class_id via prop AnimalClass Class in species??
-                };
-            }
-            return species;
-        } 
+       
         /// <summary>
         /// Retrives Species_name based on Species_id
         /// </summary>
@@ -513,77 +414,7 @@ namespace LionKing.DAL
             }
             return species;
         }
-        /// <summary>
-        /// Retrives id and sets name for retrived class. 
-        /// </summary>
-        /// <param name="className"></param>
-        /// <returns></returns>
-        public async Task<AnimalClass> GetClassId(string className) // 0 references - can we remove?
-        {
-            string stmt = "SELECT * FROM animal_class WHERE class_name = @class_name";
-            await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-
-            await using var command = dataSource.CreateCommand(stmt);
-            command.Parameters.AddWithValue("@class_name", className);
-            await using var reader = await command.ExecuteReaderAsync();
-            AnimalClass animalClass = new AnimalClass();
-            while (await reader.ReadAsync())
-            {
-                animalClass = new AnimalClass()
-                {
-                    Class_id = reader.GetInt32(0),
-                    Class_name = (string)reader["class_name"]
-                };
-
-            }
-            return animalClass;
-        } 
-        /// <summary>
-        /// Retrieves all animal classes (to be put in combobox in interface)
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public async Task<IEnumerable<AnimalClass>> GetAllAnimalClasses() //I think this can be removed, duplicate - GetAllClasses is used instead
-        {
-            List<AnimalClass> animalClasses = new List<AnimalClass>();
-
-            try
-            {
-                string stmt = "SELECT * FROM animal_class";
-                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-                await using var command = dataSource.CreateCommand(stmt);
-                await using var reader = await command.ExecuteReaderAsync();
-
-                AnimalClass animalClass = new AnimalClass();
-                while (await reader.ReadAsync())
-                {
-                    animalClass = new AnimalClass()
-                    {
-                        Class_id = reader.GetInt32(0),
-                        //Animal_name = (string)reader["animal_name"]
-
-                        // If retrived value is null, transforms into null value in C#
-                        Class_name = ConvertFromDBVal<string>(reader["class_name"])
-                    };
-                }
-                return animalClasses;
-            }
-            catch (PostgresException ex)
-            {
-                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
-                string errorCode = ex.SqlState;
-                switch (errorCode)
-                {
-                    //case PostgresErrorCodes.:
-                    //    errorMessage = "";
-                    //    break;
-                    default:
-                        break;
-                }
-                throw new Exception(errorMessage);
-            }
-        }  
+ 
         /// <summary>
         /// Uses class_id to get all species belonging to that class
         /// </summary>
@@ -614,8 +445,6 @@ namespace LionKing.DAL
 
             return speciesList;
         }
-
-
 
         #endregion
 
