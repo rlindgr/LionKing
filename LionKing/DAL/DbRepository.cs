@@ -257,7 +257,7 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="fetchAnimal"></param>
         /// <returns></returns>
-        public async Task<Animal> GetAnimalByName(string fetchAnimal)
+        public async Task<Animal> GetAnimalByName(string fetchAnimal) // why isn't this method working??
         {
             try
             {
@@ -303,7 +303,7 @@ namespace LionKing.DAL
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Animal> GetAnimal(int id) //Is this two identical methods??
+        public async Task<Animal> GetAnimal(int id) //Is this two identical methods?? also, 0 references - can we remove?
         {
             try
             {
@@ -343,13 +343,13 @@ namespace LionKing.DAL
             }
 
 
-        }
+        } 
         /// <summary>
         /// Retrieves animal_name based on animal_id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Animal> GetAnimalByAnimalId(int id) //Is this two identical methods??
+        public async Task<Animal> GetAnimalByAnimalId(int id) //Is this two identical methods?? also, 0 references - can we remove?
 
         {
             string stmt = "select * from animal where animal_id = @id";
@@ -371,6 +371,7 @@ namespace LionKing.DAL
             }
             return animal;
         }
+        
         /// <summary>
         /// Retrieves animal_names based on Species_id
         /// </summary>
@@ -393,7 +394,9 @@ namespace LionKing.DAL
                 animal = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"]) // Use method for if the name is null. I don't want to change since im unsure if you are still working on it.
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"]), 
+                    Class_id = reader.GetInt32(2),
+                    Species_id = reader.GetInt32(3)
                 };
                 animalList.Add(animal);
 
@@ -401,7 +404,7 @@ namespace LionKing.DAL
             return animalList;
         }
 
-       /// <summary>
+        /// <summary>
        /// Retrives animals based on Class_id.
        /// </summary>
        /// <param name="id"></param>
@@ -462,7 +465,7 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="speciesName"></param>
         /// <returns></returns>
-        public async Task<Species> GetSpeciesId(string speciesName)
+        public async Task<Species> GetSpeciesId(string speciesName) // 0 references - can we remove?
         {
             string stmt = "SELECT * FROM species WHERE species_name = @species_name";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
@@ -482,7 +485,7 @@ namespace LionKing.DAL
                 };
             }
             return species;
-        }
+        } 
         /// <summary>
         /// Retrives Species_name based on Species_id
         /// </summary>
@@ -515,7 +518,7 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="className"></param>
         /// <returns></returns>
-        public async Task<AnimalClass> GetClassId(string className)
+        public async Task<AnimalClass> GetClassId(string className) // 0 references - can we remove?
         {
             string stmt = "SELECT * FROM animal_class WHERE class_name = @class_name";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
@@ -534,14 +537,14 @@ namespace LionKing.DAL
 
             }
             return animalClass;
-        }
+        } 
         /// <summary>
         /// Retrieves all animal classes (to be put in combobox in interface)
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<IEnumerable<AnimalClass>> GetAllAnimalClasses()
+        public async Task<IEnumerable<AnimalClass>> GetAllAnimalClasses() //I think this can be removed, duplicate - GetAllClasses is used instead
         {
             List<AnimalClass> animalClasses = new List<AnimalClass>();
 
@@ -580,7 +583,7 @@ namespace LionKing.DAL
                 }
                 throw new Exception(errorMessage);
             }
-        }
+        }  
         /// <summary>
         /// Uses class_id to get all species belonging to that class
         /// </summary>

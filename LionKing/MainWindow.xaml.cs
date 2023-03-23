@@ -164,6 +164,7 @@ namespace LionKing
             DbRepository db = new();
             var allClasses = await db.GetAllClasses();
             lstAnimalClass.ItemsSource = allClasses;
+            
 
             
         }
@@ -175,7 +176,7 @@ namespace LionKing
         private async void BtnViewSpecies_Click(object sender, RoutedEventArgs e)
         {
             lstAnimalClass.ItemsSource = null;
-            lstAnimal.ItemsSource= null;
+            lstAnimal.ItemsSource = null;
             
             DbRepository db = new();
             var allSpecies = await db.GetAllSpecies();
@@ -195,7 +196,6 @@ namespace LionKing
             var allAnimals = await db.GetAllAnimals();     
             lstAnimal.ItemsSource = allAnimals;
         }
-
         /// <summary>
         /// Event for when user chooses an AnimalClass in listbox in View area
         /// </summary>
@@ -207,6 +207,8 @@ namespace LionKing
             DbRepository db = new DbRepository();
             var matchingSpecies = await db.GetAllSpeciesFromClass(animalClass.Class_id);
             lstSpecies.ItemsSource = matchingSpecies;
+
+            txtCurrentClass.Text = lstAnimalClass.SelectedItem.ToString();
         }
         /// <summary>
         /// Event for when user chooses a Species in listbox in View area
@@ -221,6 +223,8 @@ namespace LionKing
             lstAnimal.ItemsSource = matchingAnimals;
             var matchingClasses = await db.GetClassById(species.Class_id);
             lstAnimalClass.SelectedItem = matchingClasses;  
+
+            txtCurrentSpecies.Text = lstSpecies.SelectedItem.ToString();
         }
         /// <summary>
         /// Presents which Species and Class that a selected Animal belongs to in View area
@@ -232,17 +236,40 @@ namespace LionKing
             lstAnimalClass.ItemsSource = null;
             lstSpecies.ItemsSource = null;
 
-
             Animal animal = (Animal)lstAnimal.SelectedItem;
             DbRepository db = new DbRepository();
             var matchingSpecies = await db.GetSpeciesById(animal.Species_id);
             var matchingClasses = await db.GetClassById(animal.Class_id);
 
+            //List <Species> species = new List<Species>();
+            //species.Add(matchingSpecies); 
+            //lstSpecies.ItemsSource = species;
+
             lstSpecies.Items.Add(matchingSpecies);
             lstAnimalClass.Items.Add(matchingClasses);
 
-        }
+            txtCurrentName.Text = lstAnimal.SelectedItem.ToString();
+            txtCurrentSpecies.Text = matchingSpecies.ToString(); 
+            txtCurrentClass.Text = matchingClasses.ToString();
 
+        }
+        private async void rbtnSortByAsc_Checked(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allAnimals = await db.GetAllAnimals();
+            db.SortAnimalByNameAcs();
+            lstAnimal.ItemsSource = null;
+            lstAnimal.ItemsSource = db.animals;
+        }
+        private async void rbtnSortByDesc_Checked(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            var allAnimals = await db.GetAllAnimals();
+            db.SortAnimalByNameDecs();
+            lstAnimal.ItemsSource = null;
+            lstAnimal.ItemsSource = db.animals;
+
+        }
 
 
         #endregion
@@ -309,30 +336,25 @@ namespace LionKing
         }
         #endregion
 
-        private async void rbtnSortByAsc_Checked(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            var allAnimals = await db.GetAllAnimals();
-            db.SortAnimalByNameAcs(); 
-            lstAnimal.ItemsSource = null;
-            lstAnimal.ItemsSource = db.animals;
-        }
 
-        private async void rbtnSortByDesc_Checked(object sender, RoutedEventArgs e)
-        {
-            DbRepository db = new();
-            var allAnimals = await db.GetAllAnimals();
-            db.SortAnimalByNameDecs();
-            lstAnimal.ItemsSource = null;
-            lstAnimal.ItemsSource = db.animals;
-
-        }
 
         private void btnClearLists_Click(object sender, RoutedEventArgs e)
         {
-            lstAnimalClass.ItemsSource = null;
+            txtGetAnimal.Clear(); 
+            
+            lstAnimalClass.ItemsSource = null; //should itemSource=null or items.Clear  be used? Or could both be needed to empty listboxes?
             lstSpecies.ItemsSource= null;
             lstAnimal.ItemsSource = null;
+            lstAnimalClass.Items.Clear();
+            lstSpecies.Items.Clear();
+            lstAnimal.Items.Clear();
+
+            txtCurrentClass.Clear();
+            txtCurrentSpecies.Clear();
+            txtCurrentName.Clear();
+            cbxEditAnimalClass.ItemsSource = null;
+            cbxEditSpecies.ItemsSource = null;
+            
         }
 
         /// <summary>
