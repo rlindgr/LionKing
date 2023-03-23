@@ -585,6 +585,26 @@ namespace LionKing.DAL
             }
         }
 
+        public async void DeleteAllSpeciesinClass(AnimalClass animalClass)
+        {
+            try
+            {
+                string stmt = "DELETE FROM species WHERE class_id=@class_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
+                await using var reader = await command.ExecuteReaderAsync(); // Reader when i want to delete? why, there are other alternatives??
+
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel, vänligen försök igen";
+                throw new Exception(errorMessage);
+            }
+
+        }
+
         #endregion
 
 
