@@ -342,7 +342,8 @@ namespace LionKing
 
             var animal = (Animal)lstAnimal.SelectedItem;
             AnimalClass newAnimalClass = (AnimalClass)cbxEditAnimalClass.SelectedItem;
-            var updatedClass = await db.UpdateClass(animal, newAnimalClass);
+            var updatedAnimal = await db.UpdateClass(animal, newAnimalClass);
+            var updatedClass = await db.GetClassById(updatedAnimal.Class_id);
 
             string currentAnimalClass = txtCurrentClass.Text;
             string currentSpecies = txtCurrentSpecies.Text;

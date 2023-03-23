@@ -454,22 +454,21 @@ namespace LionKing.DAL
         /// <param name="className"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<AnimalClass> UpdateClass(Animal oldAnimal, AnimalClass newAnimalClass ) //to be updated
+        public async Task<Animal> UpdateClass(Animal oldAnimal, AnimalClass newAnimalClass ) //to be updated
         {
             try
             {               
-                string stmt = "UPDATE animal SET class_name = @class_name WHERE class_id = @class_id";
+                string stmt = "UPDATE animal SET class_id = @class_id WHERE animal_id = @animal_id";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("@class_name", newAnimalClass.Class_name); 
-                command.Parameters.AddWithValue("@class_id", oldAnimal.Class_id);
+                command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id); 
+                command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
                 
-                AnimalClass updatedClass = new AnimalClass();
-                updatedClass.Class_id = (int)await command.ExecuteScalarAsync();
-                updatedClass.Class_name = newAnimalClass.Class_name;
+                Animal updatedAnimal = new Animal();              
+                updatedAnimal.Class_id = newAnimalClass.Class_id;
 
-                return updatedClass;
+                return updatedAnimal;
             }
             catch (PostgresException ex)
             {
