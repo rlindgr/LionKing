@@ -445,6 +445,13 @@ namespace LionKing.DAL
             return speciesList;
         }
 
+        public async void CountAllAnimals()
+        {
+            foreach (var item in collection)
+            {
+
+            }
+        }
         #endregion
 
         #region UPDATE
