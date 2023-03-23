@@ -329,7 +329,6 @@ namespace LionKing.DAL
             }
             return animalList;
         }
-
         /// <summary>
        /// Retrives animals based on Class_id.
        /// </summary>
