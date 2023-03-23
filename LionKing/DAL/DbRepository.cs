@@ -257,15 +257,15 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="fetchAnimal"></param>
         /// <returns></returns>
-        public async Task<Animal> GetAnimalByName(string fetchAnimal) // why isn't this method working??
+        public async Task<Animal> GetAnimalByName(string animalName) // why isn't this method working??
         {
             try
             {
-                string stmt = "SELECT animal_name FROM animal WHERE animal_name=@name";
+                string stmt = "SELECT * FROM animal where animal_name = @name";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
                 await using var command = dataSource.CreateCommand(stmt);
-                command.Parameters.AddWithValue("@name", fetchAnimal);
+                command.Parameters.AddWithValue("@name", animalName);
                 await using var reader = await command.ExecuteReaderAsync();
 
                 Animal animal = new Animal();
@@ -276,7 +276,7 @@ namespace LionKing.DAL
                         Animal_id = reader.GetInt32(0),
                         Animal_name = ConvertFromDBVal<string>(reader["animal_name"]),
                         Class_id = reader.GetInt32(2),
-                        //Species_id = reader.GetInt32(3)
+                        Species_id = reader.GetInt32(3)
                     };
                 }
                 return animal;

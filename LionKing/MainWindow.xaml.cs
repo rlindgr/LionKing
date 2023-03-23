@@ -140,7 +140,7 @@ namespace LionKing
                     lstAnimalClass.Items.Add(matchingClasses);
 
                     txtCurrentClass.Text = matchingClasses.ToString();
-                    txtCreateSpecies.Text = matchingSpecies.ToString();
+                    txtCurrentSpecies.Text = matchingSpecies.ToString();
                     txtCurrentName.Text = GetAnimal;
 
                 }
