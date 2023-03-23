@@ -486,83 +486,9 @@ namespace LionKing.DAL
 
         }
 
-        //public async Task<Species> UpdateSpecies(string speciesName, string speciesLatinName) //to be updated OBS!Should we add latin name?
-        //{
-        //    try
-        //    {
-
-        //        string stmt = "INSERT INTO Species(species_name, latin_name, class_id) VALUES (@species_name, @latin_name, @class_id) RETURNING species_id";
-        //        await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-        //        await using var command = dataSource.CreateCommand(stmt);
-
-        //        command.Parameters.AddWithValue("@species_name", speciesName);
-        //        command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName));
-        //        command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
-
-
-        //        Species newSpecies = new Species();
-        //        newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
-        //        newSpecies.Latin_name = speciesLatinName;
-        //        newSpecies.Species_name = speciesName;
-        //        newSpecies.Class_id = animalClass.Class_id;
-        //        return newSpecies;
-        //    }
-        //    catch (PostgresException ex)
-        //    {
-        //        string errorMessage = "Något gick fel";
-        //        string errorCode = ex.SqlState;
-        //        switch (errorCode)
-        //        {
-        //            case PostgresErrorCodes.UniqueViolation:
-        //                errorMessage = "Denna art finns redan, arten som skapas måste vara unik";
-        //                break;
-        //            case PostgresErrorCodes.NullValueNotAllowed:
-        //                errorMessage = "Du måste ange ett namn för arten du skapar, textrutan för namn får ej lämnas tom";
-        //                break;
-        //        }
-        //        throw new Exception(errorMessage);
-        //    }
-        //}
-
-        //public async Task<Animal> UpdateAnimal(string animalName) //to be updated
-        //{
-        //    try
-        //    {
-        //        string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
-        //        await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-        //        await using var command = dataSource.CreateCommand(stmt);
-
-
-        //        command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
-        //        command.Parameters.AddWithValue("@class_id", species.Class_id);
-        //        command.Parameters.AddWithValue("@species_id", species.Species_id);
-
-
-        //        Animal animal = new Animal();
-        //        animal.Animal_id = (int)await command.ExecuteScalarAsync();
-        //        animal.Animal_name = animalName;
-        //        animal.Species_id = species.Species_id;
-        //        animal.Class_id = species.Class_id;
-        //        return animal;
-        //    }
-        //    catch (PostgresException ex)
-        //    {
-        //        string errorMessage = "Något gick fel";
-        //        string errorCode = ex.SqlState;
-        //        switch (errorCode)
-        //        {
-        //            case PostgresErrorCodes.CharacterNotInRepertoire:
-        //                errorMessage = "Använd endast bokstäver när du anger namnet på ett djur, en art eller en klass"; //When searching for a class or species if a number has been inserted.(?)
-        //                break;
-        //            case PostgresErrorCodes.NullValueNotAllowed: //species txt can't be empty = null.
-        //                errorMessage = "Du måste ange art när du skapar ett nytt djur";
-        //                break;
-        //        }
-        //        throw new Exception(errorMessage);
-        //    }
-        //}
-
         
+
+
 
         #endregion
 
