@@ -485,8 +485,39 @@ namespace LionKing.DAL
             }
 
         }
+        public async Task<Animal> UpdateClassBySpecies(Animal oldAnimal, AnimalClass newAnimalClass) //to be updated
+        {
+            try
+            {
+                string stmt = "UPDATE animal SET class_id = @class_id WHERE species_id = @species_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
 
-        
+                command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id);
+                command.Parameters.AddWithValue("@species_id", oldAnimal.Species_id);
+
+                Animal updatedAnimal = new Animal();
+                updatedAnimal.Class_id = newAnimalClass.Class_id;
+
+                return updatedAnimal;
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    case PostgresErrorCodes.UniqueViolation:
+                        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                        break;
+
+                }
+                throw new Exception(errorMessage);
+            }
+
+        }
+
+
 
 
 

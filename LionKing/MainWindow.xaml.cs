@@ -371,6 +371,35 @@ namespace LionKing
             MessageBox.Show($"Uppdatering genomförd! Djuret {currentName} heter nu {newAnimalName}"); 
 
         }
+        private async void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            Animal oldAnimal = (Animal)lstAnimal.SelectedItem;
+            var oldSpecies = db.GetSpeciesById(oldAnimal.Species_id);
+            var oldAnimalClass = db.GetClassById(oldAnimal.Class_id);
+            string newName = txtEditName.Text;
+            AnimalClass newClass = (AnimalClass)cbxEditAnimalClass.SelectedItem;
+            Species newSpecies = (Species)cbxEditSpecies.SelectedItem;
+            
+            if (oldAnimal.Class_id == newClass.Class_id)
+            {
+
+            }
+            if (oldAnimal.Species_id == newSpecies.Species_id || oldAnimal.Class_id != newClass.Class_id)
+            {
+                var allAnimalsInSpecies = await db.GetAnimalsBySpeciesId(oldAnimal.Species_id);
+                if (allAnimalsInSpecies != null)
+                {
+                    var answer = MessageBox.Show($"Du kan inte ändra klasstillhörigheten för {oldAnimal} eftersom det finns fler djur i {oldSpecies}, vill du ändra klasstillhörigheten för alla djur av arten {oldSpecies}?", "Otilåten ändring av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                    if (answer == MessageBoxResult.Yes)
+                    {
+                        db.UpdateClassBySpecies(oldAnimal, newClass);
+                    }
+                }
+            }
+           
+
+        }
 
         #endregion
 
@@ -570,6 +599,8 @@ namespace LionKing
             catch (Exception ex)
             { MessageBox.Show(ex.Message); }
         }
+
+       
     }
 
     
