@@ -40,7 +40,7 @@
         <Button x:Name="btnRemoveAnimal" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="39,455,0,0" VerticalAlignment="Top" Width="110" Click="btnRemoveAnimal_Click"/>
         <Label Content="Antal djur i djurriket" HorizontalAlignment="Left" Height="30" Margin="24,566,0,0" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="16"/>
         <ListBox x:Name="lstPopulation" HorizontalAlignment="Left" Height="148" Margin="199,598,0,0" VerticalAlignment="Top" Width="293" d:ItemsSource="{d:SampleData ItemCount=5}"/>
-        <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="33,604,0,0" VerticalAlignment="Top" Width="105"/>
+        <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="33,604,0,0" VerticalAlignment="Top" Width="105" Checked="btnPopulation_Checked"/>
         <RadioButton x:Name="btnSortByClass" Content="Sortera efter djurklass" HorizontalAlignment="Left" Height="18" Margin="33,626,0,0" VerticalAlignment="Top" Width="138"/>
         <Label Content="Hitta" HorizontalAlignment="Left" Height="28" Margin="579,18,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold" FontSize="16"/>
         <Label Content="Ändra ett djur" HorizontalAlignment="Left" Height="34" Margin="761,459,0,0" VerticalAlignment="Top" Width="118" FontWeight="Bold" FontSize="16"/>

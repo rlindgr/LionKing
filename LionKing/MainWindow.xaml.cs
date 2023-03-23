@@ -399,23 +399,44 @@ namespace LionKing
 
         private async void cbxRemoveAnimal_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db = new DbRepository();
-            var getAllAnimals = await db.GetAllAnimals();
-            cbxRemoveAnimal.ItemsSource = getAllAnimals;
+            try
+            {
+                DbRepository db = new DbRepository();
+                var getAllAnimals = await db.GetAllAnimals();
+                cbxRemoveAnimal.ItemsSource = null;
+                cbxRemoveAnimal.ItemsSource = getAllAnimals;
+                
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
+            
         }
 
         private async void cbxRemoveClass_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db = new DbRepository();
-            var getAllClasses = await db.GetAllClasses();
-            cbxRemoveClass.ItemsSource = getAllClasses;
+            try
+            {
+
+                DbRepository db = new DbRepository();
+                var getAllClasses = await db.GetAllClasses();
+                cbxRemoveClass.ItemsSource = null;
+                cbxRemoveClass.ItemsSource = getAllClasses;
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
         }
 
         private async void cbxRemoveSpecies_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db = new DbRepository();
-            var getAllSpecies = await db.GetAllSpecies();
-            cbxRemoveSpecies.ItemsSource = getAllSpecies;
+            try
+            {
+                DbRepository db = new DbRepository();
+                var getAllSpecies = await db.GetAllSpecies();
+                cbxRemoveSpecies.ItemsSource = null;
+                cbxRemoveSpecies.ItemsSource = getAllSpecies;
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
         }
         #endregion
 
@@ -506,6 +527,12 @@ namespace LionKing
 
         }
 
+        private async void btnPopulation_Checked(object sender, RoutedEventArgs e)
+        {
+            DbRepository db = new();
+            
+
+        }
     }
 
     
