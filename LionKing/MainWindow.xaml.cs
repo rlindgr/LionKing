@@ -405,6 +405,10 @@ namespace LionKing
 
         }
 
+        private void btnRemoveAnimalClass_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     
