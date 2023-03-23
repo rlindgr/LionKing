@@ -41,9 +41,17 @@ namespace LionKing
         /// <param name="e"></param>
         private async void cbxSelectClass_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db = new();
-            var selectClass = await db.GetAllClasses();
-            cbxSelectClass.ItemsSource = selectClass; 
+            try
+            {
+                DbRepository db = new();
+                var selectClass = await db.GetAllClasses();
+                cbxSelectClass.ItemsSource = null;
+                cbxSelectClass.ItemsSource = selectClass;
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         /// <summary>
         /// Presents all Species in combobox in Create area
@@ -52,9 +60,19 @@ namespace LionKing
         /// <param name="e"></param>
         private async void cbxSelectSpecies_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db = new();
-            var allSpecies = await db.GetAllSpecies();
-            cbxSelectSpecies.ItemsSource = allSpecies;
+            try
+            {
+                DbRepository db = new();
+                var allSpecies = await db.GetAllSpecies();
+                cbxSelectSpecies.ItemsSource = null;
+                cbxSelectSpecies.ItemsSource = allSpecies;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
         }
 
         /// <summary>
@@ -64,25 +82,43 @@ namespace LionKing
         /// <param name="e"></param>
         private async void btnCreateClass_Click(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            var newClass = await db.AddClass(txtCreateClass.Text);
-            MessageBox.Show($"Djurklassen {newClass} har skapats och lagts till i databasen");
-            lstAnimalClass.ItemsSource= null;
-            var selectClass = await db.GetAllClasses();
-            lstAnimalClass.ItemsSource = selectClass;
+            try
+            {
+                DbRepository db = new();
+                var newClass = await db.AddClass(txtCreateClass.Text);
+                MessageBox.Show($"Djurklassen {newClass} har skapats och lagts till i databasen");
+                txtCreateClass.Clear();
+                lstAnimalClass.ItemsSource = null;
+                var allClasses = await db.GetAllClasses();
+                lstAnimalClass.ItemsSource = allClasses;
+            }
+            catch (Exception ex)  
+            {
+                MessageBox.Show(ex.Message );
+            }
 
 
         }
 
         private async void btnCreateSpecies_Click(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            string speciesName = txtCreateSpecies.Text;
-            string latinName = txtLatinName.Text;
-            AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem;
-            var newSpecies = await db.AddSpecies(speciesName, latinName, selectedClass);
-            
-            MessageBox.Show($"Djurarten {newSpecies} har skapats och lagts till i klassen {selectedClass}");
+            try
+            {
+                DbRepository db = new();
+                string speciesName = txtCreateSpecies.Text;
+                string latinName = txtLatinName.Text;
+                AnimalClass selectedClass = (AnimalClass)cbxSelectClass.SelectedItem;
+                var newSpecies = await db.AddSpecies(speciesName, latinName, selectedClass);
+                lstSpecies.ItemsSource = null;
+                MessageBox.Show($"Djurarten {newSpecies} har skapats och lagts till i klassen {selectedClass}");
+                txtCreateSpecies.Clear();
+                txtLatinName.Clear();
+                cbxSelectClass.ItemsSource = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             
             
            
@@ -95,16 +131,26 @@ namespace LionKing
         /// <param name="e"></param>
         private async void btnCreateAnimal_Click(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            string animalName = txtCreateAnimal.Text;
-            Species selectedSpecies = (Species)cbxSelectSpecies.SelectedItem;
-            
-            var newAnimal = await db.AddAnimal(animalName, selectedSpecies);
-            var className = await db.GetClassById(newAnimal.Class_id);
+            try
+            {
+                DbRepository db = new();
+                string animalName = txtCreateAnimal.Text;
+                Species selectedSpecies = (Species)cbxSelectSpecies.SelectedItem;
 
-            MessageBox.Show($"Djuret {newAnimal} har lagts till i databasen som en/ett {selectedSpecies} som tillhör {className}"); 
-            
+                var newAnimal = await db.AddAnimal(animalName, selectedSpecies);
+                var className = await db.GetClassById(newAnimal.Class_id);
 
+                MessageBox.Show($"Djuret {newAnimal} har lagts till i databasen som en/ett {selectedSpecies} som tillhör {className}");
+                txtCreateAnimal.Clear();
+                cbxSelectSpecies.ItemsSource = null;
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+          
         }
 
 
@@ -331,13 +377,22 @@ namespace LionKing
 
         private async void btnRemoveAnimal_Click(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            var selectedAnimal = (Animal)cbxRemoveAnimal.SelectedItem;
-            var deletedAnimal = await db.DeleteAnimal(selectedAnimal);
-            var animalClass = await db.GetClassById(selectedAnimal.Class_id);
-            var animalSpecies = await db.GetSpeciesById(selectedAnimal.Species_id);
-            MessageBox.Show($"Du har nu tagit bort djuret {selectedAnimal} som är en/ett {animalSpecies} som tillhör {animalClass} från databasen");
+            try
+            {
+                DbRepository db = new();
+                var selectedAnimal = (Animal)cbxRemoveAnimal.SelectedItem;
+                var deletedAnimal = await db.DeleteAnimal(selectedAnimal);
+                var animalClass = await db.GetClassById(selectedAnimal.Class_id);
+                var animalSpecies = await db.GetSpeciesById(selectedAnimal.Species_id);
+                MessageBox.Show($"Du har nu tagit bort djuret {selectedAnimal} som är en/ett {animalSpecies} som tillhör {animalClass} från databasen");
 
+            }
+            catch (Exception ex)
+            { 
+                MessageBox.Show(ex.Message);
+                
+            }
+           
 
         }
 
@@ -384,59 +439,69 @@ namespace LionKing
             
         }
 
-        /// <summary>
-        /// Removes selcted species and anmilas belonging to it 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void btnRemoveSpecies_Click(object sender, RoutedEventArgs e)
+      
+        private async void btnRemoveAnimalClass_Click(object sender, RoutedEventArgs e)
         {
-            // create list with all animals in said class, if there are any. Are you sure about this..?
-            DbRepository db = new();
-            var selectedSpecies = (Species)cbxRemoveSpecies.SelectedItem;
-            var animalsBySpecies = await db.GetAnimalsBySpeciesId(selectedSpecies.Species_id);
-            if (animalsBySpecies != null)
+            try
             {
-                MessageBox.Show($"Du kan inte ta bort en klass som inhåller djur. Du måste först radera alla djur som tillhör denna klassen");
-                //if (true) // add some way of making it possible to choose in messagebox yes/no.
-                //{
-                    db.DeleteAllAnimalsInSpecies(selectedSpecies);
-                    db.DeleteSpecies(selectedSpecies);
-                //}
-
-                var answer = MessageBox.Show("Vill du", "Varning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
-                if(answer == MessageBoxResult.Yes) 
+                DbRepository db = new();
+                var selectedAnimalClass = (AnimalClass)cbxRemoveClass.SelectedItem;
+                var animalsByClass = await db.GetAnimalsByClassId(selectedAnimalClass.Class_id);
+                var speciesByClass = await db.GetAllSpeciesFromClass(selectedAnimalClass.Class_id);
+                if (animalsByClass != null || speciesByClass != null)
                 {
-                
-                }
+                    var answer = MessageBox.Show("Du kan inte radera en klass som inehåller arter och/eller djur utan att först ta bort alla djuren och/eller arterna. Vill du göra det?", "Otilåten radering av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                    if (answer == MessageBoxResult.Yes)
+                    {
+                        db.DeleteAllAnimalsInClass(selectedAnimalClass); // if there are animals but no class, do i get an error trying to erase both?
+                        db.DeleteAllSpeciesinClass(selectedAnimalClass);
+                        db.DeleteAnimalClass(selectedAnimalClass);
+                        MessageBox.Show($"Du har tagit bort {selectedAnimalClass} samt arter och djur som tillhör den");
 
-                    
+                    }
+                }
+                else
+                {
+                    db.DeleteAnimalClass(selectedAnimalClass);
+                    MessageBox.Show($"Du har nu tagit bort {selectedAnimalClass}");
+                }
             }
-            else
+            catch (Exception ex) 
             {
-                db.DeleteSpecies(selectedSpecies);
+                MessageBox.Show(ex.Message);
             }
+
         }
 
-        private async void btnRemove_Copy1_Click(object sender, RoutedEventArgs e)
+        private async void btnRemoveSpecies_Click_1(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            var selectedAnimalClass = (AnimalClass)cbxRemoveClass.SelectedItem;
-            var animalsByClass = await db.GetAnimalsByClassId(selectedAnimalClass.Class_id);
-            if (animalsByClass != null)
+            try
             {
-                MessageBox.Show($"Du kan inte ta bort en klass som inhåller djur. Du måste först radera alla djur som tillhör denna klassen");
-                //if (true) // add some way of making it possible to choose in messagebox yes/no.
-                //{
-                db.DeleteAllAnimalsInClass(selectedAnimalClass);
-                db.DeleteAnimalClass(selectedAnimalClass);
-                MessageBox.Show($"Du har nu tgait bort klassen {selectedAnimalClass} och alla tillhörande djur från databasen");
+                DbRepository db = new();
+                var selectedSpecies = (Species)cbxRemoveSpecies.SelectedItem;
+                var animalsBySpecies = await db.GetAnimalsBySpeciesId(selectedSpecies.Species_id);
+                if (animalsBySpecies != null)
+                {
+                    var answer = MessageBox.Show("Du kan inte radera en art som inehåller djur utan att först ta bort alla djuren. Vill du göra det?", "Otilåten radering av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                    if (answer == MessageBoxResult.Yes)
+                    {
+                        db.DeleteAllAnimalsInSpecies(selectedSpecies);
+                        db.DeleteSpecies(selectedSpecies);
+                        MessageBox.Show($"Du har nu tagit bort {selectedSpecies} och alla tillhörande djur");
+                    }
+
+                }
+                else
+                {
+                    db.DeleteSpecies(selectedSpecies);
+                    MessageBox.Show($"Du har nu tagit bort {selectedSpecies}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                db.DeleteAnimalClass(selectedAnimalClass);
-                MessageBox.Show($"Du har nu tagit bort {selectedAnimalClass} från databsen");
+                MessageBox.Show(ex.Message); 
             }
+
 
         }
 
