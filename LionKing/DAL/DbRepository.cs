@@ -179,7 +179,7 @@ namespace LionKing.DAL
         {
 
             animalClasses.Clear();
-            string stmt = "SELECT * FROM Animal_class1";
+            string stmt = "SELECT * FROM Animal_class";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
             await using var command = dataSource.CreateCommand(stmt);
             await using var reader = await command.ExecuteReaderAsync();
@@ -261,7 +261,7 @@ namespace LionKing.DAL
         {
             try
             {
-                string stmt = "SELECT * FROM animal where animal_name = @name";
+                string stmt = "SELECT * FROM animal WHERE animal_name = @name";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
                 await using var command = dataSource.CreateCommand(stmt);
@@ -307,7 +307,7 @@ namespace LionKing.DAL
         {
             List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
-            string stmt = "select * from animal where species_id = @id";
+            string stmt = "SELECT * FROM animal WHERE species_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
             await using var command = dataSource.CreateCommand(stmt);
@@ -338,7 +338,7 @@ namespace LionKing.DAL
         {
             List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
-            string stmt = "SELECT * FROM animal where class_id = @id";
+            string stmt = "SELECT * FROM animal WHERE class_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
             await using var command = dataSource.CreateCommand(stmt);
@@ -448,6 +448,122 @@ namespace LionKing.DAL
         #endregion
 
         #region UPDATE
+        /// <summary>
+        /// Takes new AnimalClass from interface and updates database
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<AnimalClass> UpdateClass(Animal oldAnimal, AnimalClass newAnimalClass ) //to be updated
+        {
+            try
+            {               
+                string stmt = "UPDATE animal SET class_name = @class_name WHERE class_id = @class_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@class_name", newAnimalClass.Class_name); 
+                command.Parameters.AddWithValue("@class_id", oldAnimal.Class_id);
+                
+                AnimalClass updatedClass = new AnimalClass();
+                updatedClass.Class_id = (int)await command.ExecuteScalarAsync();
+                updatedClass.Class_name = newAnimalClass.Class_name;
+
+                return updatedClass;
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    case PostgresErrorCodes.UniqueViolation:
+                        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                        break;
+
+                }
+                throw new Exception(errorMessage);
+            }
+
+        }
+
+        //public async Task<Species> UpdateSpecies(string speciesName, string speciesLatinName) //to be updated OBS!Should we add latin name?
+        //{
+        //    try
+        //    {
+
+        //        string stmt = "INSERT INTO Species(species_name, latin_name, class_id) VALUES (@species_name, @latin_name, @class_id) RETURNING species_id";
+        //        await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+        //        await using var command = dataSource.CreateCommand(stmt);
+
+        //        command.Parameters.AddWithValue("@species_name", speciesName);
+        //        command.Parameters.AddWithValue("@latin_name", ConvertToDBValue<string>(speciesLatinName));
+        //        command.Parameters.AddWithValue("@class_id", animalClass.Class_id);
+
+
+        //        Species newSpecies = new Species();
+        //        newSpecies.Species_id = (int)await command.ExecuteScalarAsync();
+        //        newSpecies.Latin_name = speciesLatinName;
+        //        newSpecies.Species_name = speciesName;
+        //        newSpecies.Class_id = animalClass.Class_id;
+        //        return newSpecies;
+        //    }
+        //    catch (PostgresException ex)
+        //    {
+        //        string errorMessage = "Något gick fel";
+        //        string errorCode = ex.SqlState;
+        //        switch (errorCode)
+        //        {
+        //            case PostgresErrorCodes.UniqueViolation:
+        //                errorMessage = "Denna art finns redan, arten som skapas måste vara unik";
+        //                break;
+        //            case PostgresErrorCodes.NullValueNotAllowed:
+        //                errorMessage = "Du måste ange ett namn för arten du skapar, textrutan för namn får ej lämnas tom";
+        //                break;
+        //        }
+        //        throw new Exception(errorMessage);
+        //    }
+        //}
+
+        //public async Task<Animal> UpdateAnimal(string animalName) //to be updated
+        //{
+        //    try
+        //    {
+        //        string stmt = "INSERT INTO Animal(animal_name, class_id, species_id) VALUES (@animal_name, @class_id, @species_id) RETURNING animal_id";
+        //        await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+        //        await using var command = dataSource.CreateCommand(stmt);
+
+
+        //        command.Parameters.AddWithValue("@animal_name", ConvertToDBValue<string>(animalName)); // not sure this is the right way to do this?? How does c# cope with unfilled boxes?
+        //        command.Parameters.AddWithValue("@class_id", species.Class_id);
+        //        command.Parameters.AddWithValue("@species_id", species.Species_id);
+
+
+        //        Animal animal = new Animal();
+        //        animal.Animal_id = (int)await command.ExecuteScalarAsync();
+        //        animal.Animal_name = animalName;
+        //        animal.Species_id = species.Species_id;
+        //        animal.Class_id = species.Class_id;
+        //        return animal;
+        //    }
+        //    catch (PostgresException ex)
+        //    {
+        //        string errorMessage = "Något gick fel";
+        //        string errorCode = ex.SqlState;
+        //        switch (errorCode)
+        //        {
+        //            case PostgresErrorCodes.CharacterNotInRepertoire:
+        //                errorMessage = "Använd endast bokstäver när du anger namnet på ett djur, en art eller en klass"; //When searching for a class or species if a number has been inserted.(?)
+        //                break;
+        //            case PostgresErrorCodes.NullValueNotAllowed: //species txt can't be empty = null.
+        //                errorMessage = "Du måste ange art när du skapar ett nytt djur";
+        //                break;
+        //        }
+        //        throw new Exception(errorMessage);
+        //    }
+        //}
+
+        
 
         #endregion
 
