@@ -305,7 +305,7 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<Animal>> GetAnimalsBySpeciesId(int id)
         {
-            List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
+            //List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
             string stmt = "SELECT * FROM animal WHERE species_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
@@ -324,10 +324,10 @@ namespace LionKing.DAL
                     Class_id = reader.GetInt32(2),
                     Species_id = reader.GetInt32(3)
                 };
-                animalList.Add(animal);
+                animals.Add(animal);
 
             }
-            return animalList;
+            return animals;
         }
         /// <summary>
        /// Retrives animals based on Class_id.
@@ -445,13 +445,6 @@ namespace LionKing.DAL
             return speciesList;
         }
 
-        public async void CountAllAnimals()
-        {
-            foreach (var item in collection)
-            {
-
-            }
-        }
         #endregion
 
         #region UPDATE

@@ -529,9 +529,46 @@ namespace LionKing
 
         private async void btnPopulation_Checked(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            
+            try
+            {
+                DbRepository db = new();
+                await db.GetAllSpecies();
+                var numOfSpecies = db.specieslist.Count;
+                txtPopulation.Text = ($"Det finns totalt {numOfSpecies.ToString()}st arter i kungariket");
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
 
+        }
+
+        private async void cbxPopulationBySpecies_DropDownOpened(object sender, EventArgs e)
+        {
+            try
+            {
+                DbRepository db = new();
+                var allSpecies = await db.GetAllSpecies();
+                cbxPopulationBySpecies.ItemsSource = null;
+                cbxPopulationBySpecies.ItemsSource = allSpecies; ;
+
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
+        }
+
+        private async void btnCountPopulation_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Species species = (Species)cbxPopulationBySpecies.SelectedItem;
+                DbRepository db = new DbRepository();
+                await db.GetAnimalsBySpeciesId(species.Species_id);  
+                var numOfAnimalsInSpecies = db.animals.Count;
+
+                txtPopulation.Text = ($"Det finns totalt {numOfAnimalsInSpecies.ToString()}st djur av arten {species}"); 
+
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
         }
     }
 

@@ -24,7 +24,6 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="220" Margin="5,6,0,0" VerticalAlignment="Top" Width="154">
             <Button x:Name="btnCreateClass" Content="Skapa" HorizontalAlignment="Center" Height="38" Margin="0,171,0,0" VerticalAlignment="Top" Width="126" Click="btnCreateClass_Click"/>
         </Border>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="192" Margin="25,566,0,0" VerticalAlignment="Top" Width="480"/>
         <Label Content="Ange namn (valfritt)" HorizontalAlignment="Left" Height="28" Margin="333,35,0,0" VerticalAlignment="Top" Width="133"/>
         <Label Content="Ange namn på art" HorizontalAlignment="Left" Height="26" Margin="169,37,0,0" VerticalAlignment="Top" Width="110"/>
         <Label Content="Ange namn på klass" HorizontalAlignment="Left" Height="30" Margin="11,43,0,0" VerticalAlignment="Top" Width="122"/>
@@ -39,9 +38,7 @@
         <ComboBox x:Name="cbxRemoveAnimal" HorizontalAlignment="Left" Height="38" Margin="36,389,0,0" VerticalAlignment="Top" Width="126" DropDownOpened="cbxRemoveAnimal_DropDownOpened"/>
         <Button x:Name="btnRemoveAnimal" Content="Ta bort" HorizontalAlignment="Left" Height="28" Margin="39,455,0,0" VerticalAlignment="Top" Width="110" Click="btnRemoveAnimal_Click"/>
         <Label Content="Antal djur i djurriket" HorizontalAlignment="Left" Height="30" Margin="24,566,0,0" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="16"/>
-        <ListBox x:Name="lstPopulation" HorizontalAlignment="Left" Height="148" Margin="199,598,0,0" VerticalAlignment="Top" Width="293" d:ItemsSource="{d:SampleData ItemCount=5}"/>
         <RadioButton x:Name="btnPopulation" Content="Total population" HorizontalAlignment="Left" Height="18" Margin="33,604,0,0" VerticalAlignment="Top" Width="105" Checked="btnPopulation_Checked"/>
-        <RadioButton x:Name="btnSortByClass" Content="Sortera efter djurklass" HorizontalAlignment="Left" Height="18" Margin="33,626,0,0" VerticalAlignment="Top" Width="138"/>
         <Label Content="Hitta" HorizontalAlignment="Left" Height="28" Margin="579,18,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold" FontSize="16"/>
         <Label Content="Ändra ett djur" HorizontalAlignment="Left" Height="34" Margin="761,459,0,0" VerticalAlignment="Top" Width="118" FontWeight="Bold" FontSize="16"/>
         <TextBox x:Name="txtGetAnimal" HorizontalAlignment="Left" Height="28" Margin="581,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151"/>
@@ -93,5 +90,8 @@
         <Label x:Name="lblAddNewName" Content="Ange nytt namn" HorizontalAlignment="Left" Height="30" Margin="1170,548,0,0" VerticalAlignment="Top" Width="173"/>
         <Button x:Name="btnEditSpecies" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="964,642,0,0" VerticalAlignment="Top" Width="177" Click="btnEditSpecies_Click"/>
         <Button x:Name="btnEditAnimalClass" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="761,642,0,0" VerticalAlignment="Top" Width="174" Click="btnEditAnimalClass_Click"/>
+        <TextBox x:Name="txtPopulation" HorizontalAlignment="Left" Height="96" Margin="325,596,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="268"/>
+        <ComboBox x:Name="cbxPopulationBySpecies" HorizontalAlignment="Left" Height="42" Margin="22,651,0,0" VerticalAlignment="Top" Width="215" DropDownOpened="cbxPopulationBySpecies_DropDownOpened"/>
+        <Button x:Name="btnCountPopulation" Content="Räkna djur" HorizontalAlignment="Left" Height="49" Margin="23,716,0,0" VerticalAlignment="Top" Width="210" Click="btnCountPopulation_Click"/>
     </Grid>
 </Window>
