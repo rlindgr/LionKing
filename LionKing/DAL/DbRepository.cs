@@ -179,7 +179,7 @@ namespace LionKing.DAL
         {
 
             animalClasses.Clear();
-            string stmt = "SELECT * FROM Animal_class";
+            string stmt = "SELECT * FROM Animal_class1";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
             await using var command = dataSource.CreateCommand(stmt);
             await using var reader = await command.ExecuteReaderAsync();

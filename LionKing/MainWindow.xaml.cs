@@ -376,6 +376,14 @@ namespace LionKing
                     db.DeleteAllAnimalsInSpecies(selectedSpecies);
                     db.DeleteSpecies(selectedSpecies);
                 //}
+
+                var answer = MessageBox.Show("Vill du", "Varning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                if(answer == MessageBoxResult.Yes) 
+                {
+                
+                }
+
+                    
             }
             else
             {
