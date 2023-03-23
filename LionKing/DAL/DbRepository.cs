@@ -261,7 +261,7 @@ namespace LionKing.DAL
         {
             try
             {
-                string stmt = "SELECT * FROM animal where animal_name = @name";
+                string stmt = "SELECT * FROM animal WHERE animal_name = @name";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
                 await using var command = dataSource.CreateCommand(stmt);
@@ -307,7 +307,7 @@ namespace LionKing.DAL
         {
             List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
-            string stmt = "select * from animal where species_id = @id";
+            string stmt = "SELECT * FROM animal WHERE species_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
             await using var command = dataSource.CreateCommand(stmt);
@@ -338,7 +338,7 @@ namespace LionKing.DAL
         {
             List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
-            string stmt = "SELECT * FROM animal where class_id = @id";
+            string stmt = "SELECT * FROM animal WHERE class_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
 
             await using var command = dataSource.CreateCommand(stmt);
@@ -455,6 +455,47 @@ namespace LionKing.DAL
         #endregion
 
         #region UPDATE
+        /// <summary>
+        /// Takes new AnimalClass from interface and updates database
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Animal> UpdateClass(Animal oldAnimal, AnimalClass newAnimalClass ) //to be updated
+        {
+            try
+            {               
+                string stmt = "UPDATE animal SET class_id = @class_id WHERE animal_id = @animal_id";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id); 
+                command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
+                
+                Animal updatedAnimal = new Animal();              
+                updatedAnimal.Class_id = newAnimalClass.Class_id;
+
+                return updatedAnimal;
+            }
+            catch (PostgresException ex)
+            {
+                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                string errorCode = ex.SqlState;
+                switch (errorCode)
+                {
+                    case PostgresErrorCodes.UniqueViolation:
+                        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                        break;
+
+                }
+                throw new Exception(errorMessage);
+            }
+
+        }
+
+        
+
+
 
         #endregion
 

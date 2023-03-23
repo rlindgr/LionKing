@@ -63,7 +63,7 @@
                 </TransformGroup>
             </ComboBox.RenderTransform>
         </ComboBox>
-        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="1169,642,0,0" VerticalAlignment="Top" Width="174" Click="btnEdit_Click"/>
+        <Button x:Name="btnEdit" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="1169,642,0,0" VerticalAlignment="Top" Width="174"/>
         <Label x:Name="lblCreateSpecies" Content="Skapa ny art" HorizontalAlignment="Left" Height="40" Margin="165,12,0,0" VerticalAlignment="Top" Width="154" FontWeight="Bold" FontSize="16"/>
         <ComboBox x:Name="cbxSelectClass" HorizontalAlignment="Left" Height="37" Margin="173,199,0,0" VerticalAlignment="Top" Width="140" DropDownOpened="cbxSelectClass_DropDownOpened"/>
         <Label Content="Ange klasstillhörighet" HorizontalAlignment="Left" Height="28" Margin="169,169,0,0" VerticalAlignment="Top" Width="128"/>
@@ -91,5 +91,7 @@
         <Label x:Name="lblSelectNewAnimalClass" Content="Ange ny djurklass" HorizontalAlignment="Left" Height="30" Margin="761,548,0,0" VerticalAlignment="Top" Width="172"/>
         <Label x:Name="lblSelectNewSpecies" Content="Ange ny art" HorizontalAlignment="Left" Height="30" Margin="964,548,0,0" VerticalAlignment="Top" Width="177"/>
         <Label x:Name="lblAddNewName" Content="Ange nytt namn" HorizontalAlignment="Left" Height="30" Margin="1170,548,0,0" VerticalAlignment="Top" Width="173"/>
+        <Button x:Name="btnEditSpecies" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="964,642,0,0" VerticalAlignment="Top" Width="177" Click="btnEditSpecies_Click"/>
+        <Button x:Name="btnEditAnimalClass" Content="Ändra" HorizontalAlignment="Left" Height="39" Margin="761,642,0,0" VerticalAlignment="Top" Width="174" Click="btnEditAnimalClass_Click"/>
     </Grid>
 </Window>

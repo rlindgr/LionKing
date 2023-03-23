@@ -327,7 +327,6 @@ namespace LionKing
             DbRepository db = new();
             var selectClass = await db.GetAllClasses();
             cbxEditAnimalClass.ItemsSource = selectClass;
-
         }
 
         private async void cbxEditSpecies_DropDownOpened(object sender, EventArgs e)
@@ -337,10 +336,39 @@ namespace LionKing
             cbxEditSpecies.ItemsSource = allSpecies;
         }
 
-        //first draft of edit animal function
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        private async void btnEditAnimalClass_Click(object sender, RoutedEventArgs e)
+        {     
+            DbRepository db = new();
+
+            var animal = (Animal)lstAnimal.SelectedItem;
+            AnimalClass newAnimalClass = (AnimalClass)cbxEditAnimalClass.SelectedItem;
+            var updatedAnimal = await db.UpdateClass(animal, newAnimalClass);
+            var updatedClass = await db.GetClassById(updatedAnimal.Class_id);
+
+            string currentAnimalClass = txtCurrentClass.Text;
+            string currentSpecies = txtCurrentSpecies.Text;
+            string currentName = txtCurrentName.Text;
+
+            MessageBox.Show($"Uppdatering genomförd! {currentName} som är en {currentSpecies} tillhör nu djurklassen {updatedClass}"); 
+        }
+
+
+        private void btnEditSpecies_Click(object sender, RoutedEventArgs e)
         {
+            string currentSpecies = txtCurrentSpecies.Text;
+            Species newSpecies = (Species)cbxEditSpecies.SelectedItem;
+
+            MessageBox.Show($"Uppdatering genomförd! Djurnamn är nu en artX"); 
+        }
+
+        //first draft of edit animal function
+        private void btnEditAnimalName_Click(object sender, RoutedEventArgs e)
+        {
+
+            string currentName = txtCurrentName.Text;
             string newAnimalName = txtEditName.Text;
+
+            MessageBox.Show($"Uppdatering genomförd! Djuret {currentName} heter nu {newAnimalName}"); 
 
         }
 
