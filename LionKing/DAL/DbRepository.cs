@@ -732,7 +732,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel, djuren i djurarten har inte raderats, vänligen försök igen";
+                string errorMessage = "Något gick fel, djurarten har inte raderats, vänligen försök igen";
                 throw new Exception (errorMessage);
             }
         }
