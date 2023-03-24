@@ -457,34 +457,36 @@ namespace LionKing
             string newName = txtEditName.Text;
             AnimalClass newClass = (AnimalClass)cbxEditAnimalClass.SelectedItem;
             Species newSpecies = (Species)cbxEditSpecies.SelectedItem;
-            
-            
-            //if (oldAnimal.Species_id == newSpecies.Species_id || oldAnimal.Class_id != newClass.Class_id && newClass != null)
-            //{
-            //    var allAnimalsInSpecies = await db.GetAnimalsBySpeciesId(oldAnimal.Species_id);
-            //    if (allAnimalsInSpecies != null)
-            //    {
-            //        var answer = MessageBox.Show($"Du kan inte ändra klasstillhörigheten för {oldAnimal} eftersom det finns fler djur i {oldSpecies}, vill du ändra klasstillhörigheten för alla djur av arten {oldSpecies}?", "Otilåten ändring av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-            //        if (answer == MessageBoxResult.Yes)
-            //        {
-            //            db.UpdateClassBySpecies(oldAnimal, newClass);
-            //            db.UpdateAnimalName(oldAnimal, newName);
-                       
-            //        }
-            //    }
-            //}
-            //else
-            //{
-                //Animal updatedAnimalName = new Animal();
-                var firstUpdate= await db.UpdateAnimalName(oldAnimal, newName);
+
+
+            if (newClass != null && newSpecies == null)
+            {
+                var allAnimalsInSpecies = await db.GetAnimalsBySpeciesId(oldAnimal.Species_id);
+                if (allAnimalsInSpecies != null)
+                {
+                    var answer = MessageBox.Show($"Du kan inte ändra klasstillhörigheten för {oldAnimal} eftersom det finns fler djur i {oldSpecies}, vill du ändra klasstillhörigheten för alla djur av arten {oldSpecies}?", "Otilåten ändring av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                    if (answer == MessageBoxResult.Yes)
+                    {
+                        var firstUpdate = await db.UpdateClassBySpecies(oldAnimal, newClass);
+                        var finalUpdate = await db.UpdateAnimalName(firstUpdate, newName);
+
+                    }
+                }
+
+            }
+            else
+            {
+                var firstUpdate = await db.UpdateAnimalName(oldAnimal, newName);
                 var secondUpdate = await db.UpdateClass(firstUpdate, newClass);
-                var finalUpdate= await db.UpdateSpecies(secondUpdate, newSpecies);
+                var finalUpdate = await db.UpdateSpecies(secondUpdate, newSpecies);
 
                 var species = await db.GetSpeciesById(finalUpdate.Species_id);
                 var AnimalClass = await db.GetClassById(finalUpdate.Class_id);
                 MessageBox.Show($"Uppdatering genomförd: {finalUpdate}, {species}, {AnimalClass}");
+            }
+                
 
-            //}
+            
            
 
         }

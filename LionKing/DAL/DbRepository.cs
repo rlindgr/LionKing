@@ -466,6 +466,7 @@ namespace LionKing.DAL
 
                     command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id);
                     command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
+                    await using var reader = await command.ExecuteReaderAsync();
 
                     Animal updatedAnimal = new Animal();
                     updatedAnimal.Class_id = newAnimalClass.Class_id;
@@ -512,6 +513,7 @@ namespace LionKing.DAL
 
                     command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id);
                     command.Parameters.AddWithValue("@species_id", oldAnimal.Species_id);
+                    await using var reader = await command.ExecuteReaderAsync();
 
                     Animal updatedAnimal = new Animal();
                     updatedAnimal.Class_id = newAnimalClass.Class_id;
@@ -551,6 +553,7 @@ namespace LionKing.DAL
 
                     command.Parameters.AddWithValue("@animal_name", (string)newName);
                     command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
+                    await using var reader = await command.ExecuteReaderAsync();
 
                     Animal updatedAnimal = new Animal();
                     updatedAnimal.Animal_name = newName;
@@ -592,6 +595,7 @@ namespace LionKing.DAL
 
                     command.Parameters.AddWithValue("@species_id", newSpecies.Species_id);
                     command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
+                    await using var reader = await command.ExecuteReaderAsync();
 
                     Animal updatedAnimal = new Animal();
                     updatedAnimal.Animal_name = oldAnimal.Animal_name;
