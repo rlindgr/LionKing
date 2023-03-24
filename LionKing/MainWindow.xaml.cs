@@ -375,7 +375,7 @@ namespace LionKing
             {
                 DbRepository db = new();
                 await db.GetAllSpecies();
-                var numOfSpecies = db.specieslist.Count;
+                var numOfSpecies = db.speciesList.Count;
                 txtPopulation.Text = ($"Det finns totalt {numOfSpecies.ToString()}st arter i kungariket");
             }
             catch (Exception ex)

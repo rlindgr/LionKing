@@ -24,7 +24,7 @@ namespace LionKing.Models
             id = Species_id;
             name = Species_name;
             latinName = Latin_name;
-            //animal_class = Class_id; - I get an error from this code, not sure why?
+            
             
         }
         public Species(string name, string latinName)
@@ -40,7 +40,7 @@ namespace LionKing.Models
             Species_name = Species_name;
             Latin_name = Latin_name;
             Class_id = Class_id;
-            /*Class.Class_id = Class.Class_id;*/ //- Can this be replaced by code above? I get error: System.NullReferenceException: 'Object reference not set to an instance of an object.'
+            
 
 
         }
@@ -56,7 +56,7 @@ namespace LionKing.Models
         {
             if (Latin_name == null)
             {
-                return ($"{Species_name}, Latinskt namn saknas"); // not working, why?
+                return ($"{Species_name}, Latinskt namn saknas"); 
             }
             else
             {

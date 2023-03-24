@@ -14,20 +14,12 @@ namespace LionKing
         /// </summary>
         public int Animal_id { get; set; }
         public string? Animal_name { get; set; }
-        public Species Species { get; set; } // can these values be null?? 
+        public Species Species { get; set; } 
         public AnimalClass Class { get; set; } 
 
-        public int Class_id { get; set; } // why do we need this for GetAllAnimals
+        public int Class_id { get; set; } 
         public int Species_id { get; set; }
 
-
-        //public Animal(string name, Species species, AnimalClass animalClass, int animalId)  - Can this be removed??
-        //{
-        //    name = Animal_name;
-        //    species = Species.Species_id;
-        //    animalClass = Class;
-        //    animalId = Animal_id;
-        //}
 
         public Animal()
         {

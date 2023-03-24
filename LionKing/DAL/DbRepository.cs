@@ -33,7 +33,7 @@ namespace LionKing.DAL
         #region Lists
         public List<AnimalClass> animalClasses { get; set; } = new List<AnimalClass>();
 
-        public List<Species> specieslist { get; set; } = new List<Species>();
+        public List<Species> speciesList { get; set; } = new List<Species>();
         public List<Animal> animals { get; set; } = new List<Animal>(); //To be changed to Animals (Listname)
 
         #endregion
@@ -202,7 +202,7 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<Species>> GetAllSpecies()
         {
-            specieslist.Clear();
+            speciesList.Clear();
             string stmt = "SELECT * FROM Species";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
             await using var command = dataSource.CreateCommand(stmt);
@@ -219,9 +219,9 @@ namespace LionKing.DAL
                     Class_id = reader.GetInt32(3)
 
                 };
-                specieslist.Add(species);
+                speciesList.Add(species);
             }
-            return specieslist;
+            return speciesList;
         }
         /// <summary>
         /// Get all animals for comboboxes
@@ -257,7 +257,7 @@ namespace LionKing.DAL
         /// </summary>
         /// <param name="fetchAnimal"></param>
         /// <returns></returns>
-        public async Task<Animal> GetAnimalByName(string animalName) // why isn't this method working??
+        public async Task<Animal> GetAnimalByName(string animalName) 
         {
             try
             {
@@ -305,7 +305,6 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<Animal>> GetAnimalsBySpeciesId(int id)
         {
-            //List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
             string stmt = "SELECT * FROM animal WHERE species_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
@@ -336,7 +335,6 @@ namespace LionKing.DAL
        /// <returns></returns>
         public async Task<IEnumerable<Animal>> GetAnimalsByClassId(int id)
         {
-            List<Animal> animalList = new List<Animal>(); // why not use the prop in this class, did we simply miss this one?
 
             string stmt = "SELECT * FROM animal WHERE class_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
@@ -351,12 +349,12 @@ namespace LionKing.DAL
                 animal = new Animal()
                 {
                     Animal_id = reader.GetInt32(0),
-                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"]) // Use method for if the name is null. I don't want to change since im unsure if you are still working on it.
+                    Animal_name = ConvertFromDBVal<string>(reader["animal_name"]) 
                 };
-                animalList.Add(animal);
+                animals.Add(animal);
 
             }
-            return animalList;
+            return animals;
         }
         /// <summary>
         /// Retrives Class_name based on Class_id
@@ -421,7 +419,7 @@ namespace LionKing.DAL
         /// <returns></returns>
         public async Task<IEnumerable<Species>> GetAllSpeciesFromClass(int id)
         {
-            List<Species> speciesList = new List<Species>();
+            //List<Species> speciesList = new List<Species>();
 
             string stmt = "SELECT * FROM species WHERE class_id = @id";
             await using var dataSource = NpgsqlDataSource.Create(_connectionString);
@@ -454,7 +452,7 @@ namespace LionKing.DAL
         /// <param name="className"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Animal> UpdateClass(Animal oldAnimal, AnimalClass newAnimalClass ) //to be updated
+        public async Task<Animal> UpdateClass(Animal oldAnimal, AnimalClass newAnimalClass ) 
         {
             if (newAnimalClass != null)
             {
@@ -483,7 +481,7 @@ namespace LionKing.DAL
                     switch (errorCode)
                     {
                         case PostgresErrorCodes.UniqueViolation:
-                            errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                            errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; 
                             break;
 
                     }
@@ -501,7 +499,7 @@ namespace LionKing.DAL
            
 
         }
-        public async Task<Animal> UpdateClassBySpecies(Animal oldAnimal, AnimalClass newAnimalClass) //to be updated
+        public async Task<Animal> UpdateClassBySpecies(Animal oldAnimal, AnimalClass newAnimalClass) 
         {
             if (newAnimalClass != null)
             {
