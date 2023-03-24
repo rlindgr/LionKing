@@ -456,65 +456,169 @@ namespace LionKing.DAL
         /// <exception cref="Exception"></exception>
         public async Task<Animal> UpdateClass(Animal oldAnimal, AnimalClass newAnimalClass ) //to be updated
         {
-            try
-            {               
-                string stmt = "UPDATE animal SET class_id = @class_id WHERE animal_id = @animal_id";
-                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-                await using var command = dataSource.CreateCommand(stmt);
-
-                command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id); 
-                command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
-                
-                Animal updatedAnimal = new Animal();              
-                updatedAnimal.Class_id = newAnimalClass.Class_id;
-
-                return updatedAnimal;
-            }
-            catch (PostgresException ex)
+            if (newAnimalClass != null)
             {
-                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
-                string errorCode = ex.SqlState;
-                switch (errorCode)
+                try
                 {
-                    case PostgresErrorCodes.UniqueViolation:
-                        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
-                        break;
+                    string stmt = "UPDATE animal SET class_id = @class_id WHERE animal_id = @animal_id";
+                    await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                    await using var command = dataSource.CreateCommand(stmt);
 
+                    command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id);
+                    command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
+
+                    Animal updatedAnimal = new Animal();
+                    updatedAnimal.Class_id = newAnimalClass.Class_id;
+                    updatedAnimal.Animal_name = oldAnimal.Animal_name;
+                    updatedAnimal.Animal_id = oldAnimal.Animal_id;
+                    updatedAnimal.Species_id = oldAnimal.Species_id;
+
+                    return updatedAnimal;
                 }
-                throw new Exception(errorMessage);
+                catch (PostgresException ex)
+                {
+                    string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                    string errorCode = ex.SqlState;
+                    switch (errorCode)
+                    {
+                        case PostgresErrorCodes.UniqueViolation:
+                            errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                            break;
+
+                    }
+                    throw new Exception(errorMessage);
+                }
+
+
             }
+            else
+            {
+                return oldAnimal;
+
+            }
+            
+           
 
         }
         public async Task<Animal> UpdateClassBySpecies(Animal oldAnimal, AnimalClass newAnimalClass) //to be updated
         {
-            try
+            if (newAnimalClass != null)
             {
-                string stmt = "UPDATE animal SET class_id = @class_id WHERE species_id = @species_id";
-                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
-                await using var command = dataSource.CreateCommand(stmt);
-
-                command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id);
-                command.Parameters.AddWithValue("@species_id", oldAnimal.Species_id);
-
-                Animal updatedAnimal = new Animal();
-                updatedAnimal.Class_id = newAnimalClass.Class_id;
-
-                return updatedAnimal;
-            }
-            catch (PostgresException ex)
-            {
-                string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
-                string errorCode = ex.SqlState;
-                switch (errorCode)
+                try
                 {
-                    case PostgresErrorCodes.UniqueViolation:
-                        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
-                        break;
+                    string stmt = "UPDATE animal SET class_id = @class_id WHERE species_id = @species_id";
+                    await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                    await using var command = dataSource.CreateCommand(stmt);
+
+                    command.Parameters.AddWithValue("@class_id", newAnimalClass.Class_id);
+                    command.Parameters.AddWithValue("@species_id", oldAnimal.Species_id);
+
+                    Animal updatedAnimal = new Animal();
+                    updatedAnimal.Class_id = newAnimalClass.Class_id;
+                    updatedAnimal.Animal_id = oldAnimal.Animal_id;
+                    updatedAnimal.Animal_name = oldAnimal.Animal_name;
+                    updatedAnimal.Species_id = oldAnimal.Species_id;
+
+                    return updatedAnimal;
+                }
+                catch (PostgresException ex)
+                {
+                    string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                    string errorCode = ex.SqlState;
+                    switch (errorCode)
+                    {
+                        case PostgresErrorCodes.UniqueViolation:
+                            errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                            break;
+
+                    }
+                    throw new Exception(errorMessage);
+                }
+            }
+            else { return oldAnimal; }
+
+        }
+
+        public async Task<Animal> UpdateAnimalName (Animal oldAnimal, string newName) 
+        {
+            if (newName != null)
+            {
+                try
+                {
+                    string stmt = "UPDATE animal SET animal_name=@animal_name WHERE animal_id=@animal_id";
+                    await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                    await using var command = dataSource.CreateCommand(stmt);
+
+                    command.Parameters.AddWithValue("@animal_name", newName);
+                    command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
+
+                    Animal updatedAnimal = new Animal();
+                    updatedAnimal.Animal_name = newName;
+                    updatedAnimal.Class_id = oldAnimal.Class_id;
+                    updatedAnimal.Species_id = oldAnimal.Species_id;
+                    updatedAnimal.Animal_id = oldAnimal.Animal_id;
+                    return updatedAnimal;
+                }
+
+
+                catch (PostgresException ex)
+                {
+                    string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                    string errorCode = ex.SqlState;
+                    //switch (errorCode)
+                    //{
+                    //    case PostgresErrorCodes.UniqueViolation:
+                    //        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                    //        break;
+
+                    //}
+
+                    throw new Exception(errorMessage);
+                }
+            }
+
+            else { return oldAnimal; }
+        }
+
+        public async Task<Animal> UpdateSpecies (Animal oldAnimal, Species newSpecies)
+        {
+            if (newSpecies != null)
+            {
+                try
+                {
+                    string stmt = "UPDATE animal SET species_id=@species_id WHERE animal_id=@animal_id";
+                    await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                    await using var command = dataSource.CreateCommand(stmt);
+
+                    command.Parameters.AddWithValue("@species_id", newSpecies.Species_id);
+                    command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
+
+                    Animal updatedAnimal = new Animal();
+                    updatedAnimal.Animal_name = oldAnimal.Animal_name;
+                    updatedAnimal.Class_id = oldAnimal.Class_id;
+                    updatedAnimal.Species_id = newSpecies.Species_id;
+                    updatedAnimal.Animal_id = oldAnimal.Animal_id;
+                    return updatedAnimal;
 
                 }
-                throw new Exception(errorMessage);
-            }
+                catch (PostgresException ex)
+                {
+                    string errorMessage = "Något gick fel"; //Unsure of which errors we can expect
+                    string errorCode = ex.SqlState;
+                    //switch (errorCode)
+                    //{
+                    //    case PostgresErrorCodes.UniqueViolation:
+                    //        errorMessage = "Denna klass finns redan, klassen som skapas måste vara unik"; //Ska vi använda denna?
+                    //        break;
 
+                    //}
+
+                    throw new Exception(errorMessage);
+                }
+
+
+            }
+            else { return oldAnimal; }
         }
 
 

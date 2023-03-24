@@ -376,32 +376,57 @@ namespace LionKing
 
         private async void cbxEditAnimalClass_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db = new();
-            var selectClass = await db.GetAllClasses();
-            cbxEditAnimalClass.ItemsSource = selectClass;
+            try
+            {
+                DbRepository db = new();
+                var selectClass = await db.GetAllClasses();
+                cbxEditAnimalClass.ItemsSource = null;
+                cbxEditAnimalClass.ItemsSource = selectClass;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private async void cbxEditSpecies_DropDownOpened(object sender, EventArgs e)
         {
-            DbRepository db = new();
-            var allSpecies = await db.GetAllSpecies();           
-            cbxEditSpecies.ItemsSource = allSpecies;
+            try
+            {
+                DbRepository db = new();
+                var allSpecies = await db.GetAllSpecies();
+                cbxEditSpecies.ItemsSource = null;
+                cbxEditSpecies.ItemsSource = allSpecies;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private async void btnEditAnimalClass_Click(object sender, RoutedEventArgs e)
-        {     
-            DbRepository db = new();
+        {
+            try
+            {
+                DbRepository db = new();
 
-            var animal = (Animal)lstAnimal.SelectedItem;
-            AnimalClass newAnimalClass = (AnimalClass)cbxEditAnimalClass.SelectedItem;
-            var updatedAnimal = await db.UpdateClass(animal, newAnimalClass);
-            var updatedClass = await db.GetClassById(updatedAnimal.Class_id);
+                var animal = (Animal)lstAnimal.SelectedItem;
+                AnimalClass newAnimalClass = (AnimalClass)cbxEditAnimalClass.SelectedItem;
+                var updatedAnimal = await db.UpdateClass(animal, newAnimalClass);
+                var updatedClass = await db.GetClassById(updatedAnimal.Class_id);
 
-            string currentAnimalClass = txtCurrentClass.Text;
-            string currentSpecies = txtCurrentSpecies.Text;
-            string currentName = txtCurrentName.Text;
+                string currentAnimalClass = txtCurrentClass.Text;
+                string currentSpecies = txtCurrentSpecies.Text;
+                string currentName = txtCurrentName.Text;
 
-            MessageBox.Show($"Uppdatering genomförd! {currentName} som är en {currentSpecies} tillhör nu djurklassen {updatedClass}"); 
+                MessageBox.Show($"Uppdatering genomförd! {currentName} som är en {currentSpecies} tillhör nu djurklassen {updatedClass}");
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            
         }
 
 
@@ -433,22 +458,32 @@ namespace LionKing
             AnimalClass newClass = (AnimalClass)cbxEditAnimalClass.SelectedItem;
             Species newSpecies = (Species)cbxEditSpecies.SelectedItem;
             
-            if (oldAnimal.Class_id == newClass.Class_id)
-            {
+            
+            //if (oldAnimal.Species_id == newSpecies.Species_id || oldAnimal.Class_id != newClass.Class_id && newClass != null)
+            //{
+            //    var allAnimalsInSpecies = await db.GetAnimalsBySpeciesId(oldAnimal.Species_id);
+            //    if (allAnimalsInSpecies != null)
+            //    {
+            //        var answer = MessageBox.Show($"Du kan inte ändra klasstillhörigheten för {oldAnimal} eftersom det finns fler djur i {oldSpecies}, vill du ändra klasstillhörigheten för alla djur av arten {oldSpecies}?", "Otilåten ändring av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            //        if (answer == MessageBoxResult.Yes)
+            //        {
+            //            db.UpdateClassBySpecies(oldAnimal, newClass);
+            //            db.UpdateAnimalName(oldAnimal, newName);
+                       
+            //        }
+            //    }
+            //}
+            //else
+            //{
+                Animal updatedAnimal = new Animal();
+                updatedAnimal= await db.UpdateAnimalName(oldAnimal, newName);
+                updatedAnimal = await db.UpdateClass(oldAnimal, newClass);
+                updatedAnimal= await db.UpdateSpecies(oldAnimal, newSpecies);
+                var species = await db.GetSpeciesById(updatedAnimal.Species_id);
+                var AnimalClass = await db.GetClassById(updatedAnimal.Class_id);
+                MessageBox.Show($"Uppdatering genomförd: {updatedAnimal}, {species}, {AnimalClass}");
 
-            }
-            if (oldAnimal.Species_id == newSpecies.Species_id || oldAnimal.Class_id != newClass.Class_id)
-            {
-                var allAnimalsInSpecies = await db.GetAnimalsBySpeciesId(oldAnimal.Species_id);
-                if (allAnimalsInSpecies != null)
-                {
-                    var answer = MessageBox.Show($"Du kan inte ändra klasstillhörigheten för {oldAnimal} eftersom det finns fler djur i {oldSpecies}, vill du ändra klasstillhörigheten för alla djur av arten {oldSpecies}?", "Otilåten ändring av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-                    if (answer == MessageBoxResult.Yes)
-                    {
-                        db.UpdateClassBySpecies(oldAnimal, newClass);
-                    }
-                }
-            }
+            //}
            
 
         }
