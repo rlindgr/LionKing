@@ -166,10 +166,11 @@ namespace LionKing
         /// <param name="e"></param>
         private async void btnGetAnimal_Click_1(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            string GetAnimal = txtGetAnimal.Text;
+            
             try
             {
+                DbRepository db = new();
+                string GetAnimal = txtGetAnimal.Text;
                 var animal = await db.GetAnimalByName(GetAnimal);
 
                 if (animal.Animal_name == null)
@@ -204,15 +205,21 @@ namespace LionKing
         /// <param name="e"></param>
         private async void btnViewAnimalClass_Click(object sender, RoutedEventArgs e)
         {
-            lstSpecies.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
-            lstAnimal.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
+            try 
+            {
+                lstSpecies.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
+                lstAnimal.ItemsSource = null; //Do we need to create a method that clears listboxes for this to work? issues with ItemSource vs item.add()
 
-            DbRepository db = new();
-            var allClasses = await db.GetAllClasses();
-            lstAnimalClass.ItemsSource = allClasses;
-            
+                DbRepository db = new();
+                var allClasses = await db.GetAllClasses();
+                lstAnimalClass.ItemsSource = allClasses;
+            }            
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
-            
+
         }
         /// <summary>
         /// Displays all Species in listbox in View Area
@@ -223,10 +230,17 @@ namespace LionKing
         {
             lstAnimalClass.ItemsSource = null;
             lstAnimal.ItemsSource = null;
-            
-            DbRepository db = new();
-            var allSpecies = await db.GetAllSpecies();
-            lstSpecies.ItemsSource = allSpecies;
+
+            try 
+            {
+                DbRepository db = new();
+                var allSpecies = await db.GetAllSpecies();
+                lstSpecies.ItemsSource = allSpecies;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         /// <summary>
         /// Displays all Animals in listbox in View area
@@ -237,10 +251,18 @@ namespace LionKing
         {
             lstAnimalClass.ItemsSource = null;
             lstSpecies.ItemsSource = null; 
-            
-            DbRepository db = new();
-            var allAnimals = await db.GetAllAnimals();     
-            lstAnimal.ItemsSource = allAnimals;
+
+            try 
+            {
+                DbRepository db = new();
+                var allAnimals = await db.GetAllAnimals();
+                lstAnimal.ItemsSource = allAnimals;
+
+            }           
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         /// <summary>
         /// Event for when user chooses an AnimalClass in listbox in View area
@@ -249,12 +271,19 @@ namespace LionKing
         /// <param name="e"></param>
         private async void lstAnimalClass_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            AnimalClass animalClass = (AnimalClass)lstAnimalClass.SelectedItem;
-            DbRepository db = new DbRepository();
-            var matchingSpecies = await db.GetAllSpeciesFromClass(animalClass.Class_id);
-            lstSpecies.ItemsSource = matchingSpecies;
+            try 
+            {
+                AnimalClass animalClass = (AnimalClass)lstAnimalClass.SelectedItem;
+                DbRepository db = new DbRepository();
+                var matchingSpecies = await db.GetAllSpeciesFromClass(animalClass.Class_id);
+                lstSpecies.ItemsSource = matchingSpecies;
 
-            txtCurrentClass.Text = lstAnimalClass.SelectedItem.ToString();
+                txtCurrentClass.Text = lstAnimalClass.SelectedItem.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         /// <summary>
         /// Event for when user chooses a Species in listbox in View area
@@ -263,14 +292,21 @@ namespace LionKing
         /// <param name="e"></param>
         private async void lstSpecies_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Species species = (Species)lstSpecies.SelectedItem;
-            DbRepository db = new DbRepository();
-            var matchingAnimals = await db.GetAnimalsBySpeciesId(species.Species_id);
-            lstAnimal.ItemsSource = matchingAnimals;
-            var matchingClasses = await db.GetClassById(species.Class_id);
-            lstAnimalClass.SelectedItem = matchingClasses;  
+            try 
+            {
+                Species species = (Species)lstSpecies.SelectedItem;
+                DbRepository db = new DbRepository();
+                var matchingAnimals = await db.GetAnimalsBySpeciesId(species.Species_id);
+                lstAnimal.ItemsSource = matchingAnimals;
+                var matchingClasses = await db.GetClassById(species.Class_id);
+                lstAnimalClass.SelectedItem = matchingClasses;
 
-            txtCurrentSpecies.Text = lstSpecies.SelectedItem.ToString();
+                txtCurrentSpecies.Text = lstSpecies.SelectedItem.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         /// <summary>
         /// Presents which Species and Class that a selected Animal belongs to in View area
@@ -282,39 +318,55 @@ namespace LionKing
             lstAnimalClass.ItemsSource = null;
             lstSpecies.ItemsSource = null;
 
-            Animal animal = (Animal)lstAnimal.SelectedItem;
-            DbRepository db = new DbRepository();
-            var matchingSpecies = await db.GetSpeciesById(animal.Species_id);
-            var matchingClasses = await db.GetClassById(animal.Class_id);
+            try 
+            {
+                Animal animal = (Animal)lstAnimal.SelectedItem;
+                DbRepository db = new DbRepository();
+                var matchingSpecies = await db.GetSpeciesById(animal.Species_id);
+                var matchingClasses = await db.GetClassById(animal.Class_id);
 
-            //List <Species> species = new List<Species>();
-            //species.Add(matchingSpecies); 
-            //lstSpecies.ItemsSource = species;
+                lstSpecies.Items.Add(matchingSpecies);
+                lstAnimalClass.Items.Add(matchingClasses);
 
-            lstSpecies.Items.Add(matchingSpecies);
-            lstAnimalClass.Items.Add(matchingClasses);
-
-            txtCurrentName.Text = lstAnimal.SelectedItem.ToString();
-            txtCurrentSpecies.Text = matchingSpecies.ToString(); 
-            txtCurrentClass.Text = matchingClasses.ToString();
+                txtCurrentName.Text = lstAnimal.SelectedItem.ToString();
+                txtCurrentSpecies.Text = matchingSpecies.ToString();
+                txtCurrentClass.Text = matchingClasses.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
         private async void rbtnSortByAsc_Checked(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            var allAnimals = await db.GetAllAnimals();
-            db.SortAnimalByNameAcs();
-            lstAnimal.ItemsSource = null;
-            lstAnimal.ItemsSource = db.animals;
+            try 
+            {
+                DbRepository db = new();
+                var allAnimals = await db.GetAllAnimals();
+                db.SortAnimalByNameAcs();
+                lstAnimal.ItemsSource = null;
+                lstAnimal.ItemsSource = db.animals;
+            }           
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         private async void rbtnSortByDesc_Checked(object sender, RoutedEventArgs e)
         {
-            DbRepository db = new();
-            var allAnimals = await db.GetAllAnimals();
-            db.SortAnimalByNameDecs();
-            lstAnimal.ItemsSource = null;
-            lstAnimal.ItemsSource = db.animals;
-
+            try 
+            {
+                DbRepository db = new();
+                var allAnimals = await db.GetAllAnimals();
+                db.SortAnimalByNameDecs();
+                lstAnimal.ItemsSource = null;
+                lstAnimal.ItemsSource = db.animals;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
 
