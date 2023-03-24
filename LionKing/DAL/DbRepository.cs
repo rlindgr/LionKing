@@ -549,7 +549,7 @@ namespace LionKing.DAL
                     await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                     await using var command = dataSource.CreateCommand(stmt);
 
-                    command.Parameters.AddWithValue("@animal_name", newName);
+                    command.Parameters.AddWithValue("@animal_name", (string)newName);
                     command.Parameters.AddWithValue("@animal_id", oldAnimal.Animal_id);
 
                     Animal updatedAnimal = new Animal();

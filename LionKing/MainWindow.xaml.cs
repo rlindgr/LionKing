@@ -475,13 +475,14 @@ namespace LionKing
             //}
             //else
             //{
-                Animal updatedAnimal = new Animal();
-                updatedAnimal= await db.UpdateAnimalName(oldAnimal, newName);
-                updatedAnimal = await db.UpdateClass(oldAnimal, newClass);
-                updatedAnimal= await db.UpdateSpecies(oldAnimal, newSpecies);
-                var species = await db.GetSpeciesById(updatedAnimal.Species_id);
-                var AnimalClass = await db.GetClassById(updatedAnimal.Class_id);
-                MessageBox.Show($"Uppdatering genomförd: {updatedAnimal}, {species}, {AnimalClass}");
+                //Animal updatedAnimalName = new Animal();
+                var firstUpdate= await db.UpdateAnimalName(oldAnimal, newName);
+                var secondUpdate = await db.UpdateClass(firstUpdate, newClass);
+                var finalUpdate= await db.UpdateSpecies(secondUpdate, newSpecies);
+
+                var species = await db.GetSpeciesById(finalUpdate.Species_id);
+                var AnimalClass = await db.GetClassById(finalUpdate.Class_id);
+                MessageBox.Show($"Uppdatering genomförd: {finalUpdate}, {species}, {AnimalClass}");
 
             //}
            
