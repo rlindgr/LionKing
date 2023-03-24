@@ -654,7 +654,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel, vänligen försök igen";
+                string errorMessage = "Något gick fel, djuret har inte raderats vänligen försök igen";
                 throw new Exception(errorMessage);
             }
 
@@ -679,7 +679,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel";
+                string errorMessage = "Något gick fel, djuren i den valda djurarten har inte raderats";
                 throw new Exception(errorMessage);
             }
            
@@ -704,7 +704,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel";
+                string errorMessage = "Något gick fel, djuren i den valda klassen har inte raderats";
                 throw new Exception(errorMessage);
             }
 
@@ -732,7 +732,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel, vänligen försök igen";
+                string errorMessage = "Något gick fel, djuren i djurarten har inte raderats, vänligen försök igen";
                 throw new Exception (errorMessage);
             }
         }
@@ -759,7 +759,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel, vänligen försök igen";
+                string errorMessage = "Något gick fel, djurklassen har inte raderats, vänligen försök igen";
                 throw new Exception(errorMessage);
             }
         }
@@ -778,7 +778,7 @@ namespace LionKing.DAL
             }
             catch (PostgresException ex)
             {
-                string errorMessage = "Något gick fel, vänligen försök igen";
+                string errorMessage = "Något gick fel, arterna i den valda klassen har inte raderats, vänligen försök igen";
                 throw new Exception(errorMessage);
             }
 

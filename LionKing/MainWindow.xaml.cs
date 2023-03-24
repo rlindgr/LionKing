@@ -464,7 +464,8 @@ namespace LionKing
                 var allAnimalsInSpecies = await db.GetAnimalsBySpeciesId(oldAnimal.Species_id);
                 if (allAnimalsInSpecies != null)
                 {
-                    var answer = MessageBox.Show($"Du kan inte ändra klasstillhörigheten för {oldAnimal} eftersom det finns fler djur i {oldSpecies}, vill du ändra klasstillhörigheten för alla djur av arten {oldSpecies}?", "Otilåten ändring av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                   
+                    var answer = MessageBox.Show($"Du kan inte ändra klasstillhörigheten för {oldAnimal} eftersom det finns fler djur i {oldAnimalClass}, vill du ändra klasstillhörigheten för alla djur av arten {oldSpecies}?", "Otilåten ändring av art", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                     if (answer == MessageBoxResult.Yes)
                     {
                         var firstUpdate = await db.UpdateClassBySpecies(oldAnimal, newClass);
